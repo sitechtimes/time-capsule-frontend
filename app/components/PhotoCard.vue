@@ -1,13 +1,13 @@
 <template>
   <div class="">
     <div id="image"></div>
-    <h2>{{ cardData.uploadDate }}</h2>
+    <h2>{{ photoData.uploadDate }}</h2>
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps<{
-  cardData: Photo;
+  photoData: Photo;
 }>();
 
 /* export interface Photo {
