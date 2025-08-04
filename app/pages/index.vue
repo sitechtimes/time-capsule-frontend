@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button class="btn btn-primary">Primary</button>
-  </div>
+  <div></div>
 </template>
 
 <script setup lang="ts"></script>
