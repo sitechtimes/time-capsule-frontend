@@ -1,7 +1,8 @@
 <template>
-  <div class="">
-    <div id="image"></div>
+  <div class="card">
+    <div id=""></div>
     <h2>{{ photoData.uploadDate }}</h2>
+    <button class="btn" @click="deleteCard">Delete</button>
   </div>
 </template>
 
@@ -20,6 +21,14 @@ defineProps<{
   imageData: string;
   author: User["id"];
 } */
+const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  delete: [void];
+}>();
+
+function deleteCard() {
+  emit("delete");
+}
 </script>
 
 <style scoped></style>
