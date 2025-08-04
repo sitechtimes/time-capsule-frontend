@@ -1,26 +1,27 @@
-export const useAuthStore = defineStore("authStore", () => {
-  const user = ref<User | null>(null);
-  const errorMessage = ref("");
+export const useUserStore = defineStore("userStore", () => {
+  const user = ref<User>();
+  const theme = ref("light");
 
   function signOut() {
-    user.value = null;
+    user.value = undefined;
   }
 
-  async function signIn(email: string, password: string) {
-    try {
-      user.value = await $fetch("/api/login", {
-        method: "POST",
-        body: { email, password },
-      });
-      console.log(user.value);
-    } catch (error) {
-      errorMessage.value = `Login error: ${error}`;
-    }
+  async function signIn(
+    email: string,
+    password: string
+  ): Promise<Error | undefined> {
+    const { data, error } = await tryRequestEndpoint<User>("/login", "POST", {
+      email,
+      password,
+    });
+    if (error) return error;
+    user.value = data;
+    console.log(user.value);
   }
   return {
     user,
-    errorMessage,
     signOut,
     signIn,
+    theme,
   };
 });

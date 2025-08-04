@@ -14,6 +14,13 @@ interface LoginResponse {
 export default defineEventHandler(async (event) => {
   const body = await readBody<LoginBody>(event);
 
+  if (body.email !== "admin@gmail.com" || body.password !== "admin") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Incorrect email or password",
+    });
+  }
+
   return {
     id: 1,
     email: body.email,
