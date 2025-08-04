@@ -13,7 +13,9 @@
           type="search"
           placeholder="Search"
           required
+          @change="search(searchInput)"
         />
+        <!-- search bar or filters? -->
       </label>
     </div>
 
@@ -42,7 +44,6 @@ async function fetchPhotoData() {
   } catch (error: unknown) {
     errorMessage.value = error;
   }
-
   //return ?
 }
 fetchPhotoData();
@@ -50,13 +51,17 @@ fetchPhotoData();
 async function deletePhoto(photoIndex: number) {
   photoData.value.splice(photoIndex, 1);
   /* try {
-    await $fetch(`/api/items/${photoID}`, {
+    await $fetch(`/api/items/${photoIndex}`, {
       method: "DELETE",
-    });
+      });
     console.log("item deleted");
   } catch (error) {
     console.error("Error deleting item:", error);
   } */
+}
+
+function search(input: string) {
+  //photoData.value.filter((photo)=>)
 }
 </script>
 

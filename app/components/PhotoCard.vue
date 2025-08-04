@@ -1,14 +1,20 @@
 <template>
-  <div class="card">
-    <div id=""></div>
-    <h2>{{ photoData.uploadDate }}</h2>
-    <button class="btn" @click="deleteCard">Delete</button>
+  <div class="card card-side bg-base-100 shadow-sm w-100 m-8">
+    <figure>
+      <img :src="photoData.imageData" aria-hidden="true" class="" />
+    </figure>
+    <div class="card-body">
+      <p>{{ photoData.id }}</p>
+      <div class="card-actions justify-end">
+        <button class="btn btn-primary" @click="deleteCard">Delete</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps<{
-  photoData: Photo;
+  photoData: Photo; //have to convert upload date
 }>();
 
 /* export interface Photo {
