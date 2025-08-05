@@ -26,6 +26,6 @@ export default defineEventHandler(async (event) => {
     email: body.email,
     firstName: "John",
     lastName: "Doe",
-    userType: "user",
+    userType: "supervisor",
   } satisfies LoginResponse;
 });

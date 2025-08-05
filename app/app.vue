@@ -2,7 +2,7 @@
   <div :data-theme="store.theme">
     <AppHeader />
     <NuxtPage />
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">

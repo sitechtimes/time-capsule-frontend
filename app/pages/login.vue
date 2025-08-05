@@ -25,8 +25,8 @@
 
 <script setup lang="ts">
 const loginForm = reactive({
-  email: "",
-  password: "",
+  email: "admin@gmail.com",
+  password: "admin",
 });
 
 watch(

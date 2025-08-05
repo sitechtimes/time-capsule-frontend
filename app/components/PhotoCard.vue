@@ -9,8 +9,12 @@
         Graduation Year: {{ photoData.graduationYear }} <br />
         Event: {{ photoData.event }} <br />
         Location: {{ photoData.location }} <br />
-        People: {{ person in photoData.people }} <br />
-        author: {{ photoData.author }}
+        People:
+        <span v-for="(person, index) in photoData.people" :key="index">
+          {{ person }}<span v-if="index < photoData.people.length - 1">, </span>
+        </span>
+        <br />
+        Author: {{ photoData.author }}
       </p>
       <div class="card-actions justify-end">
         <button class="btn btn-primary" @click="deleteCard">Delete</button>
