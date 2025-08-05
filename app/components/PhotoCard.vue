@@ -4,7 +4,14 @@
       <img :src="photoData.imageData" aria-hidden="true" class="" />
     </figure>
     <div class="card-body">
-      <p>{{ photoData.event }}</p>
+      <p>
+        Upload Date: {{ photoData.uploadDate }} <br />
+        Graduation Year: {{ photoData.graduationYear }} <br />
+        Event: {{ photoData.event }} <br />
+        Location: {{ photoData.location }} <br />
+        People: {{ person in photoData.people }} <br />
+        author: {{ photoData.author }}
+      </p>
       <div class="card-actions justify-end">
         <button class="btn btn-primary" @click="deleteCard">Delete</button>
       </div>

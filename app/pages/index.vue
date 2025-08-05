@@ -100,7 +100,7 @@ async function deletePhoto(photoIndex: number) {
   } */
 }
 
-function searchByGradYear(input) {
+function searchByGradYear(input: string) {
   if (input === "") {
     filteredPhotoData.value = photoData.value;
   }
@@ -117,7 +117,7 @@ function searchByUploadDate(input) {
   );
 }
 
-function searchByEvent(input) {
+function searchByEvent(input: string) {
   filteredPhotoData.value = photoData.value.filter((photo) =>
     photo.event.toLowerCase().includes(input.toLowerCase())
   );
