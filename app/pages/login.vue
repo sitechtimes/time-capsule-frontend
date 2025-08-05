@@ -1,21 +1,25 @@
 <template>
-  <div class="flex flex-col justify-around min-h-[95vh] p-5">
-    <form @submit.prevent="handleLogin" class="flex flex-col space-y-4">
-      <input
-        type="text"
-        placeholder="email"
-        v-model="loginForm.email"
-        class="input mb-4 w-full"
-      />
-      <input
-        class="input mb-4 w-full"
-        type="password"
-        placeholder="password"
-        v-model="loginForm.password"
-      />
-      <button type="submit" class="btn w-full btn-primary">Login</button>
-      <p v-if="errorMessage">{{ errorMessage }}</p>
-    </form>
+  <div class="flex justify-center items-center min-h-screen bg-accent">
+    <div
+      class="card bg-neutral shadow-[6px_6px_12px_rgba(0,0,0,0.2)] shadow-primary rounded-lg p-6 w-full max-w-md"
+    >
+      <form @submit.prevent="handleLogin" class="flex flex-col space-y-4">
+        <input
+          type="text"
+          placeholder="email"
+          v-model="loginForm.email"
+          class="input mb-4 w-full bg-neutral"
+        />
+        <input
+          class="input mb-4 w-full bg-neutral"
+          type="password"
+          placeholder="password"
+          v-model="loginForm.password"
+        />
+        <button type="submit" class="btn w-full btn-primary">Login</button>
+        <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+      </form>
+    </div>
   </div>
 </template>
 

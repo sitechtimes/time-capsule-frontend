@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-accent">
     <label class="swap swap-rotate">
       <input type="checkbox" @change="toggle" />
       <img
@@ -22,11 +22,7 @@
 const store = useUserStore();
 
 function toggle() {
-  if (store.theme === "dark") {
-    store.theme = "light";
-  } else {
-    store.theme = "dark";
-  }
+  store.theme = store.theme === "light" ? "dark" : "light";
 }
 </script>
 
