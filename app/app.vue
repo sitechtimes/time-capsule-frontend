@@ -1,7 +1,10 @@
 <template>
-  <main>
+  <div :data-theme="store.theme">
+    <AppHeader />
     <NuxtPage />
   </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const store = useUserStore();
+</script>
