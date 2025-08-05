@@ -4,7 +4,7 @@
       <img :src="photoData.imageData" aria-hidden="true" class="" />
     </figure>
     <div class="card-body">
-      <p>{{ photoData.id }}</p>
+      <p>{{ photoData.event }}</p>
       <div class="card-actions justify-end">
         <button class="btn btn-primary" @click="deleteCard">Delete</button>
       </div>
