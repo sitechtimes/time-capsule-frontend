@@ -10,7 +10,7 @@
           draggable="false"
         />
         <input
-          v-model="graduationYearInput"
+          v-model="searchInputs.graduationYear"
           type="number"
           placeholder="Graduation Year"
         />
@@ -18,7 +18,7 @@
 
       <label class="input">
         <!-- upload date range? -->
-        <select v-model="uploadDateInput.year" name="" id="">
+        <select v-model="searchInputs.uploadDate.year" name="" id="">
           <option value="all">All</option>
           <option
             v-for="year in getYears(2025, 2050)"
@@ -28,7 +28,7 @@
             {{ year }}
           </option>
         </select>
-        <select v-model="uploadDateInput.month" name="" id="">
+        <select v-model="searchInputs.uploadDate.month" name="" id="">
           <option value="all">All</option>
           <option
             v-for="(month, index) in months"
@@ -47,17 +47,7 @@
           class="h-4 opacity-50 dark:invert select-none"
           draggable="false"
         />
-        <input v-model="eventInput" type="text" placeholder="Event" />
-      </label>
-
-      <label class="input">
-        <img
-          src="/search.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 dark:invert select-none"
-          draggable="false"
-        />
-        <input v-model="locationInput" type="text" placeholder="Location" />
+        <input v-model="searchInputs.event" type="text" placeholder="Event" />
       </label>
 
       <label class="input">
@@ -68,12 +58,32 @@
           draggable="false"
         />
         <input
-          v-model="peopleInput"
+          v-model="searchInputs.location"
           type="text"
-          placeholder="People (comma-separated)"
-          @change="searchByPeople(peopleInput)"
+          placeholder="Location"
         />
       </label>
+
+      <div>
+        <label for="people" class="block mb-1">People (comma-separated):</label>
+        <input
+          v-model="personInput"
+          type="text"
+          placeholder="Ex: John Doe, ..."
+          class="input w-full bg-base-100"
+          @input="handlePeopleInput"
+        />
+      </div>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <div
+          v-for="(person, index) in searchInputs.people"
+          :key="index"
+          class="rounded-full bg-neutral-200 px-3 py-1 flex items-center gap-2"
+        >
+          <span class="text-black">{{ person }}</span>
+          <button type="button" @click="removePerson(index)">✕</button>
+        </div>
+      </div>
 
       <button class="btn" @click="resetInputs">Reset</button>
     </div>
@@ -97,15 +107,31 @@
 const photoData = ref<Photo[]>([]);
 //const filteredPhotoData = ref<Photo[]>([]);
 const errorMessage = ref();
-const graduationYearInput = ref("");
-const uploadDateInput = ref({
-  month: "all",
-  year: "all",
+const searchInputs = reactive({
+  uploadDate: ref({
+    month: "all",
+    year: "all",
+  }),
+  graduationYear: new Date().getFullYear(),
+  event: "",
+  location: "",
+  people: ref<string[]>([]),
 });
-const eventInput = ref("");
-const locationInput = ref("");
-const peopleInput = ref([]);
-const currentPeopleInput = ref(""); //change name later
+
+const personInput = ref(""); //change name later?
+function removePerson(index: number) {
+  searchInputs.people.splice(index, 1);
+}
+function handlePeopleInput() {
+  const name = personInput.value;
+  if (name.endsWith(",")) {
+    const trimmedName = name.slice(0, -1).trim();
+    if (trimmedName && !searchInputs.people.includes(trimmedName)) {
+      searchInputs.people.push(trimmedName);
+    }
+    personInput.value = "";
+  }
+}
 
 const user = useUserStore().user;
 const months = [
@@ -166,53 +192,51 @@ async function deletePhoto(photoIndex: number) {
 }
 
 function resetInputs() {
-  graduationYearInput.value = "";
-  uploadDateInput.value = {
+  searchInputs.uploadDate = {
     month: "all",
     year: "all",
   };
-  eventInput.value = "";
-  locationInput.value = "";
-  peopleInput.value = [];
+  searchInputs.graduationYear = new Date().getFullYear();
+  searchInputs.event = "";
+  searchInputs.location = "";
+  searchInputs.people = [];
   //filteredPhotoData.value = photoData.value;
 }
 
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch =
-      String(photo.graduationYear).includes(graduationYearInput.value) ||
-      graduationYearInput.value === "";
+      String(photo.graduationYear).includes(
+        String(searchInputs.graduationYear)
+      ) || searchInputs.graduationYear === new Date().getFullYear();
 
     const uploadDateMatch = // fix this
-      (photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) &&
+      (photo.uploadDate.getFullYear() ===
+        Number(searchInputs.uploadDate.year) &&
         photo.uploadDate.getMonth() + 1 ===
-          Number(uploadDateInput.value.month)) ||
-      (photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) &&
-        uploadDateInput.value.month === "all") ||
+          Number(searchInputs.uploadDate.month)) ||
+      (photo.uploadDate.getFullYear() ===
+        Number(searchInputs.uploadDate.year) &&
+        searchInputs.uploadDate.month === "all") ||
       (photo.uploadDate.getMonth() + 1 ===
-        Number(uploadDateInput.value.month) &&
-        uploadDateInput.value.year === "all") ||
-      (uploadDateInput.value.year === "all" &&
-        uploadDateInput.value.month === "all");
+        Number(searchInputs.uploadDate.month) &&
+        searchInputs.uploadDate.year === "all") ||
+      (searchInputs.uploadDate.year === "all" &&
+        searchInputs.uploadDate.month === "all");
 
     const eventMatch =
-      photo.event.toLowerCase().includes(eventInput.value.toLowerCase()) ||
-      eventInput.value === "";
+      photo.event.toLowerCase().includes(searchInputs.event.toLowerCase()) ||
+      searchInputs.event === "";
 
     const locationMatch =
       photo.location
         .toLowerCase()
-        .includes(locationInput.value.toLowerCase()) ||
-      locationInput.value === "";
+        .includes(searchInputs.location.toLowerCase()) ||
+      searchInputs.location === "";
 
     return gradYearMatch && uploadDateMatch && eventMatch && locationMatch;
   });
 });
-
-function handlePeople(input) {
-  if (input[-1] === ",") {
-  }
-}
 
 /* function searchByGradYear(input: string) {
   if (input === "") {
