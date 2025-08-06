@@ -49,7 +49,7 @@
 
         <div>
           <label for="people" class="block mb-1"
-            >People (comma-separated):</label
+            >People (comma-separation):</label
           >
           <input
             type="text"
@@ -133,6 +133,8 @@ async function uploadPhoto() {
 
   reader.readAsDataURL(file);
 
+  //create a new endpoint for event and location so user can choose from them
+  //if it's a new event or location, then user can create one
   const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", {
     uploadDate: Math.floor(new Date(uploadForm.uploadDate).getTime() / 1000),
     graduationYear: uploadForm.graduationYear,

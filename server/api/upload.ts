@@ -7,6 +7,7 @@ interface UploadBody {
   imageData: string;
   author: number;
 }
+[];
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<UploadBody>(event);
