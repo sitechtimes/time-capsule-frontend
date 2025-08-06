@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-sm w-[30%] m-8">
+  <div class="card card-side bg-base-100 shadow-sm w-[26%] m-8">
     <figure>
       <img :src="photoData.imageData" aria-hidden="true" class="" />
     </figure>
@@ -9,15 +9,12 @@
         Graduation Year: {{ photoData.graduationYear }} <br />
         Event: {{ photoData.event }} <br />
         Location: {{ photoData.location }} <br />
-        People:
-        <span v-for="(person, index) in photoData.people" :key="index">
-          {{ person }}<span v-if="index < photoData.people.length - 1">, </span>
-        </span>
+        People: {{ photoData.people.join(", ") }}
         <br />
         Author: {{ photoData.author }}
       </p>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary" @click="deleteCard">Delete</button>
+        <button class="btn btn-primary" @click="emit('delete')">Delete</button>
       </div>
     </div>
   </div>
@@ -42,10 +39,6 @@ const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
 }>();
-
-function deleteCard() {
-  emit("delete");
-}
 </script>
 
 <style scoped></style>

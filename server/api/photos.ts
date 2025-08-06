@@ -8,7 +8,7 @@ interface Photo {
   imageData: string;
   author: number;
 }
-
+// this should filter by user id (backend) & also the other filters bc display has limit
 export default defineEventHandler(async (event) => {
   return [
     {

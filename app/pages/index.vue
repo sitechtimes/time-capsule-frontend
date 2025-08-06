@@ -20,14 +20,21 @@
         <!-- upload date range? -->
         <select v-model="uploadDateInput.year" name="" id="">
           <option value="all">All</option>
-          <option v-for="year in [2025]" :key="year" :value="year">
-            <!-- idk bro  -->
+          <option
+            v-for="year in getYears(2025, 2050)"
+            :key="year"
+            :value="year"
+          >
             {{ year }}
           </option>
         </select>
         <select v-model="uploadDateInput.month" name="" id="">
           <option value="all">All</option>
-          <option v-for="month in 12" :key="month" :value="month">
+          <option
+            v-for="(month, index) in months"
+            :key="month"
+            :value="index + 1"
+          >
             {{ month }}
           </option>
         </select>
@@ -67,6 +74,7 @@
           @change="searchByPeople(peopleInput)"
         />
       </label>
+
       <button class="btn" @click="resetInputs">Reset</button>
     </div>
 
@@ -83,6 +91,8 @@
 </template>
 
 <script setup lang="ts">
+//endpoint for events+locations - so user can select existing events instead of inputting own; cards for people
+
 // filter by date, year; search by event, location?, people(multiple), author
 const photoData = ref<Photo[]>([]);
 //const filteredPhotoData = ref<Photo[]>([]);
@@ -94,13 +104,35 @@ const uploadDateInput = ref({
 });
 const eventInput = ref("");
 const locationInput = ref("");
-const peopleInput = ref("test");
+const peopleInput = ref([]);
+const currentPeopleInput = ref(""); //change name later
 
 const user = useUserStore().user;
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+function getYears(min: number, max: number) {
+  const yearArray: number[] = [];
+  for (let i = min; i <= max; i++) {
+    yearArray.push(i);
+  }
+  return yearArray;
+}
 
 async function fetchPhotoData() {
   try {
-    const { data } = await useFetch("/api/photos");
+    const { data } = await useFetch("/api/photos"); //use tryRequestEndpoint
     if (data.value) {
       let newPhotoArray: Photo[] = data.value.map((item) => ({
         ...item,
@@ -140,6 +172,8 @@ function resetInputs() {
     year: "all",
   };
   eventInput.value = "";
+  locationInput.value = "";
+  peopleInput.value = [];
   //filteredPhotoData.value = photoData.value;
 }
 
@@ -153,8 +187,11 @@ const filteredPhotoData = computed(() => {
       (photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) &&
         photo.uploadDate.getMonth() + 1 ===
           Number(uploadDateInput.value.month)) ||
-      photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) ||
-      photo.uploadDate.getMonth() + 1 === Number(uploadDateInput.value.month) ||
+      (photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) &&
+        uploadDateInput.value.month === "all") ||
+      (photo.uploadDate.getMonth() + 1 ===
+        Number(uploadDateInput.value.month) &&
+        uploadDateInput.value.year === "all") ||
       (uploadDateInput.value.year === "all" &&
         uploadDateInput.value.month === "all");
 
@@ -171,6 +208,11 @@ const filteredPhotoData = computed(() => {
     return gradYearMatch && uploadDateMatch && eventMatch && locationMatch;
   });
 });
+
+function handlePeople(input) {
+  if (input[-1] === ",") {
+  }
+}
 
 /* function searchByGradYear(input: string) {
   if (input === "") {
@@ -213,12 +255,11 @@ function searchByLocation(input: string) {
   );
 } */
 
-function searchByPeople(input: string) {
-  const inputArray = input.split(", ");
-  console.log(inputArray);
-  // check if all ppl in inputArray (ppl input) are in photoData.value.people; filteredPhotoData is every photo that does have all ppl
+function searchByPeople(input: string[]) {
+  console.log(input);
+  // check if all ppl in input (ppl input) are in photoData.value.people for each photo; filteredPhotoData is every photo that does have all ppl
   photoData.value.forEach((photo) => {
-    const peopleIncluded = inputArray.every((person) =>
+    const peopleIncluded = input.every((person) =>
       photo.people.includes(person)
     );
     if (peopleIncluded) filteredPhotoData.value.push(photo);
