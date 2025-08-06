@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <div>
-      <!-- <form action=""></form>       combine inputs-->
-      <label class="input">
+  <div class="p-4 mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <label class="input flex items-center gap-2">
         <img
           src="/search.svg"
           aria-hidden="true"
@@ -13,12 +12,15 @@
           v-model="searchInputs.graduationYear"
           type="number"
           placeholder="Graduation Year"
+          class="w-full bg-transparent focus:outline-none"
         />
       </label>
 
-      <label class="input">
-        <!-- upload date range? -->
-        <select v-model="searchInputs.uploadDate.year" name="" id="">
+      <div class="input flex gap-2">
+        <select
+          v-model="searchInputs.uploadDate.year"
+          class="w-1/2 bg-transparent focus:outline-none"
+        >
           <option value="all">All</option>
           <option
             v-for="year in getYears(2025, 2050)"
@@ -28,7 +30,10 @@
             {{ year }}
           </option>
         </select>
-        <select v-model="searchInputs.uploadDate.month" name="" id="">
+        <select
+          v-model="searchInputs.uploadDate.month"
+          class="w-1/2 bg-transparent focus:outline-none"
+        >
           <option value="all">All</option>
           <option
             v-for="(month, index) in months"
@@ -38,19 +43,24 @@
             {{ month }}
           </option>
         </select>
-      </label>
+      </div>
 
-      <label class="input">
+      <label class="input flex items-center gap-2">
         <img
           src="/search.svg"
           aria-hidden="true"
           class="h-4 opacity-50 dark:invert select-none"
           draggable="false"
         />
-        <input v-model="searchInputs.event" type="text" placeholder="Event" />
+        <input
+          v-model="searchInputs.event"
+          type="text"
+          placeholder="Event"
+          class="w-full bg-transparent focus:outline-none"
+        />
       </label>
 
-      <label class="input">
+      <label class="input flex items-center gap-2">
         <img
           src="/search.svg"
           aria-hidden="true"
@@ -61,11 +71,14 @@
           v-model="searchInputs.location"
           type="text"
           placeholder="Location"
+          class="w-full bg-transparent focus:outline-none"
         />
       </label>
 
       <div>
-        <label for="people" class="block mb-1">People (comma-separated):</label>
+        <label for="people" class="block mb-1 text-sm font-medium"
+          >People (comma-separated):</label
+        >
         <input
           v-model="personInput"
           type="text"
@@ -74,21 +87,20 @@
           @input="handlePeopleInput"
         />
       </div>
-      <div class="flex flex-wrap gap-2 mt-2">
-        <div
-          v-for="(person, index) in searchInputs.people"
-          :key="index"
-          class="rounded-full bg-neutral-200 px-3 py-1 flex items-center gap-2"
-        >
-          <span class="text-black">{{ person }}</span>
-          <button type="button" @click="removePerson(index)">✕</button>
-        </div>
-      </div>
 
-      <button class="btn" @click="resetInputs">Reset</button>
+      <div class="flex items-end">
+        <button class="btn" @click="resetInputs">Reset</button>
+      </div>
     </div>
 
-    <div id="card-container" class="flex flex-row flex-wrap">
+    <div class="flex flex-wrap flex-row">
+      <div v-for="(person, index) in searchInputs.people" :key="index">
+        <span class="text-black">{{ person }}</span>
+        <button type="button" @click="removePerson(index)">✕</button>
+      </div>
+    </div>
+
+    <div id="card-container" class="flex flex-row flex-wrap gap-4">
       <PhotoCard
         v-for="(photo, index) in filteredPhotoData"
         :key="photo.id"
@@ -96,7 +108,8 @@
         @delete="deletePhoto(index)"
       />
     </div>
-    <p>{{ errorMessage }}</p>
+
+    <p class="mt-4">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -112,7 +125,7 @@ const searchInputs = reactive({
     month: "all",
     year: "all",
   }),
-  graduationYear: new Date().getFullYear(),
+  graduationYear: "",
   event: "",
   location: "",
   people: ref<string[]>([]),
@@ -196,7 +209,7 @@ function resetInputs() {
     month: "all",
     year: "all",
   };
-  searchInputs.graduationYear = new Date().getFullYear();
+  searchInputs.graduationYear = "";
   searchInputs.event = "";
   searchInputs.location = "";
   searchInputs.people = [];
@@ -208,7 +221,7 @@ const filteredPhotoData = computed(() => {
     const gradYearMatch =
       String(photo.graduationYear).includes(
         String(searchInputs.graduationYear)
-      ) || searchInputs.graduationYear === new Date().getFullYear();
+      ) || searchInputs.graduationYear === "";
 
     const uploadDateMatch = // fix this
       (photo.uploadDate.getFullYear() ===
@@ -234,7 +247,17 @@ const filteredPhotoData = computed(() => {
         .includes(searchInputs.location.toLowerCase()) ||
       searchInputs.location === "";
 
-    return gradYearMatch && uploadDateMatch && eventMatch && locationMatch;
+    const peopleMatch =
+      searchInputs.people.some((person) => photo.people.includes(person)) ||
+      searchInputs.people.length === 0; //check case too
+
+    return (
+      gradYearMatch &&
+      uploadDateMatch &&
+      eventMatch &&
+      locationMatch &&
+      peopleMatch
+    );
   });
 });
 
@@ -277,7 +300,7 @@ function searchByLocation(input: string) {
   filteredPhotoData.value = photoData.value.filter((photo) =>
     photo.location.toLowerCase().includes(input.toLowerCase())
   );
-} */
+}
 
 function searchByPeople(input: string[]) {
   console.log(input);
@@ -288,7 +311,7 @@ function searchByPeople(input: string[]) {
     );
     if (peopleIncluded) filteredPhotoData.value.push(photo);
   });
-}
+} */
 </script>
 
 <style scoped></style>
