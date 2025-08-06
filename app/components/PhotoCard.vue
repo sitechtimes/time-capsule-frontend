@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-sm w-100 m-8">
+  <div class="card card-side bg-base-100 shadow-sm w-[30%] m-8">
     <figure>
       <img :src="photoData.imageData" aria-hidden="true" class="" />
     </figure>

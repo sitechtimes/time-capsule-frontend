@@ -13,11 +13,10 @@
           v-model="graduationYearInput"
           type="number"
           placeholder="Graduation Year"
-          @change="searchByGradYear(graduationYearInput)"
         />
       </label>
 
-      <label class="input" @change="searchByUploadDate(uploadDateInput)">
+      <label class="input">
         <!-- upload date range? -->
         <select v-model="uploadDateInput.year" name="" id="">
           <option value="all">All</option>
@@ -41,12 +40,7 @@
           class="h-4 opacity-50 dark:invert select-none"
           draggable="false"
         />
-        <input
-          v-model="eventInput"
-          type="text"
-          placeholder="Event"
-          @change="searchByEvent(eventInput)"
-        />
+        <input v-model="eventInput" type="text" placeholder="Event" />
       </label>
 
       <label class="input">
@@ -56,12 +50,7 @@
           class="h-4 opacity-50 dark:invert select-none"
           draggable="false"
         />
-        <input
-          v-model="locationInput"
-          type="text"
-          placeholder="Location"
-          @change="searchByLocation(locationInput)"
-        />
+        <input v-model="locationInput" type="text" placeholder="Location" />
       </label>
 
       <label class="input">
@@ -81,7 +70,7 @@
       <button class="btn" @click="resetInputs">Reset</button>
     </div>
 
-    <div id="card-container" class="flex flex-row">
+    <div id="card-container" class="flex flex-row flex-wrap">
       <PhotoCard
         v-for="(photo, index) in filteredPhotoData"
         :key="photo.id"
@@ -96,7 +85,7 @@
 <script setup lang="ts">
 // filter by date, year; search by event, location?, people(multiple), author
 const photoData = ref<Photo[]>([]);
-const filteredPhotoData = ref<Photo[]>([]);
+//const filteredPhotoData = ref<Photo[]>([]);
 const errorMessage = ref();
 const graduationYearInput = ref("");
 const uploadDateInput = ref({
@@ -104,6 +93,8 @@ const uploadDateInput = ref({
   year: "all",
 });
 const eventInput = ref("");
+const locationInput = ref("");
+const peopleInput = ref("test");
 
 const user = useUserStore().user;
 
@@ -121,7 +112,7 @@ async function fetchPhotoData() {
         );
       }
       photoData.value = newPhotoArray;
-      filteredPhotoData.value = newPhotoArray;
+      //filteredPhotoData.value = newPhotoArray;
     }
   } catch (error: unknown) {
     errorMessage.value = error;
@@ -149,15 +140,44 @@ function resetInputs() {
     year: "all",
   };
   eventInput.value = "";
-  filteredPhotoData.value = photoData.value;
+  //filteredPhotoData.value = photoData.value;
 }
 
-function searchByGradYear(input: string) {
+const filteredPhotoData = computed(() => {
+  return photoData.value.filter((photo) => {
+    const gradYearMatch =
+      String(photo.graduationYear).includes(graduationYearInput.value) ||
+      graduationYearInput.value === "";
+
+    const uploadDateMatch = // fix this
+      (photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) &&
+        photo.uploadDate.getMonth() + 1 ===
+          Number(uploadDateInput.value.month)) ||
+      photo.uploadDate.getFullYear() === Number(uploadDateInput.value.year) ||
+      photo.uploadDate.getMonth() + 1 === Number(uploadDateInput.value.month) ||
+      (uploadDateInput.value.year === "all" &&
+        uploadDateInput.value.month === "all");
+
+    const eventMatch =
+      photo.event.toLowerCase().includes(eventInput.value.toLowerCase()) ||
+      eventInput.value === "";
+
+    const locationMatch =
+      photo.location
+        .toLowerCase()
+        .includes(locationInput.value.toLowerCase()) ||
+      locationInput.value === "";
+
+    return gradYearMatch && uploadDateMatch && eventMatch && locationMatch;
+  });
+});
+
+/* function searchByGradYear(input: string) {
   if (input === "") {
     filteredPhotoData.value = photoData.value;
   }
-  filteredPhotoData.value = photoData.value.filter(
-    (photo) => photo.graduationYear === Number(input)
+  filteredPhotoData.value = photoData.value.filter((photo) =>
+    String(photo.graduationYear).includes(input)
   );
 }
 
@@ -191,10 +211,11 @@ function searchByLocation(input: string) {
   filteredPhotoData.value = photoData.value.filter((photo) =>
     photo.location.toLowerCase().includes(input.toLowerCase())
   );
-}
+} */
 
 function searchByPeople(input: string) {
   const inputArray = input.split(", ");
+  console.log(inputArray);
   // check if all ppl in inputArray (ppl input) are in photoData.value.people; filteredPhotoData is every photo that does have all ppl
   photoData.value.forEach((photo) => {
     const peopleIncluded = inputArray.every((person) =>
