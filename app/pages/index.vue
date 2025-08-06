@@ -183,7 +183,6 @@ async function fetchPhotoData() {
         );
       }
       photoData.value = newPhotoArray;
-      //filteredPhotoData.value = newPhotoArray;
     }
   } catch (error: unknown) {
     errorMessage.value = error;
@@ -214,7 +213,6 @@ function resetInputs() {
   searchInputs.event = "";
   searchInputs.location = "";
   searchInputs.people = [];
-  //filteredPhotoData.value = photoData.value;
 }
 
 const filteredPhotoData = computed(() => {
