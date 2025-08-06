@@ -1,79 +1,81 @@
 <template>
   <div class="p-4 mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      <label class="input flex items-center gap-2">
-        <img
-          src="/search.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 dark:invert select-none"
-          draggable="false"
-        />
+      <div>
+        <label for="graduation-year" class="block mb-1 text-sm font-medium"
+          >Graduation Year:</label
+        >
         <input
           v-model="searchInputs.graduationYear"
           type="number"
           placeholder="Graduation Year"
-          class="w-full bg-transparent focus:outline-none"
+          class="input w-full bg-transparent focus:outline-none"
         />
-      </label>
-
-      <div class="input flex gap-2">
-        <select
-          v-model="searchInputs.uploadDate.year"
-          class="w-1/2 bg-transparent focus:outline-none"
-        >
-          <option value="all">All</option>
-          <option
-            v-for="year in getYears(2025, 2050)"
-            :key="year"
-            :value="year"
-          >
-            {{ year }}
-          </option>
-        </select>
-        <select
-          v-model="searchInputs.uploadDate.month"
-          class="w-1/2 bg-transparent focus:outline-none"
-        >
-          <option value="all">All</option>
-          <option
-            v-for="(month, index) in months"
-            :key="month"
-            :value="index + 1"
-          >
-            {{ month }}
-          </option>
-        </select>
       </div>
 
-      <label class="input flex items-center gap-2">
-        <img
-          src="/search.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 dark:invert select-none"
-          draggable="false"
-        />
+      <div class="">
+        <label for="upload-date" class="block mb-1 text-sm font-medium"
+          >Upload Date:</label
+        >
+        <div>
+          <label for="month" class="label block mb-1 text-sm">Month</label>
+          <select
+            v-model="searchInputs.uploadDate.month"
+            class="w-1/2 bg-transparent focus:outline-none"
+            name="month"
+          >
+            <option value="all">All</option>
+            <option
+              v-for="(month, index) in months"
+              :key="month"
+              :value="index + 1"
+            >
+              {{ month }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="year" class="label block mb-1 text-sm">Year</label>
+          <select
+            v-model="searchInputs.uploadDate.year"
+            class="w-1/2 bg-transparent focus:outline-none"
+            name="year"
+          >
+            <option value="all">All</option>
+            <option
+              v-for="year in getYears(2024, 2050)"
+              :key="year"
+              :value="year"
+            >
+              {{ year }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="Events" class="block mb-1 text-sm font-medium"
+          >Event:</label
+        >
         <input
           v-model="searchInputs.event"
           type="text"
           placeholder="Event"
-          class="w-full bg-transparent focus:outline-none"
+          class="input w-full bg-transparent focus:outline-none"
         />
-      </label>
+      </div>
 
-      <label class="input flex items-center gap-2">
-        <img
-          src="/search.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 dark:invert select-none"
-          draggable="false"
-        />
+      <div class="">
+        <label for="location" class="block mb-1 text-sm font-medium"
+          >Location:</label
+        >
         <input
           v-model="searchInputs.location"
           type="text"
           placeholder="Location"
-          class="w-full bg-transparent focus:outline-none"
+          class="input w-full bg-transparent focus:outline-none"
         />
-      </label>
+      </div>
 
       <div>
         <label for="people" class="block mb-1 text-sm font-medium"
@@ -114,11 +116,9 @@
 </template>
 
 <script setup lang="ts">
-//endpoint for events+locations - so user can select existing events instead of inputting own; cards for people
-
-// filter by date, year; search by event, location?, people(multiple), author
+//endpoint for events+locations - so user can select existing events - change input to select&option
+//should the photoResponse interface be here? what to do w endpoints - photo limits, events&locations, filtering by user
 const photoData = ref<Photo[]>([]);
-//const filteredPhotoData = ref<Photo[]>([]);
 const errorMessage = ref();
 const searchInputs = reactive({
   uploadDate: ref({
@@ -131,7 +131,7 @@ const searchInputs = reactive({
   people: ref<string[]>([]),
 });
 
-const personInput = ref(""); //change name later?
+const personInput = ref("");
 function removePerson(index: number) {
   searchInputs.people.splice(index, 1);
 }
@@ -169,26 +169,30 @@ function getYears(min: number, max: number) {
   return yearArray;
 }
 
+interface PhotoResponse {
+  id: number;
+  uploadDate: number;
+  graduationYear: number;
+  event: string;
+  location: string;
+  people: string[];
+  imageData: string;
+  author: number;
+} //can't use Photo bc uploadDate is Date type ???
 async function fetchPhotoData() {
-  try {
-    const { data } = await useFetch("/api/photos"); //use tryRequestEndpoint
-    if (data.value) {
-      let newPhotoArray: Photo[] = data.value.map((item) => ({
-        ...item,
-        uploadDate: new Date(item.uploadDate * 1000),
-      })); //newPhotoArray is data with changed date format
-      if (user?.userType === "user") {
-        newPhotoArray = newPhotoArray.filter(
-          (photo) => photo.author === user.id
-        );
-      }
-      photoData.value = newPhotoArray;
-    }
-  } catch (error: unknown) {
-    errorMessage.value = error;
-  }
-  //return ?
+  const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
+  if (error) return error;
+  let newPhotoArray: Photo[] = data.map((item) => ({
+    ...item,
+    uploadDate: new Date(item.uploadDate * 1000),
+  })); //newPhotoArray is data with changed date format
+  console.log(newPhotoArray);
+  if (user?.userType === "user") {
+    newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
+  } // this shouldn't be in frontend - have to be filtered using endpoints?
+  photoData.value = newPhotoArray;
 }
+
 fetchPhotoData();
 
 async function deletePhoto(photoIndex: number) {
@@ -259,58 +263,6 @@ const filteredPhotoData = computed(() => {
     );
   });
 });
-
-/* function searchByGradYear(input: string) {
-  if (input === "") {
-    filteredPhotoData.value = photoData.value;
-  }
-  filteredPhotoData.value = photoData.value.filter((photo) =>
-    String(photo.graduationYear).includes(input)
-  );
-}
-
-function searchByUploadDate(input: object) {
-  if (input.year === "all" && input.month === "all") {
-    filteredPhotoData.value = photoData.value;
-  } else if (input.year === "all") {
-    filteredPhotoData.value = photoData.value.filter(
-      (photo) => photo.uploadDate.getMonth() + 1 === input.month
-    );
-  } else if (input.month === "all") {
-    filteredPhotoData.value = photoData.value.filter(
-      (photo) => photo.uploadDate.getFullYear() === input.year
-    );
-  } else {
-    filteredPhotoData.value = photoData.value.filter(
-      (photo) =>
-        photo.uploadDate.getFullYear() === input.year &&
-        photo.uploadDate.getMonth() + 1 === input.month
-    );
-  }
-}
-
-function searchByEvent(input: string) {
-  filteredPhotoData.value = photoData.value.filter((photo) =>
-    photo.event.toLowerCase().includes(input.toLowerCase())
-  );
-}
-
-function searchByLocation(input: string) {
-  filteredPhotoData.value = photoData.value.filter((photo) =>
-    photo.location.toLowerCase().includes(input.toLowerCase())
-  );
-}
-
-function searchByPeople(input: string[]) {
-  console.log(input);
-  // check if all ppl in input (ppl input) are in photoData.value.people for each photo; filteredPhotoData is every photo that does have all ppl
-  photoData.value.forEach((photo) => {
-    const peopleIncluded = input.every((person) =>
-      photo.people.includes(person)
-    );
-    if (peopleIncluded) filteredPhotoData.value.push(photo);
-  });
-} */
 </script>
 
 <style scoped></style>
