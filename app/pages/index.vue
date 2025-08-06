@@ -194,6 +194,7 @@ fetchPhotoData();
 
 async function deletePhoto(photoIndex: number) {
   photoData.value.splice(photoIndex, 1);
+  //delete from api
   /* try {
     await $fetch(`/api/items/${photoIndex}`, {
       method: "DELETE",
