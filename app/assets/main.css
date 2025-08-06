@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
 @plugin "daisyui/theme" {
   name: "light";
   default: false;
@@ -9,12 +10,12 @@
   --color-base-200: oklch(98% 0 0);
   --color-base-300: oklch(95% 0 0);
   --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(20% 0.042 265.755);
-  --color-primary-content: oklch(92% 0.013 255.508);
+  --color-primary: oklch(70% 0.04 256.788);
+  --color-primary-content: oklch(92% 0.006 264.531);
   --color-secondary: oklch(37% 0.044 257.287);
-  --color-secondary-content: oklch(97% 0.014 343.198);
-  --color-accent: oklch(70% 0.04 256.788);
-  --color-accent-content: oklch(44% 0.043 257.281);
+  --color-secondary-content: oklch(98% 0.002 247.839);
+  --color-accent: oklch(20% 0.042 265.755);
+  --color-accent-content: oklch(92% 0.013 255.508);
   --color-neutral: oklch(98% 0.003 247.858);
   --color-neutral-content: oklch(12% 0.042 264.695);
   --color-info: oklch(44% 0.11 240.79);
@@ -34,6 +35,7 @@
   --depth: 1;
   --noise: 0;
 }
+
 @plugin "daisyui/theme" {
   name: "dark";
   default: false;
@@ -43,13 +45,13 @@
   --color-base-200: oklch(23.26% 0.014 253.1);
   --color-base-300: oklch(21.15% 0.012 254.09);
   --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(70% 0.04 256.788);
-  --color-primary-content: oklch(44% 0.043 257.281);
+  --color-primary: oklch(20% 0.042 265.755);
+  --color-primary-content: oklch(92% 0.013 255.508);
   --color-secondary: oklch(37% 0.044 257.287);
   --color-secondary-content: oklch(98% 0.002 247.839);
-  --color-accent: oklch(0.2141 0.065 253.81);
-  --color-accent-content: oklch(92% 0.013 255.508);
-  --color-neutral: oklch(20% 0.042 265.755);
+  --color-accent: oklch(55% 0.046 257.417);
+  --color-accent-content: oklch(92% 0.006 264.531);
+  --color-neutral: oklch(0.2542 0.0111 254.04);
   --color-neutral-content: oklch(87% 0.01 258.338);
   --color-info: oklch(86% 0.127 207.078);
   --color-info-content: oklch(52% 0.105 223.128);

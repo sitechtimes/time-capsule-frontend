@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-accent">
+  <div class="bg-primary">
     <label class="swap swap-rotate">
       <input type="checkbox" @change="toggle" />
       <img

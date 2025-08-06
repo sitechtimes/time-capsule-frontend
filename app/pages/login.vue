@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-accent">
+  <div class="flex justify-center items-center min-h-screen bg-primary">
     <div
-      class="card bg-neutral shadow-[6px_6px_12px_rgba(0,0,0,0.2)] shadow-primary rounded-lg p-6 w-full max-w-md"
+      class="card bg-neutral shadow-[6px_6px_12px_rgba(0,0,0,0.2)] shadow-accent rounded-lg p-6 w-full max-w-md"
     >
       <form @submit.prevent="handleLogin" class="flex flex-col space-y-4">
         <input
@@ -16,7 +16,7 @@
           placeholder="password"
           v-model="loginForm.password"
         />
-        <button type="submit" class="btn w-full btn-primary">Login</button>
+        <button type="submit" class="btn w-full btn-accent">Login</button>
         <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
       </form>
     </div>
