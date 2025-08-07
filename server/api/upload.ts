@@ -9,6 +9,6 @@ interface UploadBody {
 }
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<UploadBody>(event);
+  const body = await readBody<UploadBody[]>(event);
   return { statusCode: 200, message: "Upload successful", data: body };
 });
