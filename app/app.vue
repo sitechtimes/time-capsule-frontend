@@ -1,7 +1,9 @@
 <template>
   <div :data-theme="store.theme">
     <AppHeader />
-    <NuxtPage />
+    <SideBar>
+      <NuxtPage />
+    </SideBar>
   </div>
 </template>
 

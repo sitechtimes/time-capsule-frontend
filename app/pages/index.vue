@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 mx-auto">
+  <div class="p-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
       <div>
         <label for="graduation-year" class="label">
@@ -146,7 +146,10 @@
 
 <script setup lang="ts">
 // filters should be done on backend, not here bc frontend doesn't have ALL photos to filter from
-//should the photoResponse interface be here? what to do w endpoints - photo limits, events&locations, filtering by user and other stuff
+// infinite scroll that loads more photos when scrolled down
+// fix layout w sidebar&filters
+// deleting from api
+// need endpoints - photo limits, events&locations, filtering by user and other stuff
 const photoData = ref<Photo[]>([]);
 const searchInputs = reactive({
   uploadDate: ref({
@@ -206,7 +209,7 @@ interface PhotoResponse {
   people: string[];
   imageData: string;
   author: number;
-} //can't use Photo bc uploadDate is Date type ???
+} //can't use Photo bc uploadDate is Date type
 async function fetchPhotoData() {
   const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
   if (error) return error;
@@ -224,8 +227,18 @@ async function fetchPhotoData() {
 fetchPhotoData();
 
 async function deletePhoto(photoIndex: number) {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this photo?"
+  );
+  if (!confirmed) return;
   photoData.value.splice(photoIndex, 1);
   //delete from api, call "/delete"
+  /* const { data, error } = await tryRequestEndpoint(
+    "/delete",
+    "DELETE",
+    {id: photoData.value[photoIndex].id}
+  );
+  if (error) return error; */
 }
 
 const events = ref<string[]>([]);
@@ -254,6 +267,7 @@ function resetInputs() {
   searchInputs.people = [];
 }
 
+// should be done on backend bc not all photos are fetched
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch =
