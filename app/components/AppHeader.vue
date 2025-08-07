@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-accent">
+  <div class="bg-primary">
     <label class="swap swap-rotate">
       <input type="checkbox" @change="toggle" />
       <img
@@ -15,6 +15,14 @@
         draggable="false"
       />
     </label>
+    <!-- <NuxtLink to="/" v-if="store.user">
+      <img
+        src="/home.svg"
+        aria-hidden="true"
+        draggable="false"
+        class="h-10 w-10"
+      />
+    </NuxtLink> -->
   </div>
 </template>
 
