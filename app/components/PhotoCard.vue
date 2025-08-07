@@ -49,19 +49,9 @@
 
 <script setup lang="ts">
 defineProps<{
-  photoData: Photo; //have to convert upload date
+  photoData: Photo;
 }>();
 
-/* export interface Photo {
-  id: number;
-  uploadDate: number;
-  graduationYear: number;
-  event: string;
-  location: string;
-  people: string[];
-  imageData: string;
-  author: User["id"];
-} */
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];

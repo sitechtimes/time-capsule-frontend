@@ -1,9 +1,8 @@
 <template>
   <div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
     <div
       :class="[
-        'bg-base-200 w-64 p-4 space-y-4 fixed h-full z-30 transition-transform duration-300 ease-in-out',
+        'bg-base-200 w-64 p-4 left-0 space-y-4 fixed h-full z-30 transition-transform duration-300 ease-in-out ',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
       ]"
     >
@@ -12,18 +11,16 @@
         <button class="btn btn-sm btn-ghost" @click="toggleSidebar">✕</button>
       </div>
       <ul class="menu">
-        <!-- <slot></slot> -->
+        <slot name="side"></slot>
       </ul>
     </div>
 
-    <!-- Main content -->
     <div
       :class="[
         'flex-1 transition-all duration-300 ease-in-out p-6',
         sidebarOpen ? 'ml-64' : 'ml-0',
       ]"
     >
-      <!-- Topbar -->
       <div class="flex items-center justify-between mb-4">
         <button class="btn btn-square btn-ghost" @click="toggleSidebar">
           <svg
@@ -45,8 +42,8 @@
         </button>
       </div>
 
-      <!-- Page Content -->
-      <slot></slot>
+      <!-- page content -->
+      <slot name="main"></slot>
     </div>
   </div>
 </template>

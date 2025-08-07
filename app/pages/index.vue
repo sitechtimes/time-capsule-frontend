@@ -1,146 +1,149 @@
 <template>
-  <div class="p-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <div>
-        <label for="graduation-year" class="label">
-          <span class="label-text">Graduation Year</span>
-        </label>
-        <input
-          v-model="searchInputs.graduationYear"
-          type="number"
-          placeholder="Graduation Year"
-          class="input input-bordered w-full"
-        />
-      </div>
+  <div class="p-6 pt-0">
+    <SideBar>
+      <template #side>
+        <div class="flex flex-col">
+          <div>
+            <label for="graduation-year" class="label">
+              <span class="label-text">Graduation Year</span>
+            </label>
+            <input
+              v-model="searchInputs.graduationYear"
+              type="number"
+              placeholder="Graduation Year"
+              class="input input-bordered w-full"
+            />
+          </div>
 
-      <div>
-        <label class="label">
-          <span class="label-text">Upload Date</span>
-        </label>
-        <div class="flex gap-4">
-          <div class="flex-1">
-            <label for="month" class="label">
-              <span class="label-text">Month</span>
+          <div>
+            <label class="label">
+              <span class="label-text">Upload Date</span>
+            </label>
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <label for="month" class="label">
+                  <span class="label-text">Month</span>
+                </label>
+                <select
+                  v-model="searchInputs.uploadDate.month"
+                  class="select select-bordered w-full"
+                  name="month"
+                >
+                  <option value="All">All</option>
+                  <option
+                    v-for="(month, index) in months"
+                    :key="month"
+                    :value="index + 1"
+                  >
+                    {{ month }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="flex-1">
+                <label for="year" class="label">
+                  <span class="label-text">Year</span>
+                </label>
+                <select
+                  v-model="searchInputs.uploadDate.year"
+                  class="select select-bordered w-full"
+                  name="year"
+                >
+                  <option value="All">All</option>
+                  <option
+                    v-for="year in getYears(2024, 2050)"
+                    :key="year"
+                    :value="year"
+                  >
+                    {{ year }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="event" class="label">
+              <span class="label-text">Event</span>
             </label>
             <select
-              v-model="searchInputs.uploadDate.month"
+              v-model="searchInputs.event"
+              name="event"
               class="select select-bordered w-full"
-              name="month"
             >
-              <option value="All">All</option>
-              <option
-                v-for="(month, index) in months"
-                :key="month"
-                :value="index + 1"
-              >
-                {{ month }}
+              <option v-for="event in events" :key="event" :value="event">
+                {{ event }}
               </option>
             </select>
           </div>
 
-          <div class="flex-1">
-            <label for="year" class="label">
-              <span class="label-text">Year</span>
+          <div>
+            <label for="location" class="label">
+              <span class="label-text">Location</span>
             </label>
             <select
-              v-model="searchInputs.uploadDate.year"
+              v-model="searchInputs.location"
+              name="location"
               class="select select-bordered w-full"
-              name="year"
             >
-              <option value="All">All</option>
               <option
-                v-for="year in getYears(2024, 2050)"
-                :key="year"
-                :value="year"
+                v-for="location in locations"
+                :key="location"
+                :value="location"
               >
-                {{ year }}
+                {{ location }}
               </option>
             </select>
+          </div>
+
+          <div>
+            <label for="people" class="label">
+              <span class="label-text">People (comma-separated)</span>
+            </label>
+            <input
+              v-model="personInput"
+              type="text"
+              placeholder="Ex: John Doe, Jane Smith"
+              class="input input-bordered w-full"
+              @input="handlePeopleInput"
+            />
+          </div>
+
+          <div class="flex items-end">
+            <button class="btn btn-outline w-full" @click="resetInputs">
+              Reset
+            </button>
           </div>
         </div>
-      </div>
 
-      <div>
-        <label for="event" class="label">
-          <span class="label-text">Event</span>
-        </label>
-        <select
-          v-model="searchInputs.event"
-          name="event"
-          id=""
-          class="select select-bordered w-full"
-        >
-          <option v-for="(event, index) in events" :key="index" :value="event">
-            {{ event }}
-          </option>
-        </select>
-      </div>
-
-      <div>
-        <label for="location" class="label">
-          <span class="label-text">Location</span>
-        </label>
-        <select
-          v-model="searchInputs.location"
-          name="location"
-          id=""
-          class="select select-bordered w-full"
-        >
-          <option
-            v-for="(location, index) in locations"
-            :key="index"
-            :value="location"
+        <div class="flex flex-wrap gap-2 mb-6">
+          <div
+            v-for="(person, index) in searchInputs.people"
+            :key="person"
+            class="badge badge-neutral gap-2"
           >
-            {{ location }}
-          </option>
-        </select>
-      </div>
-
-      <div>
-        <label for="people" class="label">
-          <span class="label-text">People (comma-separated)</span>
-        </label>
-        <input
-          v-model="personInput"
-          type="text"
-          placeholder="Ex: John Doe, Jane Smith"
-          class="input input-bordered w-full"
-          @input="handlePeopleInput"
-        />
-      </div>
-
-      <div class="flex items-end">
-        <button class="btn btn-outline w-full" @click="resetInputs">
-          Reset
-        </button>
-      </div>
-    </div>
-
-    <div class="flex flex-wrap gap-2 mb-6">
-      <div
-        v-for="(person, index) in searchInputs.people"
-        :key="index"
-        class="badge badge-neutral gap-2"
-      >
-        {{ person }}
-        <button
-          type="button"
-          class="btn btn-xs btn-circle btn-ghost"
-          @click="removePerson(index)"
-        >
-          ✕
-        </button>
-      </div>
-    </div>
-
-    <div id="card-container" class="flex flex-row flex-wrap">
-      <PhotoCard
-        v-for="(photo, index) in filteredPhotoData"
-        :key="photo.id"
-        :photoData="photo"
-        @delete="deletePhoto(index)"
-      />
-    </div>
+            {{ person }}
+            <button
+              type="button"
+              class="btn btn-xs btn-circle btn-ghost"
+              @click="removePerson(index)"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      </template>
+      <template #main>
+        <div id="card-container" class="flex flex-row flex-wrap">
+          <PhotoCard
+            v-for="(photo, index) in filteredPhotoData"
+            :key="photo.id"
+            :photoData="photo"
+            @delete="deletePhoto(index)"
+          />
+        </div>
+      </template>
+    </SideBar>
   </div>
 </template>
 
