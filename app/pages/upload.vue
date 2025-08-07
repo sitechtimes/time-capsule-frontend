@@ -7,7 +7,6 @@
 
       <div
         v-for="(photo, index) in photos"
-        :key="index"
         class="card bg-neutral shadow-[6px_6px_12px_rgba(0,0,0,0.2)] shadow-accent rounded-lg p-6"
       >
         <h2 class="text-lg font-semibold mb-4 text-center">
@@ -61,12 +60,11 @@
 
           <div class="flex flex-wrap gap-2 mt-2">
             <div
-              v-for="(ppl, pplIndex) in photo.people"
-              :key="pplIndex"
+              v-for="(person, personIndex) in photo.people"
               class="rounded-full bg-neutral-200 px-3 py-1 flex items-center gap-2"
             >
-              <span class="text-black">{{ ppl }}</span>
-              <button type="button" @click="removePerson(photo, pplIndex)">
+              <span class="text-black">{{ person }}</span>
+              <button type="button" @click="removePerson(photo, personIndex)">
                 ✕
               </button>
             </div>
@@ -148,10 +146,7 @@ function removeForm(index: number) {
 function handlePeopleInput(photo: PhotoForm) {
   const name = photo.personInput;
   if (name.endsWith(",")) {
-    const trimmed = name.slice(0, -1).trim();
-    if (trimmed && !photo.people.includes(trimmed)) {
-      photo.people.push(trimmed);
-    }
+    photo.people.push(name.slice(0, -1).trim());
     photo.personInput = "";
   }
 }
