@@ -15,6 +15,14 @@
         draggable="false"
       />
     </label>
+    <!-- <NuxtLink to="/" v-if="store.user">
+      <img
+        src="/home.svg"
+        aria-hidden="true"
+        draggable="false"
+        class="h-10 w-10"
+      />
+    </NuxtLink> -->
   </div>
 </template>
 
