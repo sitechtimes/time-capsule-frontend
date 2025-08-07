@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary">
+  <div class="bg-primary sticky top-0">
     <label class="swap swap-rotate">
       <input type="checkbox" @change="toggle" />
       <img
