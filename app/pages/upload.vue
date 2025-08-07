@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-start min-h-screen bg-primary p-6">
+  <div class="flex justify-center items-center min-h-screen bg-primary p-6">
     <div class="w-full max-w-2xl space-y-6">
       <h1 class="text-2xl font-semibold mb-4 text-center text-accent">
         Upload Photos
@@ -14,16 +14,6 @@
           Photo {{ index + 1 }}
         </h2>
         <form class="space-y-4" @submit.prevent>
-          <div>
-            <label class="block mb-1" for="uploadDate">Upload Date:</label>
-            <input
-              type="date"
-              v-model="photo.uploadDate"
-              required
-              class="input w-full bg-base-100"
-            />
-          </div>
-
           <div>
             <label class="block mb-1" for="graduationYear"
               >Graduation Year:</label
@@ -125,7 +115,6 @@
 
 <script setup lang="ts">
 interface PhotoForm {
-  uploadDate: Date;
   graduationYear: number;
   event: string;
   location: string;
@@ -139,7 +128,6 @@ const photos = ref<PhotoForm[]>([]);
 
 function createEmptyPhotoForm(): PhotoForm {
   return {
-    uploadDate: new Date(),
     graduationYear: new Date().getFullYear(),
     event: "",
     location: "",
@@ -219,7 +207,7 @@ async function uploadPhotos() {
       photo.imageData = base64String;
 
       const sendData = {
-        uploadDate: Number(photo.uploadDate) / 1000,
+        uploadDate: Math.floor(Date.now() / 1000),
         graduationYear: photo.graduationYear,
         event: photo.event,
         location: photo.location,
@@ -248,5 +236,6 @@ async function uploadPhotos() {
   photos.value = [];
   addNewForm();
 }
+
 addNewForm();
 </script>
