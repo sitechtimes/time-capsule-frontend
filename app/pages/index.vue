@@ -80,12 +80,20 @@
         <label for="location" class="label">
           <span class="label-text">Location</span>
         </label>
-        <input
+        <select
           v-model="searchInputs.location"
-          type="text"
-          placeholder="Location"
-          class="input input-bordered w-full"
-        />
+          name="location"
+          id=""
+          class="select select-bordered w-full"
+        >
+          <option
+            v-for="(location, index) in locations"
+            :key="index"
+            :value="location"
+          >
+            {{ location }}
+          </option>
+        </select>
       </div>
 
       <div>
@@ -137,8 +145,8 @@
 </template>
 
 <script setup lang="ts">
-//endpoint for events+locations - so user can select existing events - change input to select&option
-//should the photoResponse interface be here? what to do w endpoints - photo limits, events&locations, filtering by user
+// filters should be done on backend, not here bc frontend doesn't have ALL photos to filter from
+//should the photoResponse interface be here? what to do w endpoints - photo limits, events&locations, filtering by user and other stuff
 const photoData = ref<Photo[]>([]);
 const searchInputs = reactive({
   uploadDate: ref({
@@ -147,7 +155,7 @@ const searchInputs = reactive({
   }),
   graduationYear: "",
   event: "All",
-  location: "",
+  location: "All",
   people: ref<string[]>([]),
 });
 
@@ -218,23 +226,22 @@ fetchPhotoData();
 async function deletePhoto(photoIndex: number) {
   photoData.value.splice(photoIndex, 1);
   //delete from api, call "/delete"
-  /* try {
-    await $fetch(`/api/items/${photoIndex}`, {
-      method: "DELETE",
-      });
-    console.log("item deleted");
-  } catch (error) {
-    console.error("Error deleting item:", error);
-  } */
 }
 
 const events = ref<string[]>([]);
+const locations = ref<string[]>([]);
 async function fetchEvents() {
   const { data, error } = await tryRequestEndpoint<string[]>("/events");
   if (error) return error;
   events.value = data;
 }
+async function fetchLocations() {
+  const { data, error } = await tryRequestEndpoint<string[]>("/locations");
+  if (error) return error;
+  locations.value = data;
+}
 fetchEvents();
+fetchLocations();
 
 function resetInputs() {
   searchInputs.uploadDate = {
@@ -276,10 +283,10 @@ const filteredPhotoData = computed(() => {
       photo.location
         .toLowerCase()
         .includes(searchInputs.location.toLowerCase()) ||
-      searchInputs.location === "";
+      searchInputs.location === "All";
 
     const peopleMatch =
-      searchInputs.people.some((person) => photo.people.includes(person)) ||
+      searchInputs.people.every((person) => photo.people.includes(person)) ||
       searchInputs.people.length === 0; //check case too
 
     return (
