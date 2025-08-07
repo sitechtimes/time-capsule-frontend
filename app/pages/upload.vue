@@ -99,7 +99,7 @@
           <div v-if="photos.length > 1" class="mt-3 text-center">
             <button
               type="button"
-              class="btn btn-error w-full max-w-xs"
+              class="btn btn-accent w-full max-w-xs"
               @click="removeForm(index)"
             >
               Remove Photo
@@ -174,41 +174,75 @@ function removePerson(photo: PhotoForm, index: number) {
 
 const fileInputs = useTemplateRef("fileInput");
 
-async function uploadPhotos() {
-  for (const photo of photos.value) {
-    //figure out how to iterate through the uploaded files for the one that matches the current photo form
-    const file = fileInputs.value?.files?.[0];
-    if (!file) return alert("No file selected");
-
+function readFileAsBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      const base64String = reader.result;
-      console.log(base64String); // data:image/png;base64,...
-      photo.imageData = base64String as string;
+      const result = reader.result;
+      if (typeof result === "string") {
+        const base64 = result.split(",")[1];
+        if (base64) {
+          resolve(base64);
+        } else {
+          reject("Base64 data not found in result");
+        }
+      } else {
+        reject("File could not be converted to base64");
+      }
     };
 
+    reader.onerror = () => reject("FileReader failed");
     reader.readAsDataURL(file);
+  });
+}
 
-    const sendData = {
-      uploadDate: Number(photo.uploadDate) / 1000,
-      graduationYear: photo.graduationYear,
-      event: photo.event,
-      location: photo.location,
-      people: photo.people,
-      imageData: photo.imageData,
-      author: userStore.user?.id,
-    };
+async function uploadPhotos() {
+  const inputElements = fileInputs.value;
 
-    const { data, error } = await tryRequestEndpoint<Photo>(
-      "/upload",
-      "POST",
-      sendData
-    );
+  if (!inputElements || inputElements.length !== photos.value.length) {
+    alert("Each photo must have an image selected");
+    return;
+  }
 
-    if (error) return console.error("Upload error:", error);
+  for (const [index, photo] of photos.value.entries()) {
+    const input = inputElements[index];
+    const file = input?.files?.[0];
 
-    console.log("Uploaded:", data);
+    if (!file) {
+      alert(`No file selected for photo ${index + 1}`);
+      return;
+    }
+
+    try {
+      const base64String = await readFileAsBase64(file);
+      photo.imageData = base64String;
+
+      const sendData = {
+        uploadDate: Number(photo.uploadDate) / 1000,
+        graduationYear: photo.graduationYear,
+        event: photo.event,
+        location: photo.location,
+        people: photo.people,
+        imageData: photo.imageData,
+        author: userStore.user?.id,
+      };
+
+      const { data, error } = await tryRequestEndpoint<Photo>(
+        "/upload",
+        "POST",
+        sendData
+      );
+
+      if (error) {
+        console.error("Upload error:", error);
+        return;
+      }
+
+      console.log("Uploaded:", data);
+    } catch (e) {
+      console.error(`Error reading file for photo ${index + 1}:`, e);
+    }
   }
 
   photos.value = [];
