@@ -50,11 +50,7 @@
                   name="year"
                 >
                   <option value="All">All</option>
-                  <option
-                    v-for="year in getYears(2024, 2050)"
-                    :key="year"
-                    :value="year"
-                  >
+                  <option v-for="year in getYears()" :key="year" :value="year">
                     {{ year }}
                   </option>
                 </select>
@@ -169,13 +165,11 @@ const personInput = ref("");
 function removePerson(index: number) {
   searchInputs.people.splice(index, 1);
 }
+
 function handlePeopleInput() {
   const name = personInput.value;
   if (name.endsWith(",")) {
-    const trimmedName = name.slice(0, -1).trim();
-    if (trimmedName && !searchInputs.people.includes(trimmedName)) {
-      searchInputs.people.push(trimmedName);
-    }
+    searchInputs.people.push(name.slice(0, -1).trim());
     personInput.value = "";
   }
 }
@@ -195,9 +189,11 @@ const months = [
   "November",
   "December",
 ] as const;
-function getYears(min: number, max: number) {
+function getYears() {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
   const yearArray: number[] = [];
-  for (let i = min; i <= max; i++) {
+  for (let i = 2025; i <= currentYear; i++) {
     yearArray.push(i);
   }
   return yearArray;
