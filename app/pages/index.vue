@@ -4,7 +4,7 @@
       <template #side>
         <div class="flex flex-col">
           <div>
-            <label for="graduation-year" class="label">
+            <label for="graduation-year" class="label dark:invert">
               <span class="label-text">Graduation Year</span>
             </label>
             <input
@@ -16,12 +16,12 @@
           </div>
 
           <div>
-            <label class="label">
+            <label class="label dark:invert">
               <span class="label-text">Upload Date</span>
             </label>
             <div class="flex gap-4">
               <div class="flex-1">
-                <label for="month" class="label">
+                <label for="month" class="label dark:invert">
                   <span class="label-text">Month</span>
                 </label>
                 <select
@@ -41,7 +41,7 @@
               </div>
 
               <div class="flex-1">
-                <label for="year" class="label">
+                <label for="year" class="label dark:invert">
                   <span class="label-text">Year</span>
                 </label>
                 <select
@@ -59,7 +59,7 @@
           </div>
 
           <div>
-            <label for="event" class="label">
+            <label for="event" class="label dark:invert">
               <span class="label-text">Event</span>
             </label>
             <select
@@ -74,7 +74,7 @@
           </div>
 
           <div>
-            <label for="location" class="label">
+            <label for="location" class="label dark:invert">
               <span class="label-text">Location</span>
             </label>
             <select
@@ -93,7 +93,7 @@
           </div>
 
           <div>
-            <label for="people" class="label">
+            <label for="people" class="label dark:invert">
               <span class="label-text">People (comma-separated)</span>
             </label>
             <input
@@ -124,7 +124,12 @@
               class="btn btn-xs btn-circle btn-ghost"
               @click="removePerson(index)"
             >
-              ✕
+              <img
+                src="/close-outline.svg"
+                aria-hidden="true"
+                class="h-4 opacity-50 dark:invert select-none"
+                draggable="false"
+              />
             </button>
           </div>
         </div>
@@ -261,9 +266,10 @@ function resetInputs() {
     year: "All",
   };
   searchInputs.graduationYear = "";
-  searchInputs.event = "";
-  searchInputs.location = "";
+  searchInputs.event = "All";
+  searchInputs.location = "All";
   searchInputs.people = [];
+  personInput.value = "";
 }
 
 // should be done on backend bc not all photos are fetched

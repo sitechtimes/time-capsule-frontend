@@ -1,29 +1,22 @@
 <template>
   <div class="card card-side bg-base-100 shadow-sm w-[26%] m-8">
-    <figure>
-      <img :src="photoData.imageData" aria-hidden="true" class="" />
-    </figure>
+    <img :src="photoData.imageData" aria-hidden="true" class="" />
 
     <div class="dropdown dropdown-end">
-      <div
-        tabindex="0"
-        role="button"
-        class="btn btn-circle btn-ghost btn-xs text-info"
-      >
+      <div role="button" class="btn btn-circle btn-ghost btn-xs text-info">
         <img
           src="/info.svg"
           aria-hidden="true"
-          class="h-4 opacity-50 select-none"
+          class="h-4 opacity-50 select-none dark:invert"
           draggable="false"
         />
       </div>
       <div
-        tabindex="0"
         class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm"
       >
-        <div tabindex="0" class="card-body">
+        <div class="card-body">
           <p>
-            Upload Date: {{ photoData.uploadDate }} <br />
+            Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
             Graduation Year: {{ photoData.graduationYear }} <br />
             Event: {{ photoData.event }} <br />
             Location: {{ photoData.location }} <br />
@@ -38,7 +31,7 @@
         <img
           src="/trash-outline.svg"
           aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs text-info"
+          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs text-info dark:invert"
           draggable="false"
           @click="emit('delete')"
         />
