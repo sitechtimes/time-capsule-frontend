@@ -1,49 +1,40 @@
 <template>
-  <div class="flex h-screen overflow-hidden">
-    <div
-      class="bg-base-200 w-64 p-4 left-0 space-y-4 fixed h-full z-30 transition-transform duration-300 ease-in-out"
-      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+  <aside
+    :class="[isCollapsed ? 'w-12' : 'w-64']"
+    class="bg-base-200 min-h-screen transition-all duration-300 relative"
+  >
+    <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
+    <!-- Toggle Button (always visible) -->
+    <button
+      class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10"
+      @click="isCollapsed = !isCollapsed"
     >
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold">Filters</h2>
-      </div>
-      <ul class="menu">
-        <slot name="side"></slot>
-      </ul>
-    </div>
+      <img
+        v-if="!isCollapsed"
+        src="/arrow-back-outline.svg"
+        aria-hidden="true"
+        draggable="false"
+        class="dark:invert select-none"
+      />
+      <img
+        v-else
+        src="/arrow-forward-outline.svg"
+        aria-hidden="true"
+        draggable="false"
+        class="dark:invert select-none"
+      />
+    </button>
 
-    <div
-      class="flex-1 transition-all duration-300 ease-in-out p-6"
-      :class="sidebarOpen ? 'ml-64' : 'ml-0'"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <button
-          class="btn btn-square btn-ghost"
-          @click="sidebarOpen = !sidebarOpen"
-        >
-          <img
-            v-if="sidebarOpen === true"
-            src="/close-outline.svg"
-            aria-hidden="true"
-            draggable="false"
-            class="select-none dark:invert"
-          />
-          <img
-            v-else
-            src="/menu-outline.svg"
-            aria-hidden="true"
-            draggable="false"
-            class="select-none dark:invert"
-          />
-        </button>
-      </div>
+    <!-- Content (only when expanded) -->
+    <div v-if="!isCollapsed" class="p-4">
+      <h2 class="text-xl font-bold mb-6">Filters</h2>
 
-      <!-- page content -->
-      <slot name="main"></slot>
+      <!-- sidebar content -->
+      <slot></slot>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script setup lang="ts">
-const sidebarOpen = ref(true);
+const isCollapsed = ref(false);
 </script>

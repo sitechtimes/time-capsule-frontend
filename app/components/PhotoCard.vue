@@ -1,9 +1,17 @@
 <template>
   <div class="card card-side bg-base-100 shadow-sm w-[26%] m-8">
-    <img :src="photoData.imageData" aria-hidden="true" class="" />
+    <img
+      :src="photoData.imageData"
+      aria-hidden="true"
+      class="object-contain w-full h-auto"
+    />
 
     <div class="dropdown dropdown-end">
-      <div role="button" class="btn btn-circle btn-ghost btn-xs text-info">
+      <div
+        tabindex="0"
+        role="button"
+        class="btn btn-circle btn-ghost btn-xs text-info"
+      >
         <img
           src="/info.svg"
           aria-hidden="true"

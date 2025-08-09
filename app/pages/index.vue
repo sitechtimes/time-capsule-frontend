@@ -1,150 +1,146 @@
 <template>
-  <div class="p-6 pt-0">
+  <div class="flex min-h-screen">
     <SideBar>
-      <template #side>
-        <div class="flex flex-col">
-          <div>
-            <label for="graduation-year" class="label dark:invert">
-              <span class="label-text">Graduation Year</span>
-            </label>
-            <input
-              v-model="searchInputs.graduationYear"
-              type="number"
-              placeholder="Graduation Year"
-              class="input input-bordered w-full"
-            />
-          </div>
-
-          <div>
-            <label class="label dark:invert">
-              <span class="label-text">Upload Date</span>
-            </label>
-            <div class="flex gap-4">
-              <div class="flex-1">
-                <label for="month" class="label dark:invert">
-                  <span class="label-text">Month</span>
-                </label>
-                <select
-                  v-model="searchInputs.uploadDate.month"
-                  class="select select-bordered w-full"
-                  name="month"
-                >
-                  <option value="All">All</option>
-                  <option
-                    v-for="(month, index) in months"
-                    :key="month"
-                    :value="index + 1"
-                  >
-                    {{ month }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="flex-1">
-                <label for="year" class="label dark:invert">
-                  <span class="label-text">Year</span>
-                </label>
-                <select
-                  v-model="searchInputs.uploadDate.year"
-                  class="select select-bordered w-full"
-                  name="year"
-                >
-                  <option value="All">All</option>
-                  <option v-for="year in getYears()" :key="year" :value="year">
-                    {{ year }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label for="event" class="label dark:invert">
-              <span class="label-text">Event</span>
-            </label>
-            <select
-              v-model="searchInputs.event"
-              name="event"
-              class="select select-bordered w-full"
-            >
-              <option v-for="event in events" :key="event" :value="event">
-                {{ event }}
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label for="location" class="label dark:invert">
-              <span class="label-text">Location</span>
-            </label>
-            <select
-              v-model="searchInputs.location"
-              name="location"
-              class="select select-bordered w-full"
-            >
-              <option
-                v-for="location in locations"
-                :key="location"
-                :value="location"
-              >
-                {{ location }}
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label for="people" class="label dark:invert">
-              <span class="label-text">People (comma-separated)</span>
-            </label>
-            <input
-              v-model="personInput"
-              type="text"
-              placeholder="Ex: John Doe, Jane Smith"
-              class="input input-bordered w-full"
-              @input="handlePeopleInput"
-            />
-          </div>
-
-          <div class="flex items-end">
-            <button class="btn btn-outline w-full" @click="resetInputs">
-              Reset
-            </button>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-2 mb-6">
-          <div
-            v-for="(person, index) in searchInputs.people"
-            :key="person"
-            class="badge badge-neutral gap-2"
-          >
-            {{ person }}
-            <button
-              type="button"
-              class="btn btn-xs btn-circle btn-ghost"
-              @click="removePerson(index)"
-            >
-              <img
-                src="/close-outline.svg"
-                aria-hidden="true"
-                class="h-4 opacity-50 dark:invert select-none"
-                draggable="false"
-              />
-            </button>
-          </div>
-        </div>
-      </template>
-      <template #main>
-        <div id="card-container" class="flex flex-row flex-wrap">
-          <PhotoCard
-            v-for="(photo, index) in filteredPhotoData"
-            :key="photo.id"
-            :photoData="photo"
-            @delete="deletePhoto(index)"
+      <div class="">
+        <div>
+          <label for="graduation-year" class="label dark:invert">
+            <span class="label-text dark:invert">Graduation Year</span>
+          </label>
+          <input
+            v-model="searchInputs.graduationYear"
+            type="number"
+            placeholder="Graduation Year"
+            class="input input-bordered w-full"
           />
         </div>
-      </template>
+
+        <div>
+          <label class="label dark:invert">
+            <span class="label-text">Upload Date</span>
+          </label>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label for="month" class="label dark:invert">
+                <span class="label-text">Month</span>
+              </label>
+              <select
+                v-model="searchInputs.uploadDate.month"
+                class="select select-bordered w-full"
+                name="month"
+              >
+                <option value="All">All</option>
+                <option
+                  v-for="(month, index) in months"
+                  :key="month"
+                  :value="index + 1"
+                >
+                  {{ month }}
+                </option>
+              </select>
+            </div>
+
+            <div class="flex-1">
+              <label for="year" class="label dark:invert">
+                <span class="label-text">Year</span>
+              </label>
+              <select
+                v-model="searchInputs.uploadDate.year"
+                class="select select-bordered w-full"
+                name="year"
+              >
+                <option value="All">All</option>
+                <option v-for="year in getYears()" :key="year" :value="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label for="event" class="label dark:invert">
+            <span class="label-text">Event</span>
+          </label>
+          <select
+            v-model="searchInputs.event"
+            name="event"
+            class="select select-bordered w-full"
+          >
+            <option v-for="event in events" :key="event" :value="event">
+              {{ event }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="location" class="label dark:invert">
+            <span class="label-text">Location</span>
+          </label>
+          <select
+            v-model="searchInputs.location"
+            name="location"
+            class="select select-bordered w-full"
+          >
+            <option
+              v-for="location in locations"
+              :key="location"
+              :value="location"
+            >
+              {{ location }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="people" class="label dark:invert">
+            <span class="label-text">People (comma-separated)</span>
+          </label>
+          <input
+            v-model="personInput"
+            type="text"
+            placeholder="Ex: John Doe, Jane Smith"
+            class="input input-bordered w-full"
+            @input="handlePeopleInput"
+          />
+        </div>
+
+        <div class="flex items-end">
+          <button class="btn btn-outline w-full" @click="resetInputs">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-6">
+        <div
+          v-for="(person, index) in searchInputs.people"
+          :key="person"
+          class="badge badge-neutral gap-2"
+        >
+          {{ person }}
+          <button
+            type="button"
+            class="btn btn-xs btn-circle btn-ghost"
+            @click="removePerson(index)"
+          >
+            <img
+              src="/close-outline.svg"
+              aria-hidden="true"
+              class="h-4 opacity-50 dark:invert select-none"
+              draggable="false"
+            />
+          </button>
+        </div>
+      </div>
     </SideBar>
+    <div id="card-container" class="flex flex-row flex-wrap w-full">
+      <PhotoCard
+        v-for="(photo, index) in filteredPhotoData"
+        :key="photo.id"
+        :photoData="photo"
+        @delete="deletePhoto(index)"
+      />
+    </div>
   </div>
 </template>
 
