@@ -8,7 +8,8 @@ interface Photo {
   imageData: string;
   author: number;
 }
-// this should filter by user id (backend) & also the other filters bc display has limit
+// should have endpoints that filter by user id & other filters & limit # of photos; frontend doesn't load all photos at once
+// /api/photos should return authors' name instead of id
 export default defineEventHandler(async (event) => {
   return [
     {

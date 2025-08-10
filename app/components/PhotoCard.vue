@@ -10,7 +10,8 @@
       <div
         tabindex="0"
         role="button"
-        class="btn btn-circle btn-ghost btn-xs text-info"
+        class="btn btn-circle btn-ghost btn-xs text-info tooltip"
+        data-tip="Info"
       >
         <img
           src="/info.svg"
@@ -35,11 +36,11 @@
         </div>
       </div>
 
-      <div class="card-actions justify-end">
+      <div class="card-actions justify-end tooltip" data-tip="Delete">
         <img
           src="/trash-outline.svg"
           aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs text-info dark:invert"
+          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs dark:invert"
           draggable="false"
           @click="emit('delete')"
         />

@@ -6,22 +6,22 @@
     <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
     <!-- Toggle Button (always visible) -->
     <button
-      class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10"
+      class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert"
       @click="isCollapsed = !isCollapsed"
     >
       <img
         v-if="!isCollapsed"
         src="/arrow-back-outline.svg"
         aria-hidden="true"
+        class="h-4 dark:invert select-none"
         draggable="false"
-        class="dark:invert select-none"
       />
       <img
         v-else
         src="/arrow-forward-outline.svg"
         aria-hidden="true"
+        class="h-4 dark:invert select-none"
         draggable="false"
-        class="dark:invert select-none"
       />
     </button>
 
