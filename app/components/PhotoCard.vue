@@ -45,6 +45,15 @@
           @click="emit('delete')"
         />
       </div>
+      <div class="card-actions justify-end tooltip" data-tip="Download">
+        <img
+          src="/download-outline.svg"
+          aria-hidden="true"
+          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs dark:invert"
+          draggable="false"
+          @click="download(photoData)"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +67,29 @@ const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
 }>();
+
+const download = async (photoData: Photo) => {
+  try {
+    const base64Data = photoData.imageData;
+    const fileName = `${photoData.event} at ${photoData.location}`; //what should the file name be?
+
+    // Convert base64 to Blob
+    const res = await fetch(base64Data);
+    const blob = await res.blob();
+
+    // Create download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+
+    // Cleanup
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Failed to download image:", error);
+  }
+};
 </script>
 
 <style scoped></style>

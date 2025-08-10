@@ -6,12 +6,20 @@
           <label for="graduation-year" class="label dark:invert">
             <span class="label-text dark:invert">Graduation Year</span>
           </label>
-          <input
+          <select
             v-model="searchInputs.graduationYear"
-            type="number"
-            placeholder="Graduation Year"
-            class="input input-bordered w-full"
-          />
+            class="select select-bordered w-full"
+            name="graduation-year"
+          >
+            <option value="All">All</option>
+            <option
+              v-for="year in getYears('graduation')"
+              :key="year"
+              :value="year"
+            >
+              {{ year }}
+            </option>
+          </select>
         </div>
 
         <div>
@@ -49,7 +57,11 @@
                 name="year"
               >
                 <option value="All">All</option>
-                <option v-for="year in getYears()" :key="year" :value="year">
+                <option
+                  v-for="year in getYears('upload')"
+                  :key="year"
+                  :value="year"
+                >
                   {{ year }}
                 </option>
               </select>
@@ -156,7 +168,7 @@ const searchInputs = reactive({
     month: "All",
     year: "All",
   }),
-  graduationYear: "",
+  graduationYear: "All",
   event: "All",
   location: "All",
   people: ref<string[]>([]),
@@ -190,13 +202,20 @@ const months = [
   "November",
   "December",
 ] as const;
-function getYears() {
+function getYears(type: "upload" | "graduation") {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const yearArray: number[] = [];
-  for (let i = 2025; i <= currentYear; i++) {
-    yearArray.push(i);
+  if (type === "upload") {
+    for (let i = 2025; i <= currentYear; i++) {
+      yearArray.push(i);
+    }
+  } else if (type === "graduation") {
+    for (let i = 2026; i <= currentYear + 4; i++) {
+      yearArray.push(i);
+    }
   }
+
   return yearArray;
 }
 
@@ -261,7 +280,7 @@ function resetInputs() {
     month: "All",
     year: "All",
   };
-  searchInputs.graduationYear = "";
+  searchInputs.graduationYear = "All";
   searchInputs.event = "All";
   searchInputs.location = "All";
   searchInputs.people = [];
@@ -272,9 +291,8 @@ function resetInputs() {
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch =
-      String(photo.graduationYear).includes(
-        String(searchInputs.graduationYear)
-      ) || searchInputs.graduationYear === "";
+      String(photo.graduationYear) === String(searchInputs.graduationYear) ||
+      searchInputs.graduationYear === "All";
 
     const uploadDateMatch = // fix this
       (photo.uploadDate.getFullYear() ===
