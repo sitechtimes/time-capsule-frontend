@@ -68,10 +68,13 @@ const emit = defineEmits<{
   delete: [void];
 }>();
 
+//should i allow selecting and downloading multiple photos at once?
 const download = async (photoData: Photo) => {
   try {
     const base64Data = photoData.imageData;
-    const fileName = `${photoData.event} at ${photoData.location}`; //what should the file name be?
+    const fileName = `${photoData.event} at ${
+      photoData.location
+    } - Uploaded ${photoData.uploadDate.toLocaleString()}`; //what should the file name be?; also do i have to add metadata?
 
     // Convert base64 to Blob
     const res = await fetch(base64Data);
