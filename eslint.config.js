@@ -7,12 +7,12 @@ import globals from "globals";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    ignores: ["**/.nuxt", "**/node_modules", "**/.output", "**/dist"],
+    ignores: ["**/.nuxt", "**/node_modules", "**/.output", "**/dist"]
   },
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
-    },
+      globals: { ...globals.browser, ...globals.node }
+    }
   },
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -26,9 +26,9 @@ export default [
         parser: tseslint.parser,
         extraFileExtensions: [".vue"],
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
   },
   {
     rules: {
@@ -78,8 +78,8 @@ export default [
           caughtErrorsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           varsIgnorePattern: "^_",
-          ignoreRestSiblings: true,
-        },
+          ignoreRestSiblings: true
+        }
       ],
 
       "@typescript-eslint/no-confusing-void-expression": "off",
@@ -100,21 +100,9 @@ export default [
       "vue/attributes-order": [
         "error",
         {
-          order: [
-            "DEFINITION",
-            "CONDITIONALS",
-            "LIST_RENDERING",
-            "RENDER_MODIFIERS",
-            "GLOBAL",
-            ["UNIQUE", "SLOT"],
-            "TWO_WAY_BINDING",
-            "OTHER_DIRECTIVES",
-            "OTHER_ATTR",
-            "EVENTS",
-            "CONTENT",
-          ],
-          alphabetical: false,
-        },
+          order: ["DEFINITION", "CONDITIONALS", "LIST_RENDERING", "RENDER_MODIFIERS", "GLOBAL", ["UNIQUE", "SLOT"], "TWO_WAY_BINDING", "OTHER_DIRECTIVES", "OTHER_ATTR", "EVENTS", "CONTENT"],
+          alphabetical: false
+        }
       ],
       "vue/block-lang": ["error", { script: { lang: "ts" } }],
       "vue/block-order": ["error", { order: ["template", "script", "style"] }],
@@ -145,15 +133,12 @@ export default [
 
       "vue/no-use-v-if-with-v-for": "off",
       "vue/multi-word-component-names": "off",
-      "vue/html-self-closing": [
-        "error",
-        { html: { void: "always", normal: "never", component: "always" } },
-      ],
+      "vue/html-self-closing": ["error", { html: { void: "always", normal: "never", component: "always" } }],
       "vue/max-attributes-per-line": "off",
       "vue/require-v-for-key": "off",
       "vue/singleline-html-element-content-newline": "off",
       "vue/multiline-html-element-content-newline": "off",
-      "vue/no-v-html": "off",
-    },
-  },
+      "vue/no-v-html": "off"
+    }
+  }
 ];
