@@ -1,117 +1,62 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-primary p-6">
+  <div class="bg-primary flex min-h-screen items-center justify-center p-6">
     <div class="w-full max-w-2xl space-y-6">
-      <h1 class="text-2xl font-semibold mb-4 text-center text-accent">
-        Upload Photos
-      </h1>
+      <h1 class="text-accent mb-4 text-center text-2xl font-semibold">Upload Photos</h1>
 
-      <div
-        v-for="(photo, index) in photos"
-        class="card bg-neutral shadow-[6px_6px_12px_rgba(0,0,0,0.2)] shadow-accent rounded-lg p-6"
-      >
-        <h2 class="text-lg font-semibold mb-4 text-center">
-          Photo {{ index + 1 }}
-        </h2>
+      <div v-for="(photo, index) in photos" class="card bg-neutral shadow-accent rounded-lg p-6 shadow-[6px_6px_12px_rgba(0,0,0,0.2)]">
+        <h2 class="mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>
         <form class="space-y-4" @submit.prevent>
           <div>
-            <label class="block mb-1" for="graduationYear"
-              >Graduation Year:</label
-            >
-            <input
-              type="number"
-              v-model="photo.graduationYear"
-              required
-              class="input w-full bg-base-100"
-            />
+            <label class="mb-1 block" for="graduationYear">Graduation Year:</label>
+            <input v-model="photo.graduationYear" type="number" required class="input bg-base-100 w-full" />
           </div>
 
           <div>
-            <label class="block mb-1" for="event">Event:</label>
-            <input
-              type="text"
-              v-model="photo.event"
-              required
-              class="input w-full bg-base-100"
-            />
+            <label class="mb-1 block" for="event">Event:</label>
+            <input v-model="photo.event" type="text" required class="input bg-base-100 w-full" />
           </div>
 
           <div>
-            <label class="block mb-1" for="location">Location:</label>
-            <input
-              type="text"
-              v-model="photo.location"
-              required
-              class="input w-full bg-base-100"
-            />
+            <label class="mb-1 block" for="location">Location:</label>
+            <input v-model="photo.location" type="text" required class="input bg-base-100 w-full" />
           </div>
 
           <div>
-            <label class="block mb-1" for="people"
-              >People (comma-separated):</label
-            >
-            <input
-              type="text"
-              v-model="photo.personInput"
-              @input="handlePeopleInput(photo)"
-              placeholder="Ex: John Doe, ..."
-              class="input w-full bg-base-100"
-            />
+            <label class="mb-1 block" for="people">People (comma-separated):</label>
+            <input v-model="photo.personInput" type="text" placeholder="Ex: John Doe, ..." class="input bg-base-100 w-full" @input="handlePeopleInput(photo)" />
           </div>
 
-          <div class="flex flex-wrap gap-2 mt-2">
-            <div
-              v-for="(person, personIndex) in photo.people"
-              class="rounded-full bg-neutral-200 px-3 py-1 flex items-center gap-2"
-            >
+          <div class="mt-2 flex flex-wrap gap-2">
+            <div v-for="(person, personIndex) in photo.people" class="flex items-center gap-2 rounded-full bg-neutral-200 px-3 py-1">
               <span class="text-black">{{ person }}</span>
-              <button type="button" @click="removePerson(photo, personIndex)">
-                ✕
-              </button>
+              <button type="button" @click="removePerson(photo, personIndex)">✕</button>
             </div>
           </div>
 
           <div>
-            <label class="block mb-1" for="imageData">Image File:</label>
-            <input
-              type="file"
-              accept="image/*"
-              ref="fileInput"
-              required
-              class="file-input w-full"
-            />
-            <div v-if="photo.imageData" class="mt-1 text-sm text-success">
-              Image selected
-            </div>
+            <label class="mb-1 block" for="imageData">Image File:</label>
+            <input ref="fileInput" type="file" accept="image/*" required class="file-input w-full" />
+            <div v-if="photo.imageData" class="text-success mt-1 text-sm">Image selected</div>
           </div>
 
           <div v-if="photos.length > 1" class="mt-3 text-center">
-            <button
-              type="button"
-              class="btn btn-accent w-full max-w-xs"
-              @click="removeForm(index)"
-            >
-              Remove Photo
-            </button>
+            <button type="button" class="btn btn-accent w-full max-w-xs" @click="removeForm(index)">Remove Photo</button>
           </div>
         </form>
       </div>
 
-      <button
-        type="button"
-        class="btn btn-secondary w-full"
-        @click="addNewForm"
-      >
-        + Add Another Photo
-      </button>
+      <button type="button" class="btn btn-secondary w-full" @click="addNewForm">+ Add Another Photo</button>
 
-      <button type="button" class="btn btn-accent w-full" @click="uploadPhotos">
-        Upload All Photos
-      </button>
+      <button type="button" class="btn btn-accent w-full" @click="uploadPhotos">Upload All Photos</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "dashboard"
+});
+
 interface PhotoForm {
   graduationYear: number;
   event: string;
@@ -131,7 +76,7 @@ function createEmptyPhotoForm(): PhotoForm {
     location: "",
     personInput: "",
     people: [],
-    imageData: "",
+    imageData: ""
   };
 }
 
@@ -208,14 +153,10 @@ async function uploadPhotos() {
         location: photo.location,
         people: photo.people,
         imageData: photo.imageData,
-        author: userStore.user?.id,
+        author: userStore.user?.id
       };
 
-      const { data, error } = await tryRequestEndpoint<Photo>(
-        "/upload",
-        "POST",
-        sendData,
-      );
+      const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
 
       if (error) {
         console.error("Upload error:", error);

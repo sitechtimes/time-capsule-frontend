@@ -1,7 +1,8 @@
 <template>
   <div :data-theme="store.theme">
-    <AppHeader />
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 

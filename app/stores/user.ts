@@ -6,13 +6,10 @@ export const useUserStore = defineStore("userStore", () => {
     user.value = undefined;
   }
 
-  async function signIn(
-    email: string,
-    password: string,
-  ): Promise<Error | undefined> {
+  async function signIn(email: string, password: string): Promise<Error | undefined> {
     const { data, error } = await tryRequestEndpoint<User>("/login", "POST", {
       email,
-      password,
+      password
     });
     if (error) return error;
     user.value = data;
@@ -22,6 +19,6 @@ export const useUserStore = defineStore("userStore", () => {
     user,
     signOut,
     signIn,
-    theme,
+    theme
   };
 });
