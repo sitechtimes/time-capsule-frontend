@@ -159,7 +159,7 @@
 <script setup lang="ts">
 // filters should be done on backend, not here bc frontend doesn't have ALL photos to filter from
 // infinite scroll that loads more photos when scrolled down
-// fix layout w sidebar&filters
+// make imgs expand when clicked
 // deleting from api
 // need endpoints - photo limits, events&locations, filtering by user and other stuff
 const photoData = ref<Photo[]>([]);

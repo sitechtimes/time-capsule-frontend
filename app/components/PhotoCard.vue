@@ -1,16 +1,41 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-sm w-[26%] m-8">
+  <div class="card card-side bg-base-100 shadow-sm w-[26%] h-[50%] m-8">
     <img
       :src="photoData.imageData"
       aria-hidden="true"
-      class="object-contain w-full h-auto"
+      class="btn object-contain w-full h-auto cursor-pointer"
+      @click="openModal"
     />
+    <dialog ref="modalRef" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            <img
+              src="/close-outline.svg"
+              aria-hidden="true"
+              class="h-6 dark:invert select-none"
+              draggable="false"
+            />
+          </button>
+        </form>
+        <img
+          :src="photoData.imageData"
+          aria-hidden="true"
+          class="min-h-[70vh] w-auto mx-auto object-contain"
+        />
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
 
     <div class="dropdown dropdown-end">
       <div
         tabindex="0"
         role="button"
-        class="btn btn-circle btn-ghost btn-xs text-info tooltip"
+        class="btn btn-circle btn-ghost btn-s text-info tooltip"
         data-tip="Info"
       >
         <img
@@ -40,7 +65,7 @@
         <img
           src="/trash-outline.svg"
           aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs dark:invert"
+          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-s dark:invert"
           draggable="false"
           @click="emit('delete')"
         />
@@ -49,7 +74,7 @@
         <img
           src="/download-outline.svg"
           aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-xs dark:invert"
+          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-s dark:invert"
           draggable="false"
           @click="download(photoData)"
         />
@@ -67,6 +92,12 @@ const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
 }>();
+
+// for modal
+const modalRef = ref<HTMLDialogElement | null>(null);
+function openModal() {
+  modalRef.value?.showModal();
+}
 
 //should i allow selecting and downloading multiple photos at once?
 const download = async (photoData: Photo) => {
