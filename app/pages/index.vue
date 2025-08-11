@@ -45,6 +45,7 @@
 // infinite scroll that loads more photos when scrolled down
 // deleting from api
 // need endpoints - photo limits, events&locations, filtering by user and other stuff
+// are users able to see other photos?
 const photoData = ref<Photo[]>([]);
 const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
@@ -73,7 +74,6 @@ async function fetchPhotoData() {
     ...item,
     uploadDate: new Date(item.uploadDate * 1000),
   })); //newPhotoArray is data with changed date format
-  console.log(newPhotoArray);
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
   } // this shouldn't be in frontend - have to be filtered using endpoints?

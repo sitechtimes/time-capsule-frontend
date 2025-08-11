@@ -6,6 +6,7 @@
     <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
     <!-- Toggle Button (always visible) -->
     <button
+      type="button"
       class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert"
       @click="isCollapsed = !isCollapsed"
     >
@@ -81,7 +82,11 @@
         </div>
 
         <div class="flex items-end">
-          <button class="btn btn-outline w-full" @click="resetInputs">
+          <button
+            type="reset"
+            class="btn btn-outline w-full"
+            @click="resetInputs"
+          >
             Reset
           </button>
         </div>
@@ -135,12 +140,12 @@ function getYears(type: "upload" | "graduation") {
   const currentYear = currentDate.getFullYear();
   const yearArray: number[] = [];
   if (type === "upload") {
-    for (let i = 2025; i <= currentYear; i++) {
-      yearArray.push(i);
+    for (let year = 2025; year <= currentYear; year++) {
+      yearArray.push(year);
     }
   } else if (type === "graduation") {
-    for (let i = 2026; i <= currentYear + 4; i++) {
-      yearArray.push(i);
+    for (let year = 2026; year <= currentYear + 4; year++) {
+      yearArray.push(year);
     }
   }
 
@@ -171,8 +176,8 @@ async function fetchLocations() {
   if (error) return error;
   locations.value = data;
 }
-fetchEvents();
-fetchLocations();
+void fetchEvents();
+void fetchLocations();
 
 function resetInputs() {
   searchInputs.value.uploadDate = {
