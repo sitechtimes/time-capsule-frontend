@@ -30,7 +30,6 @@
       <h2 class="text-xl font-bold mb-6">Filters</h2>
 
       <!-- sidebar content -->
-      >
       <div class="">
         <FilterDropdown
           v-model="searchInputs.graduationYear"

@@ -1,5 +1,7 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-sm w-[26%] h-[50%] m-8">
+  <div
+    class="card card-side bg-base-100 shadow-sm w-[26%] h-[40%] m-8 sm:w-[21%]"
+  >
     <img
       :src="photoData.imageData"
       aria-hidden="true"

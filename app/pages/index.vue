@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 // filters should be done on backend, not here bc frontend doesn't have ALL photos to filter from
+// should there be filter for author? edit btn on card?
 // infinite scroll that loads more photos when scrolled down
 // deleting from api
 // need endpoints - photo limits, events&locations, filtering by user and other stuff
