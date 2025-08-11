@@ -1,6 +1,8 @@
 <template>
   <div class="bg-primary flex min-h-screen items-center justify-center px-4">
-    <div class="card bg-neutral shadow-accent w-full max-w-md rounded-lg p-6 shadow-[6px_6px_12px_rgba(0,0,0,0.2)]">
+    <div
+      class="card bg-neutral shadow-accent w-full max-w-full rounded-lg p-4 shadow-[4px_4px_8px_rgba(0,0,0,0.1)] sm:max-w-md sm:p-6 sm:shadow-[6px_6px_12px_rgba(0,0,0,0.2)] md:max-w-lg md:p-6 lg:max-w-xl lg:p-8"
+    >
       <form class="flex flex-col space-y-4" @submit.prevent="handleLogin">
         <label for="email">Enter in your email: </label>
         <input v-model="loginForm.email" type="text" placeholder="email" class="input bg-neutral mb-4 w-full" />
@@ -52,26 +54,4 @@ async function handleLogin() {
 }
 </script>
 
-<style scoped>
-@media (max-width: 640px) {
-  .card {
-    padding: 1rem;
-    width: 100%;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-  .card {
-    padding: 1.5rem;
-    max-width: 28rem;
-  }
-}
-
-@media (min-width: 1025px) {
-  .card {
-    padding: 2rem;
-    max-width: 32rem;
-  }
-}
-</style>
+<style scoped></style>
