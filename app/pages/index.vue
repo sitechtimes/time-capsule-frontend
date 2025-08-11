@@ -2,34 +2,17 @@
   <div class="flex min-h-screen">
     <SideBar v-model:search-inputs="searchInputs" />
 
-    <div id="card-container" class="flex flex-row flex-wrap w-full">
-      <PhotoCard
-        v-for="(photo, index) in filteredPhotoData"
-        :key="photo.id"
-        :photoData="photo"
-        @delete="deletePhoto(index)"
-        @clicked="openModal(photo)"
-      />
+    <div id="card-container" class="flex w-full flex-row flex-wrap">
+      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photoData="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
       <!-- put dialog here -->
       <dialog ref="modalRef" class="modal">
         <div class="modal-box">
           <form method="dialog">
-            <button
-              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-              <img
-                src="/close-outline.svg"
-                aria-hidden="true"
-                class="h-6 dark:invert select-none"
-                draggable="false"
-              />
+            <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
+              <img src="/close-outline.svg" aria-hidden="true" class="h-6 select-none dark:invert" draggable="false" />
             </button>
           </form>
-          <img
-            :src="selectedPhoto?.imageData"
-            aria-hidden="true"
-            class="min-h-[70vh] w-auto mx-auto object-contain"
-          />
+          <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto min-h-[70vh] w-auto object-contain" />
         </div>
         <form method="dialog" class="modal-backdrop">
           <button>close</button>
@@ -72,7 +55,7 @@ async function fetchPhotoData() {
   if (error) return error;
   let newPhotoArray: Photo[] = data.map((item) => ({
     ...item,
-    uploadDate: new Date(item.uploadDate * 1000),
+    uploadDate: new Date(item.uploadDate * 1000)
   })); //newPhotoArray is data with changed date format
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
@@ -83,9 +66,7 @@ async function fetchPhotoData() {
 fetchPhotoData();
 
 async function deletePhoto(photoIndex: number) {
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this photo?"
-  );
+  const confirmed = window.confirm("Are you sure you want to delete this photo?");
   if (!confirmed) return;
   photoData.value.splice(photoIndex, 1);
   //delete from api, call "/delete"
@@ -100,61 +81,38 @@ async function deletePhoto(photoIndex: number) {
 const searchInputs = reactive({
   uploadDate: ref({
     month: "All",
-    year: "All",
+    year: "All"
   }),
   graduationYear: "All",
   event: "All",
   location: "All",
-  people: ref<string[]>([]),
+  people: ref<string[]>([])
 });
 
 // should be done on backend bc not all photos are fetched
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
-    const gradYearMatch =
-      String(photo.graduationYear) === String(searchInputs.graduationYear) ||
-      searchInputs.graduationYear === "All";
+    const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All";
 
     const uploadDateMatch = // fix this?
-      (photo.uploadDate.getFullYear() ===
-        Number(searchInputs.uploadDate.year) &&
-        months[photo.uploadDate.getMonth()] ===
-          searchInputs.uploadDate.month) ||
-      (photo.uploadDate.getFullYear() ===
-        Number(searchInputs.uploadDate.year) &&
-        searchInputs.uploadDate.month === "All") ||
-      (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month &&
-        searchInputs.uploadDate.year === "All") ||
-      (searchInputs.uploadDate.year === "All" &&
-        searchInputs.uploadDate.month === "All");
+      (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month) ||
+      (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && searchInputs.uploadDate.month === "All") ||
+      (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month && searchInputs.uploadDate.year === "All") ||
+      (searchInputs.uploadDate.year === "All" && searchInputs.uploadDate.month === "All");
 
-    const eventMatch =
-      photo.event.toLowerCase().includes(searchInputs.event.toLowerCase()) ||
-      searchInputs.event === "All";
+    const eventMatch = photo.event.toLowerCase().includes(searchInputs.event.toLowerCase()) || searchInputs.event === "All";
 
-    const locationMatch =
-      photo.location
-        .toLowerCase()
-        .includes(searchInputs.location.toLowerCase()) ||
-      searchInputs.location === "All";
+    const locationMatch = photo.location.toLowerCase().includes(searchInputs.location.toLowerCase()) || searchInputs.location === "All";
 
-    const peopleMatch =
-      searchInputs.people.every((person) => photo.people.includes(person)) ||
-      searchInputs.people.length === 0; //check case too
+    const peopleMatch = searchInputs.people.every((person) => photo.people.includes(person)) || searchInputs.people.length === 0; //check case too
 
-    return (
-      gradYearMatch &&
-      uploadDateMatch &&
-      eventMatch &&
-      locationMatch &&
-      peopleMatch
-    );
+    return gradYearMatch && uploadDateMatch && eventMatch && locationMatch && peopleMatch;
   });
 });
 
 definePageMeta({
   layout: "dashboard"
-})
+});
 </script>
 
 <style scoped></style>

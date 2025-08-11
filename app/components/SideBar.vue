@@ -1,115 +1,49 @@
 <template>
-  <aside
-    :class="isCollapsed ? 'w-12' : 'w-64'"
-    class="bg-base-200 min-h-screen transition-all duration-300 sticky right-0"
-  >
+  <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-200 sticky right-0 min-h-screen transition-all duration-300">
     <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
     <!-- Toggle Button (always visible) -->
-    <button
-      type="button"
-      class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert"
-      @click="isCollapsed = !isCollapsed"
-    >
-      <img
-        v-if="!isCollapsed"
-        src="/arrow-back-outline.svg"
-        aria-hidden="true"
-        class="h-4 dark:invert select-none"
-        draggable="false"
-      />
-      <img
-        v-else
-        src="/arrow-forward-outline.svg"
-        aria-hidden="true"
-        class="h-4 dark:invert select-none"
-        draggable="false"
-      />
+    <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert" @click="isCollapsed = !isCollapsed">
+      <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
+      <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
     <!-- Content (only when expanded) -->
     <div v-if="!isCollapsed" class="p-4">
-      <h2 class="text-xl font-bold mb-6">Filters</h2>
+      <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
       <!-- sidebar content -->
       <div class="">
-        <FilterDropdown
-          v-model="searchInputs.graduationYear"
-          category="Graduation Year"
-          :choices="getYears('graduation')"
-        />
+        <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="getYears('graduation')" />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <FilterDropdown
-              v-model="searchInputs.uploadDate.month"
-              category="Month"
-              :choices="[...months]"
-              class="flex-1"
-            />
-            <FilterDropdown
-              v-model="searchInputs.uploadDate.year"
-              category="Year"
-              :choices="getYears('upload')"
-              class="flex-1"
-            />
+            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="[...months]" class="flex-1" />
+            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="getYears('upload')" class="flex-1" />
           </div>
         </div>
 
-        <FilterDropdown
-          v-model="searchInputs.event"
-          category="Event"
-          :choices="events"
-        />
-        <FilterDropdown
-          v-model="searchInputs.location"
-          category="Location"
-          :choices="locations"
-        />
+        <FilterDropdown v-model="searchInputs.event" category="Event" :choices="events" />
+        <FilterDropdown v-model="searchInputs.location" category="Location" :choices="locations" />
 
         <div>
           <label for="people" class="label dark:invert">
             <span class="label-text">People (comma-separated)</span>
           </label>
-          <input
-            v-model="personInput"
-            type="text"
-            placeholder="Ex: John Doe, Jane Smith"
-            class="input input-bordered w-full"
-            @input="handlePeopleInput"
-          />
+          <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleInput" />
         </div>
 
         <div class="flex items-end">
-          <button
-            type="reset"
-            class="btn btn-outline w-full"
-            @click="resetInputs"
-          >
-            Reset
-          </button>
+          <button type="reset" class="btn btn-outline w-full" @click="resetInputs">Reset</button>
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-2 mb-6">
-        <div
-          v-for="(person, index) in searchInputs.people"
-          :key="person"
-          class="badge badge-neutral gap-2"
-        >
+      <div class="mb-6 flex flex-wrap gap-2">
+        <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral gap-2">
           {{ person }}
-          <button
-            type="button"
-            class="btn btn-xs btn-circle btn-ghost"
-            @click="removePerson(index)"
-          >
-            <img
-              src="/close-outline.svg"
-              aria-hidden="true"
-              class="h-4 opacity-50 dark:invert select-none"
-              draggable="false"
-            />
+          <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
+            <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
           </button>
         </div>
       </div>
@@ -125,13 +59,13 @@ const searchInputs = defineModel("searchInputs", {
   default: () => ({
     uploadDate: {
       month: "All",
-      year: "All",
+      year: "All"
     },
     graduationYear: "All",
     event: "All",
     location: "All",
-    people: [],
-  }),
+    people: []
+  })
 });
 const personInput = ref("");
 
@@ -182,7 +116,7 @@ void fetchLocations();
 function resetInputs() {
   searchInputs.value.uploadDate = {
     month: "All",
-    year: "All",
+    year: "All"
   };
   searchInputs.value.graduationYear = "All";
   searchInputs.value.event = "All";

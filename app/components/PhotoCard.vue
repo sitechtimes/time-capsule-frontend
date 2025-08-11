@@ -1,31 +1,12 @@
 <template>
-  <div
-    class="card card-side bg-base-100 shadow-sm w-[26%] h-[40%] m-8 sm:w-[21%]"
-  >
-    <img
-      :src="photoData.imageData"
-      aria-hidden="true"
-      class="btn object-contain w-full h-auto cursor-pointer"
-      @click="emit('clicked')"
-    />
+  <div class="card card-side bg-base-100 m-8 h-[40%] w-[26%] shadow-sm sm:w-[21%]">
+    <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
 
     <div class="dropdown dropdown-end">
-      <div
-        tabindex="0"
-        role="button"
-        class="btn btn-circle btn-ghost btn-s text-info tooltip"
-        data-tip="Info"
-      >
-        <img
-          src="/info.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 select-none dark:invert"
-          draggable="false"
-        />
+      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
+        <img src="/info.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
       </div>
-      <div
-        class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm"
-      >
+      <div class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm">
         <div class="card-body">
           <p>
             Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
@@ -39,23 +20,11 @@
         </div>
       </div>
 
-      <div class="card-actions justify-end tooltip" data-tip="Delete">
-        <img
-          src="/trash-outline.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-s dark:invert"
-          draggable="false"
-          @click="emit('delete')"
-        />
+      <div class="card-actions tooltip justify-end" data-tip="Delete">
+        <img src="/trash-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="emit('delete')" />
       </div>
-      <div class="card-actions justify-end tooltip" data-tip="Download">
-        <img
-          src="/download-outline.svg"
-          aria-hidden="true"
-          class="h-4 opacity-50 select-none btn btn-circle btn-ghost btn-s dark:invert"
-          draggable="false"
-          @click="download(photoData)"
-        />
+      <div class="card-actions tooltip justify-end" data-tip="Download">
+        <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
       </div>
       <!-- add edit btn? -->
     </div>
@@ -77,9 +46,7 @@ const emit = defineEmits<{
 const download = async (photoData: Photo) => {
   try {
     const base64Data = photoData.imageData;
-    const fileName = `${photoData.event} at ${
-      photoData.location
-    } - Uploaded ${photoData.uploadDate.toLocaleString()}`; //what should the file name be?; also do i have to add metadata?
+    const fileName = `${photoData.event} at ${photoData.location} - Uploaded ${photoData.uploadDate.toLocaleString()}`; //what should the file name be?; also do i have to add metadata?
 
     // Convert base64 to Blob
     const res = await fetch(base64Data);
