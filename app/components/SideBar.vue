@@ -1,26 +1,22 @@
 <template>
   <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-200 sticky right-0 min-h-screen transition-all duration-300">
-    <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
-    <!-- Toggle Button (always visible) -->
     <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert" @click="isCollapsed = !isCollapsed">
       <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <!-- Content (only when expanded) -->
     <div v-if="!isCollapsed" class="p-4">
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
-      <!-- sidebar content -->
       <div class="">
-        <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="getYears('graduation')" />
+        <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="[...months]" class="flex-1" />
-            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="getYears('upload')" class="flex-1" />
+            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" class="flex-1" />
+            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" class="flex-1" />
           </div>
         </div>
 
@@ -69,21 +65,15 @@ const searchInputs = defineModel("searchInputs", {
 });
 const personInput = ref("");
 
-function getYears(type: "upload" | "graduation") {
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const yearArray: number[] = [];
-  if (type === "upload") {
-    for (let year = 2025; year <= currentYear; year++) {
-      yearArray.push(year);
-    }
-  } else if (type === "graduation") {
-    for (let year = 2026; year <= currentYear + 4; year++) {
-      yearArray.push(year);
-    }
-  }
-
-  return yearArray;
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const graduationYears: number[] = [];
+for (let year = 2026; year <= currentYear + 4; year++) {
+  graduationYears.push(year);
+}
+const uploadYears: number[] = [];
+for (let year = 2025; year <= currentYear; year++) {
+  uploadYears.push(year);
 }
 
 function removePerson(index: number) {
@@ -110,8 +100,6 @@ async function fetchLocations() {
   if (error) return error;
   locations.value = data;
 }
-void fetchEvents();
-void fetchLocations();
 
 function resetInputs() {
   searchInputs.value.uploadDate = {
@@ -124,4 +112,9 @@ function resetInputs() {
   searchInputs.value.people = [];
   personInput.value = "";
 }
+
+onMounted(() => {
+  void fetchEvents();
+  void fetchLocations();
+});
 </script>

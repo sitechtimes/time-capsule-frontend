@@ -1,10 +1,8 @@
 <template>
   <div class="flex min-h-screen">
-    <SideBar v-model:search-inputs="searchInputs" />
-
-    <div id="card-container" class="flex w-full flex-row flex-wrap">
+    <SideBar v-model="searchInputs" />
+    <div class="flex w-full flex-row flex-wrap">
       <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photoData="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
-      <!-- put dialog here -->
       <dialog ref="modalRef" class="modal">
         <div class="modal-box">
           <form method="dialog">
@@ -33,8 +31,7 @@ const photoData = ref<Photo[]>([]);
 const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
 
-// for modal
-const modalRef = ref<HTMLDialogElement | null>(null);
+const modalRef = useTemplateRef("modalRef");
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
   modalRef.value?.showModal();
@@ -49,21 +46,19 @@ interface PhotoResponse {
   people: string[];
   imageData: string;
   author: number;
-} //can't use Photo bc uploadDate is Date type
+}
 async function fetchPhotoData() {
   const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
   if (error) return error;
   let newPhotoArray: Photo[] = data.map((item) => ({
     ...item,
     uploadDate: new Date(item.uploadDate * 1000)
-  })); //newPhotoArray is data with changed date format
+  }));
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
   } // this shouldn't be in frontend - have to be filtered using endpoints?
   photoData.value = newPhotoArray;
 }
-
-fetchPhotoData();
 
 async function deletePhoto(photoIndex: number) {
   const confirmed = window.confirm("Are you sure you want to delete this photo?");
@@ -94,7 +89,7 @@ const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All";
 
-    const uploadDateMatch = // fix this?
+    const uploadDateMatch =
       (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month) ||
       (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && searchInputs.uploadDate.month === "All") ||
       (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month && searchInputs.uploadDate.year === "All") ||
@@ -104,7 +99,7 @@ const filteredPhotoData = computed(() => {
 
     const locationMatch = photo.location.toLowerCase().includes(searchInputs.location.toLowerCase()) || searchInputs.location === "All";
 
-    const peopleMatch = searchInputs.people.every((person) => photo.people.includes(person)) || searchInputs.people.length === 0; //check case too
+    const peopleMatch = searchInputs.people.every((person) => photo.people.includes(person)) || searchInputs.people.length === 0;
 
     return gradYearMatch && uploadDateMatch && eventMatch && locationMatch && peopleMatch;
   });
@@ -113,6 +108,8 @@ const filteredPhotoData = computed(() => {
 definePageMeta({
   layout: "dashboard"
 });
+
+onMounted(fetchPhotoData);
 </script>
 
 <style scoped></style>
