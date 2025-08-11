@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="[isCollapsed ? 'w-12' : 'w-64']"
+    :class="isCollapsed ? 'w-12' : 'w-64'"
     class="bg-base-200 min-h-screen transition-all duration-300 sticky right-0"
   >
     <!-- aside tells browser that this is supporting content, not the main page body; used for sidebars, ads, nav menus, etc. -->
