@@ -42,7 +42,7 @@ async function requestEndpoint(endpoint: string, method?: string, body?: object)
  */
 async function requestEndpoint<T>(endpoint: string, method?: string, body?: object): Promise<T>;
 async function requestEndpoint<T>(endpoint: string, method?: string, body?: object): Promise<T | void> {
-  const config = useRuntimeConfig();
+  //const config = useRuntimeConfig();
   const baseUrl = "/api"; // TODO: use config.public.backend instead of hardcoding the base URL
 
   const options: RequestInit = { credentials: "include" };
