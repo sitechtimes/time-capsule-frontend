@@ -30,11 +30,160 @@
       <h2 class="text-xl font-bold mb-6">Filters</h2>
 
       <!-- sidebar content -->
-      <slot></slot>
+      >
+      <div class="">
+        <FilterDropdown
+          v-model="searchInputs.graduationYear"
+          category="Graduation Year"
+          :choices="getYears('graduation')"
+        />
+        <div>
+          <label class="label dark:invert">
+            <span class="label-text">Upload Date</span>
+          </label>
+          <div class="flex gap-4">
+            <FilterDropdown
+              v-model="searchInputs.uploadDate.month"
+              category="Month"
+              :choices="[...months]"
+              class="flex-1"
+            />
+            <FilterDropdown
+              v-model="searchInputs.uploadDate.year"
+              category="Year"
+              :choices="getYears('upload')"
+              class="flex-1"
+            />
+          </div>
+        </div>
+
+        <FilterDropdown
+          v-model="searchInputs.event"
+          category="Event"
+          :choices="events"
+        />
+        <FilterDropdown
+          v-model="searchInputs.location"
+          category="Location"
+          :choices="locations"
+        />
+
+        <div>
+          <label for="people" class="label dark:invert">
+            <span class="label-text">People (comma-separated)</span>
+          </label>
+          <input
+            v-model="personInput"
+            type="text"
+            placeholder="Ex: John Doe, Jane Smith"
+            class="input input-bordered w-full"
+            @input="handlePeopleInput"
+          />
+        </div>
+
+        <div class="flex items-end">
+          <button class="btn btn-outline w-full" @click="resetInputs">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-6">
+        <div
+          v-for="(person, index) in searchInputs.people"
+          :key="person"
+          class="badge badge-neutral gap-2"
+        >
+          {{ person }}
+          <button
+            type="button"
+            class="btn btn-xs btn-circle btn-ghost"
+            @click="removePerson(index)"
+          >
+            <img
+              src="/close-outline.svg"
+              aria-hidden="true"
+              class="h-4 opacity-50 dark:invert select-none"
+              draggable="false"
+            />
+          </button>
+        </div>
+      </div>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
 const isCollapsed = ref(false);
+
+const searchInputs = defineModel("searchInputs", {
+  type: Object,
+  default: () => ({
+    uploadDate: {
+      month: "All",
+      year: "All",
+    },
+    graduationYear: "All",
+    event: "All",
+    location: "All",
+    people: [],
+  }),
+});
+const personInput = ref("");
+
+function getYears(type: "upload" | "graduation") {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const yearArray: number[] = [];
+  if (type === "upload") {
+    for (let i = 2025; i <= currentYear; i++) {
+      yearArray.push(i);
+    }
+  } else if (type === "graduation") {
+    for (let i = 2026; i <= currentYear + 4; i++) {
+      yearArray.push(i);
+    }
+  }
+
+  return yearArray;
+}
+
+function removePerson(index: number) {
+  searchInputs.value.people.splice(index, 1);
+}
+
+function handlePeopleInput() {
+  const name = personInput.value;
+  if (name.endsWith(",")) {
+    searchInputs.value.people.push(name.slice(0, -1).trim());
+    personInput.value = "";
+  }
+}
+
+const events = ref<string[]>([]);
+const locations = ref<string[]>([]);
+async function fetchEvents() {
+  const { data, error } = await tryRequestEndpoint<string[]>("/events");
+  if (error) return error;
+  events.value = data;
+}
+async function fetchLocations() {
+  const { data, error } = await tryRequestEndpoint<string[]>("/locations");
+  if (error) return error;
+  locations.value = data;
+}
+fetchEvents();
+fetchLocations();
+
+function resetInputs() {
+  searchInputs.value.uploadDate = {
+    month: "All",
+    year: "All",
+  };
+  searchInputs.value.graduationYear = "All";
+  searchInputs.value.event = "All";
+  searchInputs.value.location = "All";
+  searchInputs.value.people = [];
+  personInput.value = "";
+}
 </script>

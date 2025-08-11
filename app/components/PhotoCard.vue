@@ -4,6 +4,7 @@
       :src="photoData.imageData"
       aria-hidden="true"
       class="btn object-contain w-full h-auto cursor-pointer"
+      @click="emit('clicked')"
     />
 
     <div class="dropdown dropdown-end">
@@ -54,6 +55,7 @@
           @click="download(photoData)"
         />
       </div>
+      <!-- add edit btn? -->
     </div>
   </div>
 </template>
@@ -66,6 +68,7 @@ defineProps<{
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
+  clicked: [void];
 }>();
 
 //should i allow selecting and downloading multiple photos at once?

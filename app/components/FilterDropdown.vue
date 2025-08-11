@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  category: string;
+  category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
   choices: string[] | number[];
 }>();
 
