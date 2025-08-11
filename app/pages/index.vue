@@ -151,6 +151,10 @@ const filteredPhotoData = computed(() => {
     );
   });
 });
+
+definePageMeta({
+  layout: "dashboard"
+})
 </script>
 
 <style scoped></style>

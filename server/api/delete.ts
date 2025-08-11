@@ -3,6 +3,6 @@ interface DeleteBody {
 }
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<DeleteBody>(event);
+  const _body = await readBody<DeleteBody>(event);
   return { statusCode: 200, message: "Delete successful" };
 });

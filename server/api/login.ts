@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   if (body.email !== "admin@gmail.com" || body.password !== "admin") {
     throw createError({
       statusCode: 400,
-      statusMessage: "Incorrect email or password",
+      statusMessage: "Incorrect email or password"
     });
   }
 
