@@ -2,106 +2,41 @@
   <div class="flex min-h-screen">
     <SideBar>
       <div class="">
-        <div>
-          <label for="graduation-year" class="label dark:text-neutral-content">
-            <span class="label-text dark:invert">Graduation Year</span>
-          </label>
-          <select
-            v-model="searchInputs.graduationYear"
-            class="select select-bordered w-full"
-            name="graduation-year"
-          >
-            <option value="All">All</option>
-            <option
-              v-for="year in getYears('graduation')"
-              :key="year"
-              :value="year"
-            >
-              {{ year }}
-            </option>
-          </select>
-        </div>
-
+        <FilterDropdown
+          v-model="searchInputs.graduationYear"
+          category="Graduation Year"
+          :choices="getYears('graduation')"
+        />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <div class="flex-1">
-              <label for="month" class="label dark:invert">
-                <span class="label-text">Month</span>
-              </label>
-              <select
-                v-model="searchInputs.uploadDate.month"
-                class="select select-bordered w-full"
-                name="month"
-              >
-                <option value="All">All</option>
-                <option
-                  v-for="(month, index) in months"
-                  :key="month"
-                  :value="index + 1"
-                >
-                  {{ month }}
-                </option>
-              </select>
-            </div>
-
-            <div class="flex-1">
-              <label for="year" class="label dark:invert">
-                <span class="label-text">Year</span>
-              </label>
-              <select
-                v-model="searchInputs.uploadDate.year"
-                class="select select-bordered w-full"
-                name="year"
-              >
-                <option value="All">All</option>
-                <option
-                  v-for="year in getYears('upload')"
-                  :key="year"
-                  :value="year"
-                >
-                  {{ year }}
-                </option>
-              </select>
-            </div>
+            <FilterDropdown
+              v-model="searchInputs.uploadDate.month"
+              category="Month"
+              :choices="months"
+              class="flex-1"
+            />
+            <FilterDropdown
+              v-model="searchInputs.uploadDate.year"
+              category="Year"
+              :choices="getYears('upload')"
+              class="flex-1"
+            />
           </div>
         </div>
 
-        <div>
-          <label for="event" class="label dark:invert">
-            <span class="label-text">Event</span>
-          </label>
-          <select
-            v-model="searchInputs.event"
-            name="event"
-            class="select select-bordered w-full"
-          >
-            <option v-for="event in events" :key="event" :value="event">
-              {{ event }}
-            </option>
-          </select>
-        </div>
-
-        <div>
-          <label for="location" class="label dark:invert">
-            <span class="label-text">Location</span>
-          </label>
-          <select
-            v-model="searchInputs.location"
-            name="location"
-            class="select select-bordered w-full"
-          >
-            <option
-              v-for="location in locations"
-              :key="location"
-              :value="location"
-            >
-              {{ location }}
-            </option>
-          </select>
-        </div>
+        <FilterDropdown
+          v-model="searchInputs.event"
+          category="Event"
+          :choices="events"
+        />
+        <FilterDropdown
+          v-model="searchInputs.location"
+          category="Location"
+          :choices="locations"
+        />
 
         <div>
           <label for="people" class="label dark:invert">
@@ -154,6 +89,30 @@
       />
     </div>
     <!-- put dialog here -->
+    <dialog ref="modalRef" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            <img
+              src="/close-outline.svg"
+              aria-hidden="true"
+              class="h-6 dark:invert select-none"
+              draggable="false"
+            />
+          </button>
+        </form>
+        <!-- <img
+          :src=""
+          aria-hidden="true"
+          class="min-h-[70vh] w-auto mx-auto object-contain"
+        /> -->
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
@@ -163,6 +122,7 @@
 // make imgs expand when clicked
 // deleting from api
 // need endpoints - photo limits, events&locations, filtering by user and other stuff
+// dialog in here, get rid of slot in sidebar
 const photoData = ref<Photo[]>([]);
 const searchInputs = reactive({
   uploadDate: ref({
@@ -174,7 +134,6 @@ const searchInputs = reactive({
   location: "All",
   people: ref<string[]>([]),
 });
-
 const personInput = ref("");
 function removePerson(index: number) {
   searchInputs.people.splice(index, 1);

@@ -4,32 +4,7 @@
       :src="photoData.imageData"
       aria-hidden="true"
       class="btn object-contain w-full h-auto cursor-pointer"
-      @click="openModal"
     />
-    <dialog ref="modalRef" class="modal">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          >
-            <img
-              src="/close-outline.svg"
-              aria-hidden="true"
-              class="h-6 dark:invert select-none"
-              draggable="false"
-            />
-          </button>
-        </form>
-        <img
-          :src="photoData.imageData"
-          aria-hidden="true"
-          class="min-h-[70vh] w-auto mx-auto object-contain"
-        />
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
 
     <div class="dropdown dropdown-end">
       <div
@@ -92,12 +67,6 @@ const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
 }>();
-
-// for modal
-const modalRef = ref<HTMLDialogElement | null>(null);
-function openModal() {
-  modalRef.value?.showModal();
-}
 
 //should i allow selecting and downloading multiple photos at once?
 const download = async (photoData: Photo) => {
