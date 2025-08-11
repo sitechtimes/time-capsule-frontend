@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "lint": "eslint",
+    "typecheck": "vue-tsc --noEmit",
+    "prettier": "prettier . --check",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
