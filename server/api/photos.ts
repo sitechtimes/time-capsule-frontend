@@ -9,7 +9,7 @@ interface Photo {
   author: number;
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(() => {
   return [
     {
       id: 1,

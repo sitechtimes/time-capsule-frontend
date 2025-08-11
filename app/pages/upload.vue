@@ -113,14 +113,14 @@ function readFileAsBase64(file: File): Promise<string> {
         if (base64) {
           resolve(base64);
         } else {
-          reject("Base64 data not found in result");
+          reject(new Error("Base64 data not found in result"));
         }
       } else {
-        reject("File could not be converted to base64");
+        reject(new Error("File could not be converted to base64"));
       }
     };
 
-    reader.onerror = () => reject("FileReader failed");
+    reader.onerror = () => reject(new Error("FileReader failed"));
     reader.readAsDataURL(file);
   });
 }
@@ -163,9 +163,10 @@ async function uploadPhotos() {
         return;
       }
 
+      // eslint-disable-next-line no-console
       console.log("Uploaded:", data);
-    } catch (e) {
-      console.error(`Error reading file for photo ${index + 1}:`, e);
+    } catch (error) {
+      console.error(`Error reading file for photo ${index + 1}:`, error);
     }
   }
 

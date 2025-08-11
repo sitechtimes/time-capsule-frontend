@@ -13,7 +13,6 @@ export const useUserStore = defineStore("userStore", () => {
     });
     if (error) return error;
     user.value = data;
-    console.log(user.value);
   }
   return {
     user,
