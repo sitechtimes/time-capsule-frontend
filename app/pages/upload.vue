@@ -214,7 +214,7 @@ async function uploadPhotos() {
       const { data, error } = await tryRequestEndpoint<Photo>(
         "/upload",
         "POST",
-        sendData
+        sendData,
       );
 
       if (error) {

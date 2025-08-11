@@ -19,7 +19,7 @@ export type Result<T, E = Error> = Success<T> | Failure<E>;
  * doSomething(data); // data can now be used
  */
 async function tryCatch<T, E = Error>(
-  promise: Promise<T>
+  promise: Promise<T>,
 ): Promise<Result<T, E>> {
   try {
     const data = await promise;
@@ -37,7 +37,7 @@ async function tryCatch<T, E = Error>(
 async function requestEndpoint(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<void>;
 /** Makes a request to the given endpoint with the given method and body.
  * @template T - the type of the request's response
@@ -49,12 +49,12 @@ async function requestEndpoint(
 async function requestEndpoint<T>(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<T>;
 async function requestEndpoint<T>(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<T | void> {
   const config = useRuntimeConfig();
   const baseUrl = "/api"; // TODO: use config.public.backend instead of hardcoding the base URL
@@ -83,7 +83,7 @@ async function requestEndpoint<T>(
 export async function tryRequestEndpoint(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<Result<void>>;
 /** **Serves as a wrapper for `tryCatch(requestEndpoint())`.**
  * @template T - the type of the request's response
@@ -95,12 +95,12 @@ export async function tryRequestEndpoint(
 export async function tryRequestEndpoint<T, K = Error>(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<Result<T, K>>;
 export async function tryRequestEndpoint<T, K = Error>(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<Result<T | void, K>> {
   return tryCatch<T, K>(requestEndpoint<T>(endpoint, method, body));
 }

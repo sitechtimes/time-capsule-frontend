@@ -39,7 +39,7 @@ watch(
     } else {
       errorMessage.value = "";
     }
-  }
+  },
 );
 
 const errorMessage = ref("");
