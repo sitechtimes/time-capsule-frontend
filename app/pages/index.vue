@@ -3,7 +3,7 @@
     <SideBar>
       <div class="">
         <div>
-          <label for="graduation-year" class="label dark:invert">
+          <label for="graduation-year" class="label dark:text-neutral-content">
             <span class="label-text dark:invert">Graduation Year</span>
           </label>
           <select
@@ -153,6 +153,7 @@
         @delete="deletePhoto(index)"
       />
     </div>
+    <!-- put dialog here -->
   </div>
 </template>
 
