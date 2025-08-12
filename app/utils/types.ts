@@ -8,7 +8,7 @@ export interface User {
 
 export interface Photo {
   id: number;
-  uploadDate: number;
+  uploadDate: Date;
   graduationYear: number;
   event: string;
   location: string;
