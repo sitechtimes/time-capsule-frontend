@@ -31,6 +31,7 @@ const filteredChoices = computed(() => {
 function selectChoice(choice: string) {
   search.value = choice;
   modelValue.value = choice;
+  open.value = false;
 }
 
 function handleBlur() {
