@@ -3,7 +3,7 @@
     <div class="w-full max-w-2xl space-y-6">
       <h1 class="text-primary mb-4 text-center text-2xl font-semibold">Upload Photos</h1>
 
-      <div v-for="(photo, index) in photos" :key="index" class="card bg-base-100 border-base-300 rounded-lg border p-6 shadow-md">
+      <div v-for="(photo, index) in photos" class="card bg-base-100 border-base-300 rounded-lg border p-6 shadow-md">
         <h2 class="text-secondary mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>
 
         <form class="space-y-4" @submit.prevent>
@@ -28,7 +28,7 @@
           </div>
 
           <div class="mt-2 flex flex-wrap gap-2">
-            <div v-for="(person, personIndex) in photo.people" :key="personIndex" class="bg-base-300 flex items-center gap-2 rounded-full px-3 py-1 text-sm">
+            <div v-for="(person, personIndex) in photo.people" class="bg-base-300 flex items-center gap-2 rounded-full px-3 py-1 text-sm">
               <span>{{ person }}</span>
               <button type="button" @click="removePerson(photo, personIndex)">✕</button>
             </div>
