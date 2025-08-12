@@ -16,7 +16,14 @@
 
           <div>
             <label class="mb-1 block" for="people">People (comma-separated):</label>
-            <input v-model="photo.personInput" type="text" placeholder="Ex: John Doe, ..." class="input bg-base-100 w-full" @input="handlePeopleInput(photo)" />
+            <input
+              v-model="photo.personInput"
+              type="text"
+              placeholder="Ex: John Doe, ..."
+              class="input bg-base-100 w-full"
+              @keydown.enter="handlePeopleInput(photo)"
+              @input="handleCommaInput(photo)"
+            />
           </div>
 
           <div class="mt-2 flex flex-wrap gap-2">
@@ -28,7 +35,7 @@
 
           <div>
             <label class="mb-1 block" for="imageData">Image File:</label>
-            <input ref="fileInput" type="file" accept="image/*" required class="file-input w-full" />
+            <input ref="fileInput" type="file" accept="image/*" class="file-input w-full" required />
             <div v-if="photo.imageData" class="text-success mt-1 text-sm">Image selected</div>
           </div>
 
@@ -85,9 +92,31 @@ function removeForm(index: number) {
 }
 
 function handlePeopleInput(photo: PhotoForm) {
-  const name = photo.personInput;
-  if (name.endsWith(",")) {
-    photo.people.push(name.slice(0, -1).trim());
+  const name = photo.personInput.trim();
+
+  if (!name) return;
+
+  if (photo.people.includes(name)) {
+    photo.personInput = "";
+    return;
+  }
+
+  photo.people.push(name);
+  photo.personInput = "";
+}
+
+function handleCommaInput(photo: PhotoForm) {
+  const input = photo.personInput;
+  if (input.endsWith(",")) {
+    const name = input.slice(0, -1).trim();
+    if (!name) {
+      photo.personInput = "";
+      return;
+    }
+
+    if (!photo.people.includes(name)) {
+      photo.people.push(name);
+    }
     photo.personInput = "";
   }
 }
