@@ -8,18 +8,11 @@
         <form class="space-y-4" @submit.prevent>
           <div>
             <label class="mb-1 block" for="graduationYear">Graduation Year:</label>
-            <input v-model="photo.graduationYear" type="number" required class="input bg-base-100 w-full" />
+            <input v-model="photo.graduationYear" type="number" class="input bg-base-100 w-full" :min="currentYear" required />
           </div>
 
-          <div>
-            <label class="mb-1 block" for="event">Event:</label>
-            <input v-model="photo.event" type="text" required class="input bg-base-100 w-full" />
-          </div>
-
-          <div>
-            <label class="mb-1 block" for="location">Location:</label>
-            <input v-model="photo.location" type="text" required class="input bg-base-100 w-full" />
-          </div>
+          <FilterDropdown v-model="photo.event" category="Event" :choices="events" />
+          <FilterDropdown v-model="photo.location" category="Location" :choices="locations" />
 
           <div>
             <label class="mb-1 block" for="people">People (comma-separated):</label>
@@ -68,12 +61,15 @@ interface PhotoForm {
 
 const userStore = useUserStore();
 const photos = ref<PhotoForm[]>([]);
+const currentYear = new Date().getFullYear();
+const events = ref<string[]>([]);
+const locations = ref<string[]>([]);
 
 function createEmptyPhotoForm(): PhotoForm {
   return {
     graduationYear: new Date().getFullYear(),
-    event: "",
-    location: "",
+    event: "All",
+    location: "All",
     personInput: "",
     people: [],
     imageData: ""
@@ -125,6 +121,17 @@ function readFileAsBase64(file: File): Promise<string> {
   });
 }
 
+async function fetchEvents() {
+  const { data, error } = await tryRequestEndpoint<string[]>("/events");
+  if (error) return error;
+  events.value = data;
+}
+async function fetchLocations() {
+  const { data, error } = await tryRequestEndpoint<string[]>("/locations");
+  if (error) return error;
+  locations.value = data;
+}
+
 async function uploadPhotos() {
   const inputElements = fileInputs.value;
 
@@ -173,6 +180,11 @@ async function uploadPhotos() {
   photos.value = [];
   addNewForm();
 }
+
+onMounted(() => {
+  void fetchEvents();
+  void fetchLocations();
+});
 
 addNewForm();
 </script>
