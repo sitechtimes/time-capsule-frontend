@@ -1,53 +1,53 @@
 <template>
-  <div class="bg-primary flex min-h-screen items-center justify-center p-6">
+  <div class="bg-base-200 text-base-content flex min-h-screen items-center justify-center p-6 pt-20">
     <div class="w-full max-w-2xl space-y-6">
-      <h1 class="text-accent mb-4 text-center text-2xl font-semibold">Upload Photos</h1>
+      <h1 class="text-primary mb-4 text-center text-2xl font-semibold">Upload Photos</h1>
 
-      <div v-for="(photo, index) in photos" class="card bg-neutral shadow-accent rounded-lg p-6 shadow-[6px_6px_12px_rgba(0,0,0,0.2)]">
-        <h2 class="mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>
+      <div v-for="(photo, index) in photos" :key="index" class="card bg-base-100 border-base-300 rounded-lg border p-6 shadow-md">
+        <h2 class="text-secondary mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>
+
         <form class="space-y-4" @submit.prevent>
           <div>
-            <label class="mb-1 block" for="graduationYear">Graduation Year:</label>
-            <input v-model="photo.graduationYear" type="number" class="input bg-base-100 w-full" :min="currentYear" required />
+            <label class="mb-1 block font-medium">Graduation Year:</label>
+            <input v-model="photo.graduationYear" type="number" class="input input-bordered bg-base-100 w-full" :min="currentYear" required />
           </div>
 
-          <FilterDropdown v-model="photo.event" category="Event" :choices="events" />
-          <FilterDropdown v-model="photo.location" category="Location" :choices="locations" />
+          <AutofillDropdown v-model="photo.event" category="Event" :choices="events" />
+          <AutofillDropdown v-model="photo.location" category="Location" :choices="locations" />
 
           <div>
-            <label class="mb-1 block" for="people">People (comma-separated):</label>
+            <label class="mb-1 block font-medium">People (comma-separated or hit enter):</label>
             <input
               v-model="photo.personInput"
               type="text"
               placeholder="Ex: John Doe, ..."
-              class="input bg-base-100 w-full"
+              class="input input-bordered bg-base-100 w-full"
               @keydown.enter="handlePeopleInput(photo)"
               @input="handleCommaInput(photo)"
             />
           </div>
 
           <div class="mt-2 flex flex-wrap gap-2">
-            <div v-for="(person, personIndex) in photo.people" class="flex items-center gap-2 rounded-full bg-neutral-200 px-3 py-1">
-              <span class="text-black">{{ person }}</span>
+            <div v-for="(person, personIndex) in photo.people" :key="personIndex" class="bg-base-300 flex items-center gap-2 rounded-full px-3 py-1 text-sm">
+              <span>{{ person }}</span>
               <button type="button" @click="removePerson(photo, personIndex)">✕</button>
             </div>
           </div>
 
-          <div>
-            <label class="mb-1 block" for="imageData">Image File:</label>
-            <input ref="fileInput" type="file" accept="image/*" class="file-input w-full" required />
-            <div v-if="photo.imageData" class="text-success mt-1 text-sm">Image selected</div>
-          </div>
+          <div v-if="photo.imageName" class="text-success mt-1 text-sm">Selected: {{ photo.imageName }}</div>
 
           <div v-if="photos.length > 1" class="mt-3 text-center">
-            <button type="button" class="btn btn-accent w-full max-w-xs" @click="removeForm(index)">Remove Photo</button>
+            <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="removeForm(index)">Remove Photo</button>
           </div>
         </form>
       </div>
 
-      <button type="button" class="btn btn-secondary w-full" @click="addNewForm">+ Add Another Photo</button>
+      <div>
+        <label class="mb-1 block font-medium" for="multiImageUpload">Select Photos:</label>
+        <input ref="multipleFileInput" type="file" accept="image/*" multiple class="file-input file-input-bordered w-full" @change="handleMultipleFiles" />
+      </div>
 
-      <button type="button" class="btn btn-accent w-full" @click="uploadPhotos">Upload All Photos</button>
+      <button type="button" class="btn btn-primary w-full" @click="uploadPhotos">Upload All Photos</button>
     </div>
   </div>
 </template>
@@ -64,6 +64,7 @@ interface PhotoForm {
   personInput: string;
   people: string[];
   imageData: string;
+  imageName?: string;
 }
 
 const userStore = useUserStore();
@@ -72,19 +73,16 @@ const currentYear = new Date().getFullYear();
 const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
 
-function createEmptyPhotoForm(): PhotoForm {
+function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
   return {
-    graduationYear: new Date().getFullYear(),
-    event: "All",
-    location: "All",
+    graduationYear: currentYear,
+    event: "",
+    location: "",
     personInput: "",
     people: [],
-    imageData: ""
+    imageData: base64,
+    imageName: name
   };
-}
-
-function addNewForm() {
-  photos.value.push(createEmptyPhotoForm());
 }
 
 function removeForm(index: number) {
@@ -93,14 +91,10 @@ function removeForm(index: number) {
 
 function handlePeopleInput(photo: PhotoForm) {
   const name = photo.personInput.trim();
-
-  if (!name) return;
-
-  if (photo.people.includes(name)) {
+  if (!name || photo.people.includes(name)) {
     photo.personInput = "";
     return;
   }
-
   photo.people.push(name);
   photo.personInput = "";
 }
@@ -109,12 +103,7 @@ function handleCommaInput(photo: PhotoForm) {
   const input = photo.personInput;
   if (input.endsWith(",")) {
     const name = input.slice(0, -1).trim();
-    if (!name) {
-      photo.personInput = "";
-      return;
-    }
-
-    if (!photo.people.includes(name)) {
+    if (name && !photo.people.includes(name)) {
       photo.people.push(name);
     }
     photo.personInput = "";
@@ -125,12 +114,11 @@ function removePerson(photo: PhotoForm, index: number) {
   photo.people.splice(index, 1);
 }
 
-const fileInputs = useTemplateRef("fileInput");
+const multiFileInput = useTemplateRef("multipleFileInput");
 
 function readFileAsBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
     reader.onloadend = () => {
       const result = reader.result;
       if (typeof result === "string") {
@@ -144,10 +132,24 @@ function readFileAsBase64(file: File): Promise<string> {
         reject(new Error("File could not be converted to base64"));
       }
     };
-
     reader.onerror = () => reject(new Error("FileReader failed"));
     reader.readAsDataURL(file);
   });
+}
+
+async function handleMultipleFiles() {
+  const input = multiFileInput.value;
+  if (!input?.files) return;
+
+  for (const file of Array.from(input.files)) {
+    try {
+      const base64 = await readFileAsBase64(file);
+      photos.value.push(createPhotoFormWithImage(base64, file.name));
+    } catch (error) {
+      console.error(`Error reading file ${file.name}:`, error);
+    }
+  }
+  input.value = "";
 }
 
 async function fetchEvents() {
@@ -162,58 +164,38 @@ async function fetchLocations() {
 }
 
 async function uploadPhotos() {
-  const inputElements = fileInputs.value;
-
-  if (!inputElements || inputElements.length !== photos.value.length) {
-    alert("Each photo must have an image selected");
-    return;
-  }
-
   for (const [index, photo] of photos.value.entries()) {
-    const input = inputElements[index];
-    const file = input?.files?.[0];
-
-    if (!file) {
-      alert(`No file selected for photo ${index + 1}`);
+    if (!photo.imageData) {
+      alert(`No image data for photo ${index + 1}`);
       return;
     }
 
-    try {
-      const base64String = await readFileAsBase64(file);
-      photo.imageData = base64String;
+    const sendData = {
+      uploadDate: Math.floor(Date.now() / 1000),
+      graduationYear: photo.graduationYear,
+      event: photo.event,
+      location: photo.location,
+      people: photo.people,
+      imageData: photo.imageData,
+      author: userStore.user?.id
+    };
 
-      const sendData = {
-        uploadDate: Math.floor(Date.now() / 1000),
-        graduationYear: photo.graduationYear,
-        event: photo.event,
-        location: photo.location,
-        people: photo.people,
-        imageData: photo.imageData,
-        author: userStore.user?.id
-      };
+    const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
 
-      const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
-
-      if (error) {
-        console.error("Upload error:", error);
-        return;
-      }
-
-      // eslint-disable-next-line no-console
-      console.log("Uploaded:", data);
-    } catch (error) {
-      console.error(`Error reading file for photo ${index + 1}:`, error);
+    if (error) {
+      console.error("Upload error:", error);
+      return;
     }
+
+    // eslint-disable-next-line no-console
+    console.log("Uploaded:", data);
   }
 
   photos.value = [];
-  addNewForm();
 }
 
 onMounted(() => {
   void fetchEvents();
   void fetchLocations();
 });
-
-addNewForm();
 </script>
