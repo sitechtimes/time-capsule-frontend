@@ -64,6 +64,7 @@ export default [
       "prefer-template": "error",
       yoda: "error",
 
+      "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/array-type": "error",
       "default-param-last": "off",
       "@typescript-eslint/default-param-last": "error",
