@@ -2,9 +2,9 @@ interface Photo {
   id: number;
   uploadDate: number;
   graduationYear: number;
-  event: string;
-  location: string;
-  people: string[];
+  event?: string;
+  location?: string;
+  people?: string[];
   imageData: string;
   author: string;
 }

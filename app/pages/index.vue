@@ -47,17 +47,21 @@ interface PhotoResponse {
   imageData: string;
   author: number;
 }
-async function fetchPhotoData() {
-  const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
-  if (error) return error;
-  let newPhotoArray: Photo[] = data.map((item) => ({
+
+function formatPhotoDate(photos: PhotoResponse[]) {
+  return photos.map((item) => ({
     ...item,
     uploadDate: new Date(item.uploadDate * 1000)
   }));
+}
+async function fetchPhotoData() {
+  const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
+  if (error) return error;
+  let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
   } // this shouldn't be in frontend - have to be filtered using endpoints?
-  photoData.value = newPhotoArray;
+  photoData.value.push(...newPhotoArray);
 }
 
 async function deletePhoto(photoIndex: number) {
@@ -84,7 +88,7 @@ const searchInputs = reactive({
   people: ref<string[]>([])
 });
 
-// should be done on backend bc not all photos are fetched
+// should be done on backend bc not all photos are fetched (will be deleted)
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All";
@@ -94,7 +98,6 @@ const filteredPhotoData = computed(() => {
       (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && searchInputs.uploadDate.month === "All") ||
       (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month && searchInputs.uploadDate.year === "All") ||
       (searchInputs.uploadDate.year === "All" && searchInputs.uploadDate.month === "All");
-
     const eventMatch = photo.event.toLowerCase().includes(searchInputs.event.toLowerCase()) || searchInputs.event === "All";
 
     const locationMatch = photo.location.toLowerCase().includes(searchInputs.location.toLowerCase()) || searchInputs.location === "All";
@@ -109,6 +112,8 @@ definePageMeta({
   layout: "dashboard"
 });
 
+const recentlyUploadedPhotos = useUserStore().photos;
+photoData.value.push(...recentlyUploadedPhotos);
 onMounted(fetchPhotoData);
 </script>
 

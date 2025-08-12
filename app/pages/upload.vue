@@ -47,8 +47,11 @@
 
       <button type="button" class="btn btn-secondary w-full" @click="addNewForm">+ Add Another Photo</button>
 
-      <button type="button" class="btn btn-accent w-full" @click="uploadPhotos">Upload All Photos</button>
+      <button type="button" class="btn btn-accent w-full" @click="showConfirmUploadModal = true">Upload All Photos</button>
     </div>
+
+    <ConfirmModal v-if="showConfirmUploadModal" title="Confirm Upload" message="Are you sure you want to upload photos?" @cancel="showConfirmUploadModal = false" @confirm="uploadPhotos" />
+    <ConfirmModal v-if="showConfirmRedirectModal" title="Upload Successful!" message="Redirect to home page?" @cancel="showConfirmRedirectModal = false" @confirm="confirmRedirect" />
   </div>
 </template>
 
@@ -68,6 +71,9 @@ interface PhotoForm {
 
 const userStore = useUserStore();
 const photos = ref<PhotoForm[]>([]);
+const router = useRouter();
+const showConfirmUploadModal = ref(false);
+const showConfirmRedirectModal = ref(false);
 
 function createEmptyPhotoForm(): PhotoForm {
   return {
@@ -109,12 +115,7 @@ function readFileAsBase64(file: File): Promise<string> {
     reader.onloadend = () => {
       const result = reader.result;
       if (typeof result === "string") {
-        const base64 = result.split(",")[1];
-        if (base64) {
-          resolve(base64);
-        } else {
-          reject(new Error("Base64 data not found in result"));
-        }
+        resolve(result);
       } else {
         reject(new Error("File could not be converted to base64"));
       }
@@ -126,6 +127,7 @@ function readFileAsBase64(file: File): Promise<string> {
 }
 
 async function uploadPhotos() {
+  showConfirmUploadModal.value = false;
   const inputElements = fileInputs.value;
 
   if (!inputElements || inputElements.length !== photos.value.length) {
@@ -157,7 +159,7 @@ async function uploadPhotos() {
       };
 
       const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
-
+      const photoData = data?.data; //photoData gives the actual payload (w/o message, statusCode, uploadDate)
       if (error) {
         console.error("Upload error:", error);
         return;
@@ -165,14 +167,31 @@ async function uploadPhotos() {
 
       // eslint-disable-next-line no-console
       console.log("Uploaded:", data);
+      userStore.photos.push({
+        ...photoData,
+        uploadDate: new Date(photoData.uploadDate * 1000)
+      });
     } catch (error) {
       console.error(`Error reading file for photo ${index + 1}:`, error);
     }
   }
 
+  // reset forms
   photos.value = [];
   addNewForm();
+  // reset all file input fields
+  if (Array.isArray(fileInputs.value)) {
+    for (const input of fileInputs.value) {
+      if (input) input.value = "";
+    }
+  }
+  showConfirmRedirectModal.value = true;
 }
 
 addNewForm();
+
+function confirmRedirect() {
+  showConfirmRedirectModal.value = false;
+  router.push("/");
+}
 </script>
