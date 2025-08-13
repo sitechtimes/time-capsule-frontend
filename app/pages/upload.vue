@@ -154,6 +154,7 @@ async function handleMultipleFiles() {
   input.value = "";
 }
 
+// see if this can be imported from another file bc used more than once
 async function fetchEvents() {
   const { data, error } = await tryRequestEndpoint<string[]>("/events");
   if (error) return error;
