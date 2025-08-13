@@ -167,6 +167,10 @@ async function fetchLocations() {
 
 async function uploadPhotos() {
   showConfirmUploadModal.value = false;
+  if (photos.value.length === 0) {
+    alert("No photos added");
+    return;
+  }
   for (const [index, photo] of photos.value.entries()) {
     if (!photo.imageData) {
       alert(`No image data for photo ${index + 1}`);
