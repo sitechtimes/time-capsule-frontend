@@ -54,13 +54,16 @@ function formatPhotoDate(photos: PhotoResponse[]) {
     uploadDate: new Date(item.uploadDate * 1000)
   }));
 }
+
+// BACKEND SHOULD CREATE ENDPOINT THAT EXCLUDES PHOTOS WITH CERTAIN IDS FROM THE RESPONSE --> LIKE THIS: /photos?excludeIds=1,2,3
+// WHY? --> PHOTOS UPLOADED FROM CURRENT SESSION ARE SAVED LOCALLY, SO NO NEED TO FETCH
 async function fetchPhotoData() {
   const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
-  } // this shouldn't be in frontend - have to be filtered using endpoints?
+  } // this shouldn't be in frontend - filter by user with endpoint
   photoData.value.push(...newPhotoArray);
 }
 
@@ -88,7 +91,7 @@ const searchInputs = reactive({
   people: ref<string[]>([])
 });
 
-// should be done on backend bc not all photos are fetched (will be deleted)
+// filtering should be done on backend bc not all photos are fetched when page loads (will be deleted)
 const filteredPhotoData = computed(() => {
   return photoData.value.filter((photo) => {
     const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All";
