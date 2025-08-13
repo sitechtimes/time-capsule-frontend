@@ -103,9 +103,10 @@ function handleCommaInput(photo: PhotoForm) {
   const input = photo.personInput;
   if (input.endsWith(",")) {
     const name = input.slice(0, -1).trim();
-    if (name && !photo.people.includes(name)) {
-      photo.people.push(name);
+    if (!name || photo.people.includes(name)) {
+      photo.personInput = "";
     }
+    photo.people.push(name);
     photo.personInput = "";
   }
 }
