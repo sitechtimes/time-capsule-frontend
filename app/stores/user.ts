@@ -1,7 +1,7 @@
 export const useUserStore = defineStore("userStore", () => {
   const user = ref<User>();
   const theme = ref("light");
-  const photos = ref<Photo[]>([])
+  const photos = ref<Photo[]>([]);
 
   function signOut() {
     user.value = undefined;
