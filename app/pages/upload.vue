@@ -47,8 +47,11 @@
         <input ref="multipleFileInput" type="file" accept="image/*" multiple class="file-input file-input-bordered w-full" @change="handleMultipleFiles" />
       </div>
 
-      <button type="button" class="btn btn-primary w-full" @click="uploadPhotos">Upload All Photos</button>
+      <button type="button" class="btn btn-accent w-full" @click="showConfirmUploadModal = true">Upload All Photos</button>
     </div>
+
+    <ConfirmModal v-if="showConfirmUploadModal" title="Confirm Upload" message="Are you sure you want to upload photos?" @cancel="showConfirmUploadModal = false" @confirm="uploadPhotos" />
+    <ConfirmModal v-if="showConfirmRedirectModal" title="Upload Successful!" message="Redirect to home page?" @cancel="showConfirmRedirectModal = false" @confirm="confirmRedirect" />
   </div>
 </template>
 
@@ -69,6 +72,9 @@ interface PhotoForm {
 
 const userStore = useUserStore();
 const photos = ref<PhotoForm[]>([]);
+const router = useRouter();
+const showConfirmUploadModal = ref(false);
+const showConfirmRedirectModal = ref(false);
 const currentYear = new Date().getFullYear();
 const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
@@ -123,12 +129,7 @@ function readFileAsBase64(file: File): Promise<string> {
     reader.onloadend = () => {
       const result = reader.result;
       if (typeof result === "string") {
-        const base64 = result.split(",")[1];
-        if (base64) {
-          resolve(base64);
-        } else {
-          reject(new Error("Base64 data not found in result"));
-        }
+        resolve(result);
       } else {
         reject(new Error("File could not be converted to base64"));
       }
@@ -153,6 +154,7 @@ async function handleMultipleFiles() {
   input.value = "";
 }
 
+// see if this can be imported from another file bc used more than once
 async function fetchEvents() {
   const { data, error } = await tryRequestEndpoint<string[]>("/events");
   if (error) return error;
@@ -165,6 +167,11 @@ async function fetchLocations() {
 }
 
 async function uploadPhotos() {
+  showConfirmUploadModal.value = false;
+  if (photos.value.length === 0) {
+    alert("No photos added");
+    return;
+  }
   for (const [index, photo] of photos.value.entries()) {
     if (!photo.imageData) {
       alert(`No image data for photo ${index + 1}`);
@@ -183,6 +190,7 @@ async function uploadPhotos() {
 
     const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
 
+    const photoData = data?.data; //photoData gives the actual payload (w/o message, statusCode, uploadDate)
     if (error) {
       console.error("Upload error:", error);
       return;
@@ -190,9 +198,29 @@ async function uploadPhotos() {
 
     // eslint-disable-next-line no-console
     console.log("Uploaded:", data);
+    userStore.photos.push({
+      ...photoData,
+      uploadDate: new Date(photoData.uploadDate * 1000)
+    });
+
+    // eslint-disable-next-line no-console
+    console.log("Uploaded:", data);
   }
 
+  // reset forms
   photos.value = [];
+  // reset all file input fields
+  if (Array.isArray(multiFileInput.value)) {
+    for (const input of multiFileInput.value) {
+      if (input) input.value = "";
+    }
+  }
+  showConfirmRedirectModal.value = true;
+}
+
+function confirmRedirect() {
+  showConfirmRedirectModal.value = false;
+  router.push("/");
 }
 
 onMounted(() => {
