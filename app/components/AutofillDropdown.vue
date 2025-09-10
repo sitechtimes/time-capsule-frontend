@@ -15,11 +15,11 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  category: "Event" | "Location";
-  choices: string[];
+  category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
+  choices: string[] | number[];
 }>();
 
-const modelValue = defineModel<string>();
+const modelValue = defineModel<string | number>();
 const search = ref(modelValue.value ?? "");
 const open = ref(false);
 
