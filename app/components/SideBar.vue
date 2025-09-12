@@ -9,19 +9,19 @@
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
       <div class="">
-        <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" :include-all-option="true" />
+        <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" :include-all-option="false" />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" :include-all-option="true" class="flex-1" />
-            <AutofillDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" :include-all-option="true" class="flex-1" />
+            <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
+            <AutofillDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" include-all-option class="flex-1" />
           </div>
         </div>
 
-        <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" :include-all-option="true" />
-        <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" :include-all-option="true" />
+        <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" include-all-option />
+        <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
         <div>
           <label for="people" class="label dark:invert">
@@ -48,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { factory } from "typescript";
+
 const isCollapsed = ref(false);
 
 const searchInputs = defineModel("searchInputs", {

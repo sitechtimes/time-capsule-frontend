@@ -1,8 +1,8 @@
 <template>
   <div class="flex min-h-screen">
-    <SideBar v-model:searchInputs="searchInputs" />
+    <SideBar v-model:search-inputs="searchInputs" />
     <div class="flex w-full flex-row flex-wrap">
-      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photoData="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
+      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
       <dialog ref="modalRef" class="modal">
         <div class="modal-box">
           <form method="dialog">
