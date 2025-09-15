@@ -8,7 +8,7 @@
     <div v-if="!isCollapsed" class="p-4">
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
-      <div class="">
+      <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" :include-all-option="false" />
         <div>
           <label class="label dark:invert">
@@ -19,7 +19,6 @@
             <AutofillDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" include-all-option class="flex-1" />
           </div>
         </div>
-
         <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" include-all-option />
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
@@ -48,8 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import { factory } from "typescript";
-
 const isCollapsed = ref(false);
 
 const searchInputs = defineModel("searchInputs", {
