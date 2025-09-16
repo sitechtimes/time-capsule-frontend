@@ -92,6 +92,8 @@ function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
 }
 
 function removeForm(index: number) {
+  const confirmed = window.confirm("Are you sure you want to delete this photo?");
+  if (!confirmed) return;
   photos.value.splice(index, 1);
 }
 

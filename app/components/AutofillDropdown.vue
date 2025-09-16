@@ -1,12 +1,12 @@
 <template>
-  <div class="relative">
-    <label :for="category" class="mb-1 block">
-      <span class="mb-1 block">{{ category }}</span>
+  <div>
+    <label :for="category" class="label dark:text-neutral-content">
+      <span class="label-text dark:invert">{{ category }}</span>
     </label>
     <input v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="open = true" @blur="handleBlur" @input="onInput" />
 
     <ul v-if="open && filteredChoices.length" class="bg-base-100 absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border shadow">
-      <li v-if="includeAllOption" value="All" @click="selectChoice('All')">All</li>
+      <li v-if="includeAllOption" value="All" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice('All')">All</li>
       <li v-for="choice in filteredChoices" :key="choice" :value="choice" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice(choice)">
         {{ choice }}
       </li>
