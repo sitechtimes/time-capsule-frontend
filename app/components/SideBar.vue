@@ -9,7 +9,7 @@
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
       <div>
-        <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" :include-all-option="false" />
+        <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>

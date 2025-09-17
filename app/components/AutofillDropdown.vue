@@ -26,7 +26,7 @@ const search = ref(modelValue.value ?? "");
 const open = ref(false);
 
 const filteredChoices = computed(() => {
-  if (!search.value) return props.choices;
+  if (!search.value || search.value === "All") return props.choices;
 
   return props.choices.filter((choice) => {
     if (typeof choice === "string" && typeof search.value === "string") {
