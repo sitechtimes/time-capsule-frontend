@@ -22,8 +22,8 @@
               type="text"
               placeholder="Ex: John Doe, ..."
               class="input input-bordered bg-base-100 w-full"
-              @keydown.enter="handlePeopleInput(photo)"
-              @input="handleCommaInput(photo)"
+              @keydown.enter="handlePeopleEnterInput(photo)"
+              @input="handlePeopleCommaInput(photo)"
             />
           </div>
 
@@ -97,7 +97,7 @@ function removeForm(index: number) {
   photos.value.splice(index, 1);
 }
 
-function handlePeopleInput(photo: PhotoForm) {
+function handlePeopleEnterInput(photo: PhotoForm) {
   const name = photo.personInput.trim();
   if (!name || photo.people.includes(name)) {
     photo.personInput = "";
@@ -107,7 +107,7 @@ function handlePeopleInput(photo: PhotoForm) {
   photo.personInput = "";
 }
 
-function handleCommaInput(photo: PhotoForm) {
+function handlePeopleCommaInput(photo: PhotoForm) {
   const input = photo.personInput;
   if (input.endsWith(",")) {
     const name = input.slice(0, -1).trim();
