@@ -26,7 +26,7 @@
           <label for="people" class="label dark:invert">
             <span class="label-text">People (comma-separated)</span>
           </label>
-          <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleInput" />
+          <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleCommaInput(searchInputs)" />
         </div>
 
         <div class="flex items-end">
@@ -83,6 +83,18 @@ function handlePeopleInput() {
   const name = personInput.value;
   if (name.endsWith(",")) {
     searchInputs.value.people.push(name.slice(0, -1).trim());
+    personInput.value = "";
+  }
+}
+function handlePeopleCommaInput(photo: Photo) {
+  const input = personInput.value;
+  if (input.endsWith(",")) {
+    const name = input.slice(0, -1).trim();
+    if (!name || photo.people.includes(name)) {
+      personInput.value = "";
+      return;
+    }
+    photo.people.push(name);
     personInput.value = "";
   }
 }

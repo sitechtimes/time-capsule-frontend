@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+// DO NOT DELETE FILE; MAY NEED LATER
 defineProps<{
   category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
   choices: string[] | number[];
