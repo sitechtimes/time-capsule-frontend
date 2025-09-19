@@ -31,8 +31,8 @@
             type="text"
             placeholder="Ex: John Doe, Jane Smith"
             class="input input-bordered w-full"
-            @keydown.enter="handlePeopleEnterInput(searchInputs)"
-            @input="handlePeopleCommaInput(searchInputs)"
+            @keydown.enter="handlePeopleInput(searchInputs, 'enter')"
+            @input="handlePeopleInput(searchInputs, 'comma')"
           />
         </div>
 
@@ -86,25 +86,26 @@ function removePerson(index: number) {
   searchInputs.value.people.splice(index, 1);
 }
 
-function handlePeopleEnterInput(photo: Photo) {
-  const name = personInput.value.trim();
-  if (!name || photo.people.includes(name)) {
-    personInput.value = "";
-    return;
-  }
-  photo.people.push(name);
-  personInput.value = "";
-}
-function handlePeopleCommaInput(photo: Photo) {
+function handlePeopleInput(photo: Photo, type: "enter" | "comma") {
   const input = personInput.value;
-  if (input.endsWith(",")) {
-    const name = input.slice(0, -1).trim();
+  if (type === "enter") {
+    const name = input.trim();
     if (!name || photo.people.includes(name)) {
       personInput.value = "";
       return;
     }
     photo.people.push(name);
     personInput.value = "";
+  } else if (type === "comma") {
+    if (input.endsWith(",")) {
+      const name = input.slice(0, -1).trim();
+      if (!name || photo.people.includes(name)) {
+        personInput.value = "";
+        return;
+      }
+      photo.people.push(name);
+      personInput.value = "";
+    }
   }
 }
 
