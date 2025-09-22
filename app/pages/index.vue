@@ -27,7 +27,6 @@
 // deleting from api
 // need endpoints - photo limits, events&locations, filtering by user and other stuff
 // are users able to see other photos?
-const test = ref("test");
 const events = ref<string[]>([]);
 async function fetchEvents() {
   const { data, error } = await tryRequestEndpoint<string[]>("/events");

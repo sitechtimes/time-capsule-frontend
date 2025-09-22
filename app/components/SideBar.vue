@@ -86,27 +86,19 @@ function removePerson(index: number) {
   searchInputs.value.people.splice(index, 1);
 }
 
-function handlePeopleInput(photo: Photo, type: "enter" | "comma") {
-  const input = personInput.value;
-  if (type === "enter") {
-    const name = input.trim();
-    if (!name || photo.people.includes(name)) {
-      personInput.value = "";
-      return;
-    }
-    photo.people.push(name);
-    personInput.value = "";
-  } else if (type === "comma") {
-    if (input.endsWith(",")) {
-      const name = input.slice(0, -1).trim();
-      if (!name || photo.people.includes(name)) {
-        personInput.value = "";
-        return;
-      }
-      photo.people.push(name);
-      personInput.value = "";
-    }
+function handlePeopleInput(photo: Photo, action: "enter" | "comma") {
+  let input = personInput.value;
+  if (action === "comma") {
+    if (!input.endsWith(",")) return;
+    input = input.slice(0, -1);
   }
+  const name = input.trim();
+  if (!name || photo.people.includes(name)) {
+    personInput.value = "";
+    return;
+  }
+  photo.people.push(name);
+  personInput.value = "";
 }
 
 const events = ref<string[]>([]);
