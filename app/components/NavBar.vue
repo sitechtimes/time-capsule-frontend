@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="navbar-center">
-      <a class="btn btn-ghost text-xl">TimeCapsule</a>
+      <img src="/logo.svg" alt="logo" class="scale-85" />
     </div>
     <div class="navbar-end">
       <button type="button" class="btn btn-ghost btn-circle">
