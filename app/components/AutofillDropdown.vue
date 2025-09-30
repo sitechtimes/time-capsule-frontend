@@ -7,7 +7,7 @@
 
     <ul v-if="open && filteredChoices.length" class="bg-base-100 absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border shadow">
       <li v-if="includeAllOption" value="All" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice('All')">All</li>
-      <li v-for="choice in filteredChoices" :key="choice" :value="choice" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice(choice)">
+      <li v-for="choice in filteredChoices" :key="choice" :value="choice" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice(choice.toString())">
         {{ choice }}
       </li>
     </ul>
@@ -21,7 +21,7 @@ const props = defineProps<{
   includeAllOption: boolean;
 }>();
 
-const modelValue = defineModel<string | number>();
+const modelValue = defineModel<string>();
 const search = ref(modelValue.value ?? "");
 const open = ref(false);
 
@@ -29,14 +29,14 @@ const filteredChoices = computed(() => {
   if (!search.value || search.value === "All") return props.choices;
 
   return props.choices.filter((choice) => {
-    if (typeof choice === "string" && typeof search.value === "string") {
+    if (typeof choice === "string") {
       return choice.toLowerCase().includes(search.value.toLowerCase());
     }
-    return choice.toString().includes(search.value.toString());
+    return choice.toString().includes(search.value);
   });
 });
 
-function selectChoice(choice: string | number) {
+function selectChoice(choice: string) {
   search.value = choice;
   modelValue.value = choice;
   open.value = false;
