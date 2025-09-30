@@ -12,8 +12,8 @@
             <input v-model="photo.graduationYear" type="number" class="input input-bordered bg-base-100 w-full" :min="currentYear" required />
           </div>
 
-          <AutofillDropdown v-model="photo.event" category="Event" :choices="events" />
-          <AutofillDropdown v-model="photo.location" category="Location" :choices="locations" />
+          <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" />
+          <AutofillDropdown v-model="photo.location" category="Location" :choices="locations" :include-all-option="false" />
 
           <div>
             <label class="mb-1 block font-medium">People (comma-separated or hit enter):</label>
@@ -22,8 +22,8 @@
               type="text"
               placeholder="Ex: John Doe, ..."
               class="input input-bordered bg-base-100 w-full"
-              @keydown.enter="handlePeopleInput(photo)"
-              @input="handleCommaInput(photo)"
+              @keydown.enter="handlePeopleInput(photo, 'enter')"
+              @input="handlePeopleInput(photo, 'comma')"
             />
           </div>
 
@@ -92,29 +92,24 @@ function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
 }
 
 function removeForm(index: number) {
+  const confirmed = window.confirm("Are you sure you want to delete this photo?");
+  if (!confirmed) return;
   photos.value.splice(index, 1);
 }
 
-function handlePeopleInput(photo: PhotoForm) {
-  const name = photo.personInput.trim();
+function handlePeopleInput(photo: PhotoForm, action: "enter" | "comma") {
+  let input = photo.personInput;
+  if (action === "comma") {
+    if (!input.endsWith(",")) return;
+    input = input.slice(0, -1);
+  }
+  const name = input.trim();
   if (!name || photo.people.includes(name)) {
     photo.personInput = "";
     return;
   }
   photo.people.push(name);
   photo.personInput = "";
-}
-
-function handleCommaInput(photo: PhotoForm) {
-  const input = photo.personInput;
-  if (input.endsWith(",")) {
-    const name = input.slice(0, -1).trim();
-    if (!name || photo.people.includes(name)) {
-      photo.personInput = "";
-    }
-    photo.people.push(name);
-    photo.personInput = "";
-  }
 }
 
 function removePerson(photo: PhotoForm, index: number) {
