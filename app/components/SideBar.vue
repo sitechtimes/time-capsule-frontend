@@ -8,26 +8,32 @@
     <div v-if="!isCollapsed" class="p-4">
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
-      <div class="">
-        <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
+      <div>
+        <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" class="flex-1" />
-            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" class="flex-1" />
+            <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
+            <AutofillDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" include-all-option class="flex-1" />
           </div>
         </div>
-
-        <FilterDropdown v-model="searchInputs.event" category="Event" :choices="events" />
-        <FilterDropdown v-model="searchInputs.location" category="Location" :choices="locations" />
+        <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" include-all-option />
+        <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
         <div>
           <label for="people" class="label dark:invert">
             <span class="label-text">People (comma-separated)</span>
           </label>
-          <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleInput" />
+          <input
+            v-model="personInput"
+            type="text"
+            placeholder="Ex: John Doe, Jane Smith"
+            class="input input-bordered w-full"
+            @keydown.enter="handlePeopleInput(searchInputs, 'enter')"
+            @input="handlePeopleInput(searchInputs, 'comma')"
+          />
         </div>
 
         <div class="flex items-end">
@@ -80,12 +86,19 @@ function removePerson(index: number) {
   searchInputs.value.people.splice(index, 1);
 }
 
-function handlePeopleInput() {
-  const name = personInput.value;
-  if (name.endsWith(",")) {
-    searchInputs.value.people.push(name.slice(0, -1).trim());
-    personInput.value = "";
+function handlePeopleInput(photo: Photo, action: "enter" | "comma") {
+  let input = personInput.value;
+  if (action === "comma") {
+    if (!input.endsWith(",")) return;
+    input = input.slice(0, -1);
   }
+  const name = input.trim();
+  if (!name || photo.people.includes(name)) {
+    personInput.value = "";
+    return;
+  }
+  photo.people.push(name);
+  personInput.value = "";
 }
 
 const events = ref<string[]>([]);
