@@ -11,6 +11,11 @@
 </template>
 
 <script setup lang="ts">
+function handleClick() {
+  messageOpened.value = true;
+  //message= message
+}
+
 // only allow open if role is admin
 const messageOpened = ref(false);
 definePageMeta({
