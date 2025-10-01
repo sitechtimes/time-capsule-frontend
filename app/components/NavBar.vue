@@ -16,7 +16,8 @@
       </div>
     </div>
     <div class="navbar-center">
-      <img src="/logo.svg" alt="logo" class="scale-85" />
+      <img v-if="store.theme === 'light'" src="/logo.svg" alt="logo" class="scale-85" />
+      <img v-if="store.theme === 'dark'" src="/logodark.svg" alt="logo" class="scale-85" />
     </div>
     <div class="navbar-end">
       <button type="button" class="btn btn-ghost btn-circle">

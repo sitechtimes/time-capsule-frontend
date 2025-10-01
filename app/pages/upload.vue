@@ -47,7 +47,7 @@
         <input ref="multipleFileInput" type="file" accept="image/*" multiple class="file-input file-input-bordered w-full" @change="handleMultipleFiles" />
       </div>
 
-      <button type="button" class="btn btn-accent w-full" @click="showConfirmUploadModal = true">Upload All Photos</button>
+      <button type="button" class="btn btn-secondary w-full hover:bg-[#3E69A3]" @click="showConfirmUploadModal = true">Upload All Photos</button>
     </div>
 
     <ConfirmModal v-if="showConfirmUploadModal" title="Confirm Upload" message="Are you sure you want to upload photos?" @cancel="showConfirmUploadModal = false" @confirm="uploadPhotos" />

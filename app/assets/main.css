@@ -15,7 +15,7 @@
   --color-secondary: #779FD3;
   --color-secondary-content: oklch(1.000 0.000 0.0);
   --color-accent: #c3c5c5;
-  --color-accent-content: oklch(0.824 0.000 0.0);
+  --color-accent-content: oklch(1.000 0.000 0.0);
   --color-neutral: #e5e5e5;
   --color-neutral-content: oklch(92% 0.004 286.32);
   --color-info: #5d6a7b;
@@ -29,8 +29,8 @@
   --radius-selector: 1rem;
   --radius-field: 2rem;
   --radius-box: 2rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.3125rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.28125rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
@@ -42,8 +42,8 @@
   prefersdark: false;
   color-scheme: "dark";
   --color-base-100: #3d3d3d;
-  --color-base-200: oklch(23.26% 0.014 253.1);
-  --color-base-300: oklch(21.15% 0.012 254.09);
+  --color-base-200: #3d3d3d;
+  --color-base-300: oklch(23.26% 0.014 253.1);
   --color-base-content: #e5e5e5;
   --color-primary: #4d4d4d;
   --color-primary-content: #e5e5e5;
@@ -64,8 +64,8 @@
   --radius-selector: 1rem;
   --radius-field: 2rem;
   --radius-box: 2rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.3125rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.28125rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
