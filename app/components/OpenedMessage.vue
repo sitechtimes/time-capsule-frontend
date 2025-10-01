@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ message }}</p>
+    <p>{{ name }}</p>
     <!-- photos here - have approve& report for each, or maybe they are automatically approved unless reported -->
     <button class="btn">approve all</button>
     <button class="btn">report all</button>
@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  message: string;
+  name: string;
 }>();
 </script>
 
