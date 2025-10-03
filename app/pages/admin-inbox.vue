@@ -5,7 +5,7 @@
     </div>
     <div class="flex-1 overflow-y-auto p-6">
       <div v-if="!messageOpened" class="flex h-full items-center justify-center text-lg text-gray-500">Click on a message to open it</div>
-      <OpenedMessage v-else :name="selectedMessage?.student?." @close="messageOpened = false" />
+      <OpenedMessage v-else :name="selectedMessage?.student" @close="messageOpened = false" />
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ async function fetchPhotoData() {
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
-  } // this shouldn't be in frontend - filter by user with endpoint
+  }
   photoData.value.push(...newPhotoArray);
 }
 interface PhotoResponse {

@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 // fetch all students
-const students = ref();
+const students = ref<User[]>([]);
 </script>
 
 <style scoped></style>
