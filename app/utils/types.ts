@@ -6,6 +6,11 @@ export interface User {
   userType: "supervisor" | "user";
 }
 
+export interface Student extends User {
+  userType: 'user';
+  graduationYear: number
+}
+
 export interface Photo {
   id: number;
   uploadDate: Date;
