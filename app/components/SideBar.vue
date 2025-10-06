@@ -5,7 +5,7 @@
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="p-4">
+    <div v-if="!isCollapsed" class="p-4 outline-[#e5e5e5]">
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
 
       <div class="">

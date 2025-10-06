@@ -3,8 +3,8 @@
     <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
 
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
-        <img src="/info.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s tooltip" data-tip="Info">
+        <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
       </div>
       <div class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm">
         <div class="card-body">
