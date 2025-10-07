@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="card">
     <h3>{{ student.firstName }} {{ student.lastName }}</h3>
     <p>{{ student.graduationYear }} ({{ currentGrade }}th)</p>
     <p>last uploaded:</p>
