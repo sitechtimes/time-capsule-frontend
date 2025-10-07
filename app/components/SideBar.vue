@@ -6,7 +6,10 @@
     </button>
 
     <div v-if="!isCollapsed" class="p-4 outline-[#e5e5e5]">
-      <h2 class="mb-6 text-xl font-bold">Filters</h2>
+      <div class="header">
+        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="scale-85" alt="header" />
+        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="scale-85" alt="header" />
+      </div>
 
       <div class="">
         <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
@@ -49,6 +52,7 @@
 
 <script setup lang="ts">
 const isCollapsed = ref(false);
+const store = useUserStore();
 
 const searchInputs = defineModel("searchInputs", {
   type: Object,
@@ -118,3 +122,11 @@ onMounted(() => {
   void fetchLocations();
 });
 </script>
+<style scoped>
+label {
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  letter-spacing: 10;
+  text-transform: uppercase;
+}
+</style>
