@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- when clicked, open page for individual student info -->
-    <StudentCard v-for="student in students" :student="student">
-      <NuxtPage :to="`/admin-student-view/${student.id}`" />
-    </StudentCard>
+    <StudentCard v-for="student in students" :student="student" />
   </div>
 </template>
 

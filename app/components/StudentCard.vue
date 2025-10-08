@@ -4,6 +4,7 @@
     <p>{{ student.graduationYear }} ({{ currentGrade }}th)</p>
     <p>last uploaded:</p>
     <p>total uploads:</p>
+    <NuxtLink :to="`/admin-student-view/${student.id}`">See More</NuxtLink>
   </div>
 </template>
 
