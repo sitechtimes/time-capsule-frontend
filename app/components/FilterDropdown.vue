@@ -1,7 +1,7 @@
 <template>
   <div>
     <label :for="category" class="label dark:text-neutral-content">
-      <span class="label-text dark:invert">{{ category }}</span>
+      <span class="label-text m-2 text-base dark:invert">{{ category }}</span>
     </label>
     <select v-model="modelValue" class="select select-bordered w-full" :name="category">
       <option value="All">All</option>
@@ -21,4 +21,9 @@ defineProps<{
 const modelValue = defineModel<string | number>();
 </script>
 
-<style scoped></style>
+<style scoped>
+.label {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+</style>

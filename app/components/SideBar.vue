@@ -6,15 +6,15 @@
     </button>
 
     <div v-if="!isCollapsed" class="p-4 outline-[#e5e5e5]">
-      <div class="header">
-        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="scale-85" alt="header" />
-        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="scale-85" alt="header" />
+      <div class="header content-center">
+        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 content-center" alt="header" />
+        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 content-center" alt="header" />
       </div>
 
       <div class="">
-        <FilterDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
+        <FilterDropdown class="gradfilter" v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
         <div>
-          <label class="label dark:invert">
+          <label class="label m-2 dark:invert">
             <span class="label-text">Upload Date</span>
           </label>
           <div class="flex gap-4">
@@ -27,14 +27,15 @@
         <FilterDropdown v-model="searchInputs.location" category="Location" :choices="locations" />
 
         <div>
-          <label for="people" class="label dark:invert">
-            <span class="label-text">People (comma-separated)</span>
+          <label for="people" class="label m-3 dark:invert">
+            <span class="label-text">People</span>
+            <span class="comma label-text text-sm font-normal lowercase italic">(comma-separated)</span>
           </label>
           <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleInput" />
         </div>
 
         <div class="flex items-end">
-          <button type="reset" class="btn btn-outline w-full" @click="resetInputs">Reset</button>
+          <button type="reset" class="btn btn-outline m-2 w-full" @click="resetInputs">Reset</button>
         </div>
       </div>
 
@@ -128,5 +129,7 @@ label {
   font-weight: 600;
   letter-spacing: 10;
   text-transform: uppercase;
+}
+.gradfilter.category {
 }
 </style>
