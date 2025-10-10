@@ -5,46 +5,46 @@
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="p-4 outline-[#e5e5e5]">
+    <div v-if="!isCollapsed" class="w-full content-center p-4 outline-[#e5e5e5]">
       <div class="header content-center">
         <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 content-center" alt="header" />
         <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 content-center" alt="header" />
       </div>
 
-      <div class="">
-        <FilterDropdown class="gradfilter" v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
+      <div class="content-center">
+        <FilterDropdown class="gradfilter w-full content-center" v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" />
         <div>
-          <label class="label m-2 dark:invert">
-            <span class="label-text">Upload Date</span>
+          <label class="label m-2 w-full dark:invert">
+            <span class="label-text w-full content-center">Upload Date</span>
           </label>
           <div class="flex gap-4">
-            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" class="flex-1" />
-            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" class="flex-1" />
+            <FilterDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" class="w-full flex-1 content-center" />
+            <FilterDropdown v-model="searchInputs.uploadDate.year" category="Year" :choices="uploadYears" class="w-full flex-1 content-center" />
           </div>
         </div>
 
-        <FilterDropdown v-model="searchInputs.event" category="Event" :choices="events" />
-        <FilterDropdown v-model="searchInputs.location" category="Location" :choices="locations" />
+        <FilterDropdown v-model="searchInputs.event" category="Event" :choices="events" class="w-full content-center" />
+        <FilterDropdown v-model="searchInputs.location" category="Location" :choices="locations" class="w-full content-center" />
 
         <div>
-          <label for="people" class="label m-3 dark:invert">
+          <label for="people" class="label m-3 w-full content-center dark:invert">
             <span class="label-text">People</span>
             <span class="comma label-text text-sm font-normal lowercase italic">(comma-separated)</span>
           </label>
           <input v-model="personInput" type="text" placeholder="Ex: John Doe, Jane Smith" class="input input-bordered w-full" @input="handlePeopleInput" />
         </div>
 
-        <div class="flex items-end">
-          <button type="reset" class="btn btn-outline m-2 w-full" @click="resetInputs">Reset</button>
+        <div class="mb-2 flex flex-wrap gap-2">
+          <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
+            {{ person }}
+            <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
+              <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="mb-6 flex flex-wrap gap-2">
-        <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral gap-2">
-          {{ person }}
-          <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
-            <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
-          </button>
+        <div class="w-full content-center items-end">
+          <button type="reset" class="btn btn-outline m-2 w-full content-center" @click="resetInputs">Reset</button>
         </div>
       </div>
     </div>
