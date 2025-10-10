@@ -4,7 +4,8 @@
     <p>{{ student.graduationYear }} ({{ currentGrade }}th)</p>
     <p>last uploaded:</p>
     <p>total uploads:</p>
-    <NuxtLink :to="`/admin-student-view/${student.id}`">See More</NuxtLink>
+    <!-- is there a way to use nuxtlink w this -->
+    <button @click="openStudentPage(student)">See More</button>
   </div>
 </template>
 
@@ -13,18 +14,14 @@
 const props = defineProps<{
   student: Student;
 }>();
-const currentYear = new Date().getFullYear();
-function getStudentGrade(graduationYear: number): number | string {
-  const grade = 12 - (graduationYear - currentYear);
-  if (grade < 1) {
-    return "Student has not started school yet";
-  } else if (grade > 12) {
-    return "Student has already graduated";
-  }
-  return grade;
-}
+
 const currentGrade = ref<number | string>();
 currentGrade.value = getStudentGrade(props.student.graduationYear);
+
+const router = useRouter();
+function openStudentPage(student: Student) {
+  void router.push(`/admin-student-view/${student.id}`);
+}
 </script>
 
 <style scoped></style>

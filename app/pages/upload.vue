@@ -215,7 +215,7 @@ async function uploadPhotos() {
 
 function confirmRedirect() {
   showConfirmRedirectModal.value = false;
-  router.push("/");
+  void router.push("/");
 }
 
 onMounted(() => {
