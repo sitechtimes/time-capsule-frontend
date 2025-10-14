@@ -130,6 +130,4 @@ label {
   letter-spacing: 10;
   text-transform: uppercase;
 }
-.gradfilter.category {
-}
 </style>

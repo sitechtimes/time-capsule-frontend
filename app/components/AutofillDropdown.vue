@@ -6,7 +6,7 @@
     <input v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="open = true" @blur="handleBlur" @input="onInput" />
 
     <ul v-if="open && filteredChoices.length" class="bg-base-100 absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border shadow">
-      <li v-for="choice in filteredChoices" :key="choice" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice(choice)">
+      <li v-for="choice in filteredChoices" :key="choice" class="hover:bg-neutral cursor-pointer px-4 py-2 text-[#5D6A7B]" @click="selectChoice(choice)">
         {{ choice }}
       </li>
     </ul>
