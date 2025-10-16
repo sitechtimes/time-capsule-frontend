@@ -30,5 +30,5 @@ export interface Photo {
   location: string;
   people: string[];
   imageData: string;
-  author: User["firstName"]+User["lastName"];
+  author: string;
 }

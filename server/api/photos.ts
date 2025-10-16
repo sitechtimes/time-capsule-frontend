@@ -9,7 +9,7 @@ interface Photo {
   author: string;
 }
 // should have endpoints that filter by user id & other filters & limit # of photos; frontend doesn't load all photos at once
-// /api/photos should return authors' name instead of id
+// /api/photos should return authors' name instead of id (upload author as id, but fetch as name string)
 export default defineEventHandler(() => {
   return [
     {

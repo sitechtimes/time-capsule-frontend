@@ -12,6 +12,12 @@
           <li>
             <NuxtLink to="/upload" class="text-md font-semibold">Upload</NuxtLink>
           </li>
+          <li v-if="store.user?.userType === 'supervisor'">
+            <NuxtLink to="/admin-inbox" class="text-md font-semibold">Inbox</NuxtLink>
+          </li>
+          <li v-if="store.user?.userType === 'supervisor'">
+            <NuxtLink to="/admin-student-view" class="text-md font-semibold">Students</NuxtLink>
+          </li>
         </ul>
       </div>
     </div>
