@@ -6,16 +6,16 @@
     </button>
 
     <div v-if="!isCollapsed" class="align-center w-full items-center p-4 outline-[#e5e5e5]">
-      <div class="header content-center">
+      <div class="header w-full content-center items-center">
         <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 items-center" alt="header" />
         <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 items-center" alt="header" />
       </div>
 
-      <div>
+      <div class="w-full items-center">
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label m-2 w-full dark:invert">
-            <span class="label-text w-full text-center">Upload Date</span>
+            <span class="label-text w-full text-center text-xl tracking-widest text-black">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -25,7 +25,7 @@
         <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" include-all-option />
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
-        <div>
+        <div class="w-full content-center items-center">
           <label for="people" class="label m-3 w-full content-center dark:invert">
             <span class="label-text">People</span>
             <span class="comma label-text text-sm font-normal lowercase italic">(comma-separated)</span>
@@ -40,7 +40,7 @@
           />
         </div>
 
-        <div class="mb-2 flex flex-wrap gap-2">
+        <div class="mb-2 flex w-full flex-wrap content-center items-center gap-2">
           <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
             {{ person }}
             <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
@@ -50,7 +50,7 @@
         </div>
 
         <div class="items-end">
-          <button type="reset" class="btn btn-outline content-left m-2 w-full" @click="resetInputs">Reset</button>
+          <button type="reset" class="btn btn-outline-[#779FD3] content-left m-2 w-full bg-[#779FD3] font-normal text-white" @click="resetInputs">Reset</button>
         </div>
       </div>
     </div>
