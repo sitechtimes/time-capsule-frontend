@@ -21,7 +21,15 @@
       </div>
 
       <div class="card-actions tooltip justify-end" data-tip="Delete">
-        <img src="/trash-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="emit('delete')" />
+        <img v-if="store.theme === 'light'" src="/trash-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none" draggable="false" @click="emit('delete')" />
+        <img
+          v-if="store.theme === 'dark'"
+          src="/trash-outline.svg"
+          aria-hidden="true"
+          class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
+          draggable="false"
+          @click="emit('delete')"
+        />
       </div>
       <div class="card-actions tooltip justify-end" data-tip="Download">
         <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
@@ -31,6 +39,8 @@
 </template>
 
 <script setup lang="ts">
+const store = useUserStore();
+
 defineProps<{
   photoData: Photo;
 }>();

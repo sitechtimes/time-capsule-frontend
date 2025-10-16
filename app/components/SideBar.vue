@@ -5,17 +5,17 @@
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="w-full content-center p-4 outline-[#e5e5e5]">
+    <div v-if="!isCollapsed" class="align-center w-full items-center p-4 outline-[#e5e5e5]">
       <div class="header content-center">
-        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 content-center" alt="header" />
-        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 content-center" alt="header" />
+        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 items-center" alt="header" />
+        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 items-center" alt="header" />
       </div>
 
       <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label m-2 w-full dark:invert">
-            <span class="label-text w-full content-center">Upload Date</span>
+            <span class="label-text w-full text-center">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -49,8 +49,8 @@
           </div>
         </div>
 
-        <div class="w-full content-center items-end">
-          <button type="reset" class="btn btn-outline m-2 w-full content-center" @click="resetInputs">Reset</button>
+        <div class="items-end">
+          <button type="reset" class="btn btn-outline content-left m-2 w-full" @click="resetInputs">Reset</button>
         </div>
       </div>
     </div>
