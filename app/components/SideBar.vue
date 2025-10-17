@@ -14,8 +14,8 @@
       <div class="w-full items-center">
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
-          <label class="label m-2 w-full dark:invert">
-            <span class="label-text w-full text-center text-xl tracking-widest text-black">Upload Date</span>
+          <label class="label w-full dark:invert">
+            <span class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -26,9 +26,9 @@
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
         <div class="w-full content-center items-center">
-          <label for="people" class="label m-3 w-full content-center dark:invert">
-            <span class="label-text">People</span>
-            <span class="comma label-text text-sm font-normal lowercase italic">(comma-separated)</span>
+          <label for="people" class="flex w-full flex-col items-center dark:invert">
+            <span class="mt-4 mb-0 text-xl leading-none tracking-wider text-black">People</span>
+            <span class="mt-0 mb-4 text-sm leading-none font-normal text-gray-500 lowercase italic">(comma-separated)</span>
           </label>
           <input
             v-model="personInput"
@@ -49,8 +49,8 @@
           </div>
         </div>
 
-        <div class="items-end">
-          <button type="reset" class="btn btn-outline-[#779FD3] content-left m-2 w-full bg-[#779FD3] font-normal text-white" @click="resetInputs">Reset</button>
+        <div class="contents-center w-full items-center text-center">
+          <button type="reset" class="btn btn-outline-[#779FD3] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD]" @click="resetInputs">Reset</button>
         </div>
       </div>
     </div>
