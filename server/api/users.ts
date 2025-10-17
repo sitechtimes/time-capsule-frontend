@@ -20,8 +20,7 @@ export default defineEventHandler(()=> {
         email: "tinaz@gmail.com",
         firstName: "Tina",
         lastName: "Zhen",
-        userType: "user",
-        graduationYear: 2027
+        userType: "supervisor"
     },{
         id: 2,
         email: "elisac@gmail.com",
@@ -29,5 +28,5 @@ export default defineEventHandler(()=> {
         lastName: "Chen",
         userType: 'user',
         graduationYear: 2026
-}] satisfies Student[]
+}] satisfies User[] |Student[]
 })
