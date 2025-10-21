@@ -1,7 +1,7 @@
 <template>
   <div class="bg-base-200 text-base-content flex min-h-screen items-center justify-center p-6 pt-20">
     <div class="w-full max-w-2xl space-y-6">
-      <h1 class="text-primary mb-4 text-center text-2xl font-semibold">Upload Photos</h1>
+      <h1 class="mb-4 text-center text-2xl font-semibold tracking-wider text-[##5D6A7B]">Upload Photos</h1>
 
       <div v-for="(photo, index) in photos" class="card bg-base-100 border-base-300 rounded-lg border p-6 shadow-md">
         <h2 class="text-secondary mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>

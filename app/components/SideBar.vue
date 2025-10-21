@@ -15,7 +15,8 @@
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label w-full dark:invert">
-            <span class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
+            <span v-if="store.theme === 'light'" class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
+            <span v-if="store.theme === 'dark'" class="label-text m-4 w-full text-center text-xl tracking-widest text-[#e5e5e5]">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -27,8 +28,10 @@
 
         <div class="w-full content-center items-center">
           <label for="people" class="flex w-full flex-col items-center dark:invert">
-            <span class="mt-4 mb-0 text-xl leading-none tracking-wider text-black">People</span>
-            <span class="mt-0 mb-4 text-sm leading-none font-normal text-gray-500 lowercase italic">(comma-separated)</span>
+            <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-wider text-black">People</span>
+            <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-wider text-[#e5e5e5]">People</span>
+            <span v-if="store.theme === 'light'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic">(comma-separated)</span>
+            <span v-if="store.theme === 'dark'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#c3c5c5] lowercase italic">(comma-separated)</span>
           </label>
           <input
             v-model="personInput"
@@ -43,14 +46,19 @@
         <div class="mb-2 flex w-full flex-wrap content-center items-center gap-2">
           <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
             {{ person }}
-            <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
+            <button type="button" class="btn btn-xs btn-hover:[##567CAD] bg-neutral" @click="removePerson(index)">
               <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
             </button>
           </div>
         </div>
 
         <div class="contents-center w-full items-center text-center">
-          <button type="reset" class="btn btn-outline-[#779FD3] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD]" @click="resetInputs">Reset</button>
+          <button v-if="store.theme === 'light'" type="reset" class="btn btn-outline-[#779FD3] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD]" @click="resetInputs">
+            Reset
+          </button>
+          <button v-if="store.theme === 'dark'" type="reset" class="btn btn-outline-[#254D82] mb-2 w-full bg-[#254D82] text-center font-normal text-white hover:bg-[#183F72]" @click="resetInputs">
+            Reset
+          </button>
         </div>
       </div>
     </div>
