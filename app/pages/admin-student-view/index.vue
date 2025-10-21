@@ -13,6 +13,10 @@ async function fetchStudents() {
   students.value = data;
 }
 
+definePageMeta({
+  layout: "dashboard"
+});
+
 onMounted(() => {
   void fetchStudents();
 });

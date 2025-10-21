@@ -50,10 +50,11 @@ function onInput() {
   modelValue.value = search.value;
 }
 
-/* function handleInputFocus() {
+function handleInputFocus() {
   open.value = true;
   search.value = "";
-} */
+  modelValue.value = "";
+}
 
 watch(
   () => modelValue.value,

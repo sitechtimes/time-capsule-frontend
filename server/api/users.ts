@@ -14,13 +14,15 @@ interface Student extends User {
     graduationYear: number
 }
 
+//below is only for students (user and student will be made separate)
 export default defineEventHandler(()=> {
     return [{
         id: 1,
         email: "tinaz@gmail.com",
         firstName: "Tina",
         lastName: "Zhen",
-        userType: "supervisor"
+        userType: "user",
+        graduationYear: 2027
     },{
         id: 2,
         email: "elisac@gmail.com",
@@ -28,5 +30,5 @@ export default defineEventHandler(()=> {
         lastName: "Chen",
         userType: 'user',
         graduationYear: 2026
-}] satisfies User[] |Student[]
+}] satisfies Student[]
 })
