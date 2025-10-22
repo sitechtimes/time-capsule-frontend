@@ -13,4 +13,7 @@ const store = useStudentStore();
 const student = store.student;
 const currentGrade = ref<number | string>();
 if (student) currentGrade.value = getStudentGrade(student.graduationYear);
+definePageMeta({
+  layout: "dashboard"
+});
 </script>

@@ -1,17 +1,31 @@
 <template>
   <div>
-    <StudentCard v-for="student in students" :student="student" />
+    <label class="input">
+      <img src="/search-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+      <input type="search" required placeholder="Search by name" />
+    </label>
+    <div>
+      <StudentCard v-for="student in filteredStudents" :student="student" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // update this to fetch only students w/ /users/students endpoint or something
+const searchInput = ref<string>("");
 const students = ref<Student[]>([]);
 async function fetchStudents() {
   const { data, error } = await tryRequestEndpoint<Student[]>("/users");
   if (error) return error;
   students.value = data;
 }
+
+const filteredStudents = computed(() => {
+  return (
+    searchInput.value === "" ||
+    students.value.filter((student) => student.firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || student.lastName.toLowerCase().includes(searchInput.value.toLowerCase()))
+  );
+});
 
 definePageMeta({
   layout: "dashboard"
