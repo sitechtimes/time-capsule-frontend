@@ -1,8 +1,11 @@
 <template>
   <div class="flex min-h-screen">
     <SideBar v-model:search-inputs="searchInputs" />
-    <div class="flex w-full flex-row flex-wrap">
+
+    <!-- Scrollable photo container -->
+    <div class="flex max-h-screen w-full flex-row flex-wrap overflow-y-auto p-4">
       <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
+
       <dialog ref="modalRef" class="modal">
         <div class="modal-box">
           <form method="dialog">
