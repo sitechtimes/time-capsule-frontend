@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card w-[20%]">
     <h3>{{ student.firstName }} {{ student.lastName }}</h3>
     <p>{{ student.graduationYear }} ({{ currentGrade }}th)</p>
     <p>last uploaded:</p>
@@ -30,7 +30,7 @@ async function fetchIndividualStudentUploads(name: string) {
 const router = useRouter();
 async function openStudentPage(student: Student) {
   store.student = student;
-  const name = student.firstName + student.lastName;
+  const name = `${student.firstName} ${student.lastName}`;
   await fetchIndividualStudentUploads(name);
   void router.push(`/admin-student-view/${student.id}`);
 }

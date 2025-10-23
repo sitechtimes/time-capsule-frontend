@@ -2,9 +2,9 @@
   <div>
     <label class="input">
       <img src="/search-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
-      <input type="search" required placeholder="Search by name" />
+      <input type="search" placeholder="Search by name" v-model="searchInput" />
     </label>
-    <div>
+    <div class="flex flex-row">
       <StudentCard v-for="student in filteredStudents" :student="student" />
     </div>
   </div>
@@ -21,10 +21,8 @@ async function fetchStudents() {
 }
 
 const filteredStudents = computed(() => {
-  return (
-    searchInput.value === "" ||
-    students.value.filter((student) => student.firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || student.lastName.toLowerCase().includes(searchInput.value.toLowerCase()))
-  );
+  if (searchInput.value === "") return students.value;
+  return students.value.filter((student) => student.firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || student.lastName.toLowerCase().includes(searchInput.value.toLowerCase()));
 });
 
 definePageMeta({
