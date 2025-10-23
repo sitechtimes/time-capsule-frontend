@@ -1,11 +1,11 @@
 <template>
-  <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-200 sticky right-0 min-h-screen transition-all duration-300">
+  <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-100 sticky right-0 min-h-screen border-[#c3c5c5] transition-all duration-300">
     <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert" @click="isCollapsed = !isCollapsed">
       <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="align-center w-full items-center p-4 outline-[#e5e5e5]">
+    <div v-if="!isCollapsed" class="align-center w-full items-center border-[#c3c5c5] p-4">
       <div class="header w-full content-center items-center">
         <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 items-center" alt="header" />
         <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 items-center" alt="header" />
