@@ -30,5 +30,12 @@ export default defineEventHandler(()=> {
         lastName: "Chen",
         userType: 'user',
         graduationYear: 2026
+},{
+        id: 3,
+        email: "agnes@gmail.com",
+        firstName: "Agnes",
+        lastName: "Lin",
+        userType: 'user',
+        graduationYear: 2023
 }] satisfies Student[]
 })

@@ -1,11 +1,11 @@
 <template>
+  <NuxtLink to="/admin-student-view">← Back to All Students</NuxtLink>
   <p v-if="!store.student">No student selected</p>
-  <div class="card">
-    <NuxtLink to="/admin-student-view">← Back to All Students</NuxtLink>
+  <div v-else class="card">
     <h1>Student Details</h1>
     <p>ID: {{ $route.params.id }}</p>
     <p>Name: {{ student?.firstName }} {{ student?.lastName }}</p>
-    <p>{{ student?.graduationYear }} ({{ currentGrade }}th)</p>
+    <p>{{ student?.graduationYear }} ({{ currentGrade }})</p>
     <p v-if="!store.studentUploads">This student has no uploads</p>
     <div v-else class="flex flex-row">
       <PhotoCard v-for="photo in studentUploads" :photo-data="photo" />

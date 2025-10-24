@@ -1,4 +1,4 @@
-export function getStudentGrade(graduationYear: number): number | string {
+export function getStudentGrade(graduationYear: number): string {
   const currentYear = new Date().getFullYear();
   const grade = 12 - (graduationYear - currentYear);
   if (grade < 1) {
@@ -6,5 +6,5 @@ export function getStudentGrade(graduationYear: number): number | string {
   } else if (grade > 12) {
     return "Student has already graduated";
   }
-  return grade;
+  return `${grade}th`;
 }
