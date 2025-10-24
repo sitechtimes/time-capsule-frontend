@@ -1,11 +1,11 @@
 <template>
   <div class="card card-side bg-base-100 m-4 h-[40%] w-full shadow-sm sm:w-[48%] md:w-[30%] lg:w-[26%] xl:w-[21%]">
     <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
-
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s tooltip" data-tip="Info">
         <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
       </div>
+
       <div class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm">
         <div class="card-body">
           <p>
@@ -13,8 +13,7 @@
             Graduation Year: {{ photoData.graduationYear }} <br />
             Event: {{ photoData.event }} <br />
             Location: {{ photoData.location }} <br />
-            People: {{ photoData.people.join(", ") }}
-            <br />
+            People: {{ photoData.people.join(", ") }} <br />
             Author: {{ photoData.author }}
           </p>
         </div>
@@ -35,10 +34,20 @@
         <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
       </div>
     </div>
+
+    <dialog ref="modalRef" class="modal">
+      <div class="modal-box bg-base-100 max-w-5xl p-0 shadow-lg">
+        <img :src="photoData.imageData" class="h-auto w-full rounded-lg object-contain" alt="Expanded image" />
+      </div>
+      <form method="dialog" class="modal-backdrop bg-opacity-70 bg-black">
+        <button>close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from "@/stores/user"; // adjust if needed
 const store = useUserStore();
 
 defineProps<{
@@ -46,7 +55,6 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];
   clicked: [void];
 }>();
@@ -72,4 +80,9 @@ const download = async (photoData: Photo) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.modal::backdrop,
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7); /* dark, transparent overlay */
+}
+</style>
