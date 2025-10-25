@@ -6,7 +6,7 @@
     <p>ID: {{ $route.params.id }}</p>
     <p>Name: {{ student?.firstName }} {{ student?.lastName }}</p>
     <p>{{ student?.graduationYear }} ({{ currentGrade }})</p>
-    <p v-if="!store.studentUploads?.length">This student has no uploads</p>
+    <p v-if="!store.studentUploads || store.studentUploads.length === 0">This student has no uploads</p>
     <div v-else class="flex flex-row">
       <PhotoCard v-for="photo in studentUploads" :photo-data="photo" />
     </div>

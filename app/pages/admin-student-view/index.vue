@@ -29,6 +29,8 @@ definePageMeta({
   layout: "dashboard"
 });
 
+//fetch runs everytime "back to all students" is clicked in child page - should it?
+// but saving in store causes problems bc data could change in server
 onMounted(() => {
   void fetchStudents();
 });
