@@ -28,8 +28,8 @@
 
         <div class="w-full content-center items-center">
           <label for="people" class="flex w-full flex-col items-center dark:invert">
-            <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-wider text-black">People</span>
-            <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-wider text-[#e5e5e5]">People</span>
+            <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-black">People</span>
+            <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-[#e5e5e5]">People</span>
             <span v-if="store.theme === 'light'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic">(comma-separated)</span>
             <span v-if="store.theme === 'dark'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#c3c5c5] lowercase italic">(comma-separated)</span>
           </label>

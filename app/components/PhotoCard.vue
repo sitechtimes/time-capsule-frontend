@@ -1,53 +1,60 @@
 <template>
-  <div class="card card-side bg-base-100 m-4 h-[40%] w-full shadow-sm sm:w-[48%] md:w-[30%] lg:w-[26%] xl:w-[21%]">
-    <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s tooltip" data-tip="Info">
-        <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
-      </div>
-
-      <div class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm">
-        <div class="card-body">
-          <p>
-            Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
-            Graduation Year: {{ photoData.graduationYear }} <br />
-            Event: {{ photoData.event }} <br />
-            Location: {{ photoData.location }} <br />
-            People: {{ photoData.people.join(", ") }} <br />
-            Author: {{ photoData.author }}
-          </p>
-        </div>
-      </div>
-
-      <div class="card-actions tooltip justify-end" data-tip="Delete">
-        <img v-if="store.theme === 'light'" src="/trash-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none" draggable="false" @click="emit('delete')" />
+  <div class="card card-side bg-base-100 relative m-4 h-[380px] w-full shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-lg sm:w-[48%] md:w-[30%] lg:w-[26%] xl:w-[21%]">
+    <div class="flex h-full w-full flex-col">
+      <div class="bg-base-200 flex flex-grow items-center justify-center overflow-hidden">
         <img
-          v-if="store.theme === 'dark'"
-          src="/trash-outline.svg"
+          :src="photoData.imageData"
           aria-hidden="true"
-          class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
-          draggable="false"
-          @click="emit('delete')"
+          class="h-full max-h-[300px] w-full cursor-pointer object-contain transition-transform duration-300 hover:scale-105"
+          @click="emit('clicked')"
         />
       </div>
-      <div class="card-actions tooltip justify-end" data-tip="Download">
-        <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
+
+      <div class="border-base-300 bg-base-100 flex items-center justify-around border-t py-2">
+        <div class="dropdown dropdown-top">
+          <label tabindex="0" class="btn btn-circle btn-ghost btn-sm tooltip" data-tip="Info">
+            <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
+          </label>
+          <div tabindex="0" class="card card-sm dropdown-content bg-base-100 rounded-box z-50 w-64 shadow-sm">
+            <div class="card-body text-sm">
+              <p>
+                Upload Date: {{ photoData.uploadDate.toLocaleString() }}<br />
+                Graduation Year: {{ photoData.graduationYear }}<br />
+                Event: {{ photoData.event }}<br />
+                Location: {{ photoData.location }}<br />
+                People: {{ photoData.people.join(", ") }}<br />
+                Author: {{ photoData.author }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tooltip" data-tip="Download">
+          <button class="btn btn-circle btn-ghost btn-sm" @click="download(photoData)">
+            <img src="/download-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
+          </button>
+        </div>
+
+        <div class="tooltip" data-tip="Delete">
+          <button class="btn btn-circle btn-ghost btn-sm" @click="emit('delete')">
+            <img v-if="store.theme === 'light'" src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
+            <img v-else src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
+          </button>
+        </div>
+
+        <div class="tooltip" data-tip="Edit">
+          <button class="btn btn-circle btn-ghost btn-sm">
+            <img v-if="store.theme === 'light'" src="/edit.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
+            <img v-else src="/edit.svg" aria-hidden="true" class="h-5 stroke-white opacity-60 select-none" draggable="false" />
+          </button>
+        </div>
       </div>
     </div>
-
-    <dialog ref="modalRef" class="modal">
-      <div class="modal-box bg-base-100 max-w-5xl p-0 shadow-lg">
-        <img :src="photoData.imageData" class="h-auto w-full rounded-lg object-contain" alt="Expanded image" />
-      </div>
-      <form method="dialog" class="modal-backdrop bg-opacity-70 bg-black">
-        <button>close</button>
-      </form>
-    </dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user"; // adjust if needed
+import { useUserStore } from "@/stores/user";
 const store = useUserStore();
 
 defineProps<{
@@ -63,16 +70,13 @@ const download = async (photoData: Photo) => {
   try {
     const base64Data = photoData.imageData;
     const fileName = `${photoData.event} at ${photoData.location} - Uploaded ${photoData.uploadDate.toLocaleString()}`;
-
     const res = await fetch(base64Data);
     const blob = await res.blob();
-
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = fileName;
     a.click();
-
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error("Failed to download image:", error);
@@ -83,6 +87,6 @@ const download = async (photoData: Photo) => {
 <style scoped>
 .modal::backdrop,
 .modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.7); /* dark, transparent overlay */
+  background-color: rgba(0, 0, 0, 0.7);
 }
 </style>
