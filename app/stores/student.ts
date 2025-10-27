@@ -2,8 +2,7 @@
 
 export const useStudentStore = defineStore("studentStore", () => {
   const student = ref<Student>();
-  const studentUploads = ref<Photo[]>()
   return {
-    student, studentUploads
+    student
   };
 });
