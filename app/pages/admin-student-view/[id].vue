@@ -6,9 +6,9 @@
     <p>ID: {{ $route.params.id }}</p>
     <p>Name: {{ student?.firstName }} {{ student?.lastName }}</p>
     <p>{{ student?.graduationYear }} ({{ currentGrade }})</p>
-    <p>Total Uploads:</p>
-    <p>Most recent upload:</p>
-    <p v-if="!store.studentUploads || store.studentUploads.length === 0">This student has no uploads</p>
+    <p>Total Uploads: {{ studentUploads?.length }}</p>
+    <p>Most recent upload: {{ mostRecentUploadDate }}</p>
+    <p v-if="!studentUploads || studentUploads.length === 0">No uploads to show</p>
     <div v-else class="flex flex-row">
       <PhotoCard v-for="photo in studentUploads" :photo-data="photo" />
     </div>
@@ -56,7 +56,7 @@ function getMostRecentUploadDate(photos: Photo[]): string {
   return mostRecentPhoto.uploadDate.toLocaleDateString();
 }
 onMounted(async () => {
-  const name = `${props.student.firstName} ${props.student.lastName}`;
+  const name = `${student?.firstName} ${student?.lastName}`;
   await fetchIndividualStudentUploads(name);
   mostRecentUploadDate.value = studentUploads.value?.length ? getMostRecentUploadDate(studentUploads.value) : "N/A - student has no uploads";
 });

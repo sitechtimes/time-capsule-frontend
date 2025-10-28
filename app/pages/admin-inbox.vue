@@ -4,8 +4,8 @@
       <InboxMessage v-for="message in messages" :name="message.student" :photo-count="message.photos.length" time="test" @clicked="handleClick(message)" />
     </div>
     <div class="flex-1 overflow-y-auto p-6">
-      <div v-if="!messageOpened" class="flex h-full items-center justify-center text-lg text-gray-500">Click on a message to open it</div>
-      <OpenedMessage v-else :name="selectedMessage?.student" @close="messageOpened = false" />
+      <div v-if="!selectedMessage || !messageOpened" class="flex h-full items-center justify-center text-lg text-gray-500">Click on a message to open it</div>
+      <OpenedMessage v-else :name="selectedMessage?.student" :photos="photoData" @close="messageOpened = false" />
     </div>
   </div>
 </template>
@@ -64,6 +64,11 @@ const messages = ref<Message[]>([
   {
     student: "test",
     time: "test",
+    photos: photoData.value
+  },
+  {
+    student: "test test",
+    time: "Friday 10:10",
     photos: photoData.value
   }
 ]);
