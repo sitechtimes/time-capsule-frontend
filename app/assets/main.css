@@ -8,7 +8,7 @@
   color-scheme: "light";
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(100% 0 0);
-  --color-base-300: oklch(100% 0 0);
+  --color-base-300: #e5e5e5;
   --color-base-content: oklch(21% 0.006 285.885);
   --color-primary: oklch(98% 0.003 247.858);
   --color-primary-content: #5D6A7B;
@@ -39,11 +39,11 @@
 @plugin "daisyui/theme" {
   name: "dark";
   default: false;
-  prefersdark: false;
+  prefersdark: true;
   color-scheme: "dark";
   --color-base-100: #2E2E39;
   --color-base-200: #383947;
-  --color-base-300: oklch(23.26% 0.014 253.1);
+  --color-base-300: #444557;
   --color-base-content: #e5e5e5;
   --color-primary: #4d4d4d;
   --color-primary-content: #e5e5e5;

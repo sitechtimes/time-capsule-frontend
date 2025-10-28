@@ -5,7 +5,7 @@
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="align-center w-full items-center border-[#c3c5c5] p-4">
+    <div v-if="!isCollapsed" class="align-center border-base-300 dark:border-base-300 w-full items-center border-r p-4 shadow-sm">
       <div class="header w-full content-center items-center">
         <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 items-center" alt="header" />
         <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 items-center" alt="header" />

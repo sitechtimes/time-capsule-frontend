@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-base-100 shadow-sm">
+  <div class="navbar bg-base-100 dark:border-base-200 border-base-300 border-b shadow-sm">
     <div class="navbar-start">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -29,8 +29,8 @@
       </button>
       <button type="button" class="btn btn-ghost btn-circle">
         <div class="indicator">
-          <img src="/notify.svg" aria-hidden="true" class="h-5 w-5" draggable="false" />
-          <span class="badge badge-xs badge-secondary indicator-item absolute inline-flex h-full w-full animate-pulse rounded-full opacity-75"></span>
+          <img src="/notify.svg" aria-hidden="true" class="h-5 w-5 dark:invert" draggable="false" />
+          <span class="badge badge-xs badge-secondary indicator-item absolute inline-flex h-full w-full animate-pulse rounded-full opacity-100"></span>
         </div>
       </button>
     </div>

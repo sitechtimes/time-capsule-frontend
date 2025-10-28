@@ -1,7 +1,7 @@
 <template>
   <div>
-    <label :for="category" class="label dark:text-neutral-content">
-      <span class="label-text dark:invert">{{ category }}</span>
+    <label :for="category" class="label dark:text-[#e5e5e5]">
+      <span class="label-text dark:text-[#e5e5e5]">{{ category }}</span>
     </label>
     <input v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="open = true" @blur="handleBlur" @input="onInput" />
 
