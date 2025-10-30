@@ -20,6 +20,11 @@
         </form>
       </dialog>
     </div>
+    <div class="uploadnav">
+      <button class="btn btn-circle btn-ghost btn-sm">
+        <img src="/add-circle.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
+      </button>
+    </div>
   </div>
 </template>
 
