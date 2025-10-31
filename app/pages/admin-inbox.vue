@@ -40,6 +40,7 @@ function formatPhotoDate(photos: PhotoResponse[]) {
 const photoData = ref<Photo[]>([]);
 const user = useUserStore().user;
 async function fetchPhotoData() {
+  // will be fetched from diff endpoint w/ ONLY pending photos
   const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);

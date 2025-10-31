@@ -2,7 +2,9 @@
   <div>
     <p>{{ name }}</p>
     <!-- have approve& report for each, or automatically approved unless reported? -->
-    <PhotoCard v-for="photo in photos" :photo-data="photo" />
+    <p>{{ photos.length }} uploads:</p>
+    <div class="flex flex-row"><PhotoCard v-for="photo in photos" :photo-data="photo" /></div>
+
     <button class="btn">approve all</button>
     <button class="btn">report all</button>
     <button class="btn" @click="$emit('close')">close</button>
@@ -15,7 +17,9 @@ defineProps<{
   photos: Photo[];
 }>();
 
-function approve() {}
+function approve() {
+  //backend stuff
+}
 
 function reportAll() {}
 </script>
