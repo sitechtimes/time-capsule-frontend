@@ -7,8 +7,8 @@ export interface User {
 }
 
 export interface Student extends User {
-  userType: 'user';
-  graduationYear: number
+  userType: "user";
+  graduationYear: number;
 }
 
 export interface PhotoUpload {
