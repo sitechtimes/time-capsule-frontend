@@ -17,6 +17,7 @@ import StudentCard from "~/components/StudentCard.vue";
 const searchInput = ref<string>("");
 const students = ref<Student[]>([]);
 async function fetchStudents() {
+  //backend - have limit for # of users fetched
   const { data, error } = await tryRequestEndpoint<Student[]>("/users");
   if (error) return error;
   students.value = data;
