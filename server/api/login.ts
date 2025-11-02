@@ -21,11 +21,18 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // return {
+  //   id: 1,
+  //   email: body.email,
+  //   firstName: "John",
+  //   lastName: "Doe",
+  //   userType: "supervisor"
+  // } satisfies LoginResponse;
   return {
     id: 1,
     email: body.email,
-    firstName: "John",
-    lastName: "Doe",
-    userType: "supervisor"
+    firstName: "Tina",
+    lastName: "Zhen",
+    userType: "user"
   } satisfies LoginResponse;
 });

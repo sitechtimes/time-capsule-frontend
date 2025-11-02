@@ -3,19 +3,7 @@
     <SideBar v-model:search-inputs="searchInputs" />
     <div class="flex w-full flex-row flex-wrap">
       <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
-      <dialog ref="modalRef" class="modal">
-        <div class="modal-box">
-          <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
-              <img src="/close-outline.svg" aria-hidden="true" class="h-6 select-none dark:invert" draggable="false" />
-            </button>
-          </form>
-          <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto min-h-[70vh] w-auto object-contain" />
-        </div>
-        <form method="dialog" class="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+      <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
     </div>
   </div>
 </template>
@@ -32,9 +20,10 @@ const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
 
 const modalRef = useTemplateRef("modalRef");
+
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
-  modalRef.value?.showModal();
+  modalRef.value?.openModal();
 }
 
 interface PhotoResponse {
@@ -62,7 +51,7 @@ async function fetchPhotoData() {
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
-    newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.firstName + user.lastName);
+    newPhotoArray = newPhotoArray.filter((photo) => photo.author === `${user.firstName} ${user.lastName}`);
   } // this shouldn't be in frontend - filter by user with endpoint
   photoData.value.push(...newPhotoArray);
 }

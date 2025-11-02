@@ -10,19 +10,7 @@
       <button class="btn" @click="reportAll(photos)">Report All</button>
       <button class="btn" @click="$emit('close')">Close</button>
     </div>
-    <dialog ref="modalRef" class="modal">
-      <div class="modal-box">
-        <form method="dialog">
-          <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
-            <img src="/close-outline.svg" aria-hidden="true" class="h-6 select-none dark:invert" draggable="false" />
-          </button>
-        </form>
-        <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto min-h-[70vh] w-auto object-contain" />
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>Close</button>
-      </form>
-    </dialog>
+    <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
   </div>
 </template>
 
@@ -54,11 +42,10 @@ function reportAll(photos) {
 }
 
 const selectedPhoto = ref<Photo>();
-
 const modalRef = useTemplateRef("modalRef");
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
-  modalRef.value?.showModal();
+  modalRef.value?.openModal();
 }
 </script>
 

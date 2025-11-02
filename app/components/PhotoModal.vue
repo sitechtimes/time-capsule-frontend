@@ -16,7 +16,13 @@
 
 <script setup lang="ts">
 defineProps<{
-  selectedPhoto: Photo;
+  selectedPhoto: Photo | undefined;
 }>();
 const modalRef = useTemplateRef("modalRef");
+
+function openModal() {
+  modalRef.value?.showModal();
+}
+
+defineExpose({ openModal });
 </script>
