@@ -1,11 +1,11 @@
 <template>
   <div class="flex h-screen overflow-hidden">
     <div class="w-80 overflow-y-auto border-r border-gray-300 bg-gray-100">
-      <InboxMessage v-for="message in messages" :name="message.student" :photo-count="message.photos.length" time="test" @clicked="handleClick(message)" />
+      <InboxMessage v-for="message in messages" :name="message.studentName" :photo-count="message.photos.length" :date="message.date" @clicked="handleClick(message)" />
     </div>
     <div class="flex-1 overflow-y-auto p-6">
       <div v-if="!selectedMessage || !messageOpened" class="flex h-full items-center justify-center text-lg text-gray-500">Click on a message to open it</div>
-      <OpenedMessage v-else :name="selectedMessage?.student" :photos="photoData" @close="messageOpened = false" />
+      <OpenedMessage v-else :name="selectedMessage?.studentName" :photos="photoData" @close="messageOpened = false" />
     </div>
   </div>
 </template>
@@ -25,8 +25,8 @@ definePageMeta({
 
 // fetch messages
 interface Message {
-  student: string;
-  time: string;
+  studentName: string;
+  date: string;
   photos: Photo[];
 }
 
@@ -63,13 +63,13 @@ onMounted(fetchPhotoData);
 
 const messages = ref<Message[]>([
   {
-    student: "test",
-    time: "test",
+    studentName: "Test Name",
+    date: "test",
     photos: photoData.value
   },
   {
-    student: "test test",
-    time: "Friday 10:10",
+    studentName: "Name Test",
+    date: "Friday 10:10",
     photos: photoData.value
   }
 ]);

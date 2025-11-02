@@ -1,17 +1,49 @@
 <template>
-  <NuxtLink to="/admin-student-view">← Back to All Students</NuxtLink>
-  <p v-if="!store.student">No student selected</p>
-  <div v-else>
-    <h1>Student Details</h1>
-    <p>ID: {{ $route.params.id }}</p>
-    <p>Name: {{ student?.firstName }} {{ student?.lastName }}</p>
-    <p>{{ student?.graduationYear }} ({{ currentGrade }})</p>
-    <p>Total Uploads: {{ studentUploads?.length }}</p>
-    <p>Most recent upload: {{ mostRecentUploadDate }}</p>
-    <p v-if="!studentUploads || studentUploads.length === 0">No uploads to show</p>
-    <div v-else class="flex flex-row">
-      <PhotoCard v-for="photo in studentUploads" :photo-data="photo" />
+  <div class="mx-auto max-w-6xl p-6">
+    <NuxtLink to="/admin-student-view" class="btn btn-ghost text-primary hover:bg-base-200 mb-4 flex w-fit items-center gap-2"> ← Back to All Students </NuxtLink>
+
+    <p v-if="!store.student" class="alert alert-warning shadow-lg">No student selected</p>
+
+    <div v-else class="card bg-base-100 p-6 shadow-xl">
+      <h1 class="card-title text-primary mb-3 text-2xl">Student Details</h1>
+
+      <div class="mb-4 space-y-2">
+        <p><span class="font-semibold">ID:</span> {{ $route.params.id }}</p>
+        <p>
+          <span class="font-semibold">Name:</span>
+          {{ student?.firstName }} {{ student?.lastName }}
+        </p>
+        <p>
+          <span class="font-semibold">Graduation Year:</span>
+          {{ student?.graduationYear }}
+          <span class="text-sm text-gray-500">({{ currentGrade }})</span>
+        </p>
+        <p><span class="font-semibold">Total Uploads:</span> {{ studentUploads?.length }}</p>
+        <p><span class="font-semibold">Most Recent Upload:</span> {{ mostRecentUploadDate }}</p>
+      </div>
+
+      <div>
+        <h2 class="mb-4 text-lg font-semibold">Photo Uploads</h2>
+        <p v-if="!studentUploads || studentUploads.length === 0" class="text-gray-500 italic">No uploads to show.</p>
+
+        <div v-else class="flex flex-row">
+          <PhotoCard v-for="photo in studentUploads" :key="photo.id" :photo-data="photo" @clicked="openModal(photo)" />
+        </div>
+      </div>
     </div>
+    <dialog ref="modalRef" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
+            <img src="/close-outline.svg" aria-hidden="true" class="h-6 select-none dark:invert" draggable="false" />
+          </button>
+        </form>
+        <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto min-h-[70vh] w-auto object-contain" />
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
@@ -64,4 +96,11 @@ onMounted(async () => {
 definePageMeta({
   layout: "dashboard"
 });
+
+const selectedPhoto = ref<Photo>();
+const modalRef = useTemplateRef("modalRef");
+function openModal(selectedPhotoData: Photo) {
+  selectedPhoto.value = selectedPhotoData;
+  modalRef.value?.showModal();
+}
 </script>

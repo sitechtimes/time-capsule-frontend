@@ -1,8 +1,13 @@
 <template>
-  <div class="card w-[20%]">
-    <h3>{{ student.firstName }} {{ student.lastName }}</h3>
-    <p>{{ student.graduationYear }} ({{ currentGrade }})</p>
-    <button @click="openStudentPage(student)" class="btn">See More</button>
+  <div class="card bg-base-100 card-sm w-96 shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">{{ student.firstName }} {{ student.lastName }}</h2>
+      <p>{{ student.graduationYear }} ({{ currentGrade }})</p>
+      <p>{{ student.email }}</p>
+      <div class="card-actions justify-end">
+        <button class="btn" @click="openStudentPage(student)">See More</button>
+      </div>
+    </div>
   </div>
 </template>
 
