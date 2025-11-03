@@ -23,7 +23,7 @@ currentGrade.value = getStudentGrade(props.student.graduationYear);
 const router = useRouter();
 function openStudentPage(student: Student) {
   store.student = student;
-  void router.push(`/admin-student-view/${student.id}`);
+  void router.push(`/admin/student/${student.id}`);
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto max-w-6xl p-6">
-    <NuxtLink to="/admin-student-view" class="btn btn-ghost text-primary hover:bg-base-200 mb-4 flex w-fit items-center gap-2"> ← Back to All Students </NuxtLink>
+    <NuxtLink to="/admin/student" class="btn btn-ghost text-primary hover:bg-base-200 mb-4 flex w-fit items-center gap-2"> ← Back to All Students </NuxtLink>
 
     <p v-if="!store.student" class="alert alert-warning shadow-lg">No student selected</p>
 
