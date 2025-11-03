@@ -22,8 +22,8 @@ async function fetchStudents() {
 }
 
 const filteredStudents = computed(() => {
-  if (searchInput.value === "") return students.value;
-  return students.value.filter((student) => student.firstName.toLowerCase().includes(searchInput.value.toLowerCase()) ?? student.lastName.toLowerCase().includes(searchInput.value.toLowerCase()));
+  if (!searchInput.value || searchInput.value === "") return students.value;
+  return students.value.filter((student) => student.firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || student.lastName.toLowerCase().includes(searchInput.value.toLowerCase()));
 });
 
 definePageMeta({
