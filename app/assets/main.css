@@ -34,6 +34,7 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+  --badge-event: oklch(82% 0.12 346.018)
 }
 @plugin "daisyui/theme" {
   name: "dark";
