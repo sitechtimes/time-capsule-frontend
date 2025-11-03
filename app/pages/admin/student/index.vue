@@ -11,10 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import StudentCard from "~/components/StudentCard.vue";
-
 // update this to fetch only students w/ /users/students endpoint or something
-const searchInput = ref<string>("");
+const searchInput = ref();
 const students = ref<Student[]>([]);
 async function fetchStudents() {
   //backend - have limit for # of users fetched

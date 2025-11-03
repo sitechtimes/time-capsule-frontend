@@ -45,7 +45,7 @@ async function fetchPhotoData() {
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
-    newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
+    newPhotoArray = newPhotoArray.filter((photo) => photo.author === `${user.firstName} ${user.lastName}`);
   }
   photoData.value.push(...newPhotoArray);
 }
@@ -57,7 +57,7 @@ interface PhotoResponse {
   location: string;
   people: string[];
   imageData: string;
-  author: number;
+  author: string;
 }
 onMounted(fetchPhotoData);
 
