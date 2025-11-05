@@ -18,7 +18,7 @@
           </p>
           <div>
             <div class="badge badge-soft badge-primary">{{ photoData.event }}</div>
-            <div class="badge badge-soft badge-secondary">{{ photoData.location }}</div>
+            <div class="badge badge-soft bg-event">{{ photoData.location }}</div>
           </div>
         </div>
       </div>
