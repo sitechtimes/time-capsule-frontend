@@ -7,7 +7,6 @@
 
     <div v-if="!isCollapsed" class="p-4">
       <h2 class="mb-6 text-xl font-bold">Filters</h2>
-
       <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>

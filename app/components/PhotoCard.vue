@@ -4,7 +4,7 @@
 
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
-        <img src="/info.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+        <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
       </div>
       <div class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm">
         <div class="card-body">
@@ -24,7 +24,15 @@
       </div>
 
       <div class="card-actions tooltip justify-end" data-tip="Delete">
-        <img src="/trash-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="emit('delete')" />
+        <!-- only show if logged in user is student & author -->
+        <img
+          v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
+          src="/trash-outline.svg"
+          aria-hidden="true"
+          class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
+          draggable="false"
+          @click="emit('delete')"
+        />
       </div>
       <div class="card-actions tooltip justify-end" data-tip="Download">
         <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
@@ -37,6 +45,8 @@
 defineProps<{
   photoData: Photo;
 }>();
+
+const store = useUserStore();
 
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
