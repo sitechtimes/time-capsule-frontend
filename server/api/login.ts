@@ -28,4 +28,11 @@ export default defineEventHandler(async (event) => {
     lastName: "Doe",
     userType: "supervisor"
   } satisfies LoginResponse;
+  // return {
+  //   id: 1,
+  //   email: body.email,
+  //   firstName: "Tina",
+  //   lastName: "Zhen",
+  //   userType: "user"
+  // } satisfies LoginResponse;
 });
