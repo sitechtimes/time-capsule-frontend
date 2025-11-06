@@ -19,6 +19,7 @@
           <button>close</button>
         </form>
       </dialog>
+      <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
     </div>
     <div class="uploadnav">
       <button class="btn btn-circle btn-ghost btn-sm">
@@ -40,9 +41,10 @@ const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
 
 const modalRef = useTemplateRef("modalRef");
+
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
-  modalRef.value?.showModal();
+  modalRef.value?.openModal();
 }
 
 interface PhotoResponse {
@@ -53,7 +55,7 @@ interface PhotoResponse {
   location: string;
   people: string[];
   imageData: string;
-  author: number;
+  author: string;
 }
 
 function formatPhotoDate(photos: PhotoResponse[]) {
@@ -70,7 +72,7 @@ async function fetchPhotoData() {
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
-    newPhotoArray = newPhotoArray.filter((photo) => photo.author === user.id);
+    newPhotoArray = newPhotoArray.filter((photo) => photo.author === `${user.firstName} ${user.lastName}`);
   } // this shouldn't be in frontend - filter by user with endpoint
   photoData.value.push(...newPhotoArray);
 }
@@ -101,14 +103,16 @@ const searchInputs = reactive({
 
 // filtering should be done on backend bc not all photos are fetched when page loads (will be deleted)
 const filteredPhotoData = computed(() => {
+  // eslint-disable-next-line complexity
   return photoData.value.filter((photo) => {
-    const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All";
+    const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All" || searchInputs.graduationYear === "";
 
     const uploadDateMatch =
       (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month) ||
-      (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && searchInputs.uploadDate.month === "All") ||
-      (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month && searchInputs.uploadDate.year === "All") ||
-      (searchInputs.uploadDate.year === "All" && searchInputs.uploadDate.month === "All");
+      (photo.uploadDate.getFullYear() === Number(searchInputs.uploadDate.year) && (searchInputs.uploadDate.month === "All" || searchInputs.uploadDate.month === "")) ||
+      (months[photo.uploadDate.getMonth()] === searchInputs.uploadDate.month && (searchInputs.uploadDate.year === "All" || searchInputs.uploadDate.year === "")) ||
+      ((searchInputs.uploadDate.year === "All" || searchInputs.uploadDate.year === "") && (searchInputs.uploadDate.month === "All" || searchInputs.uploadDate.month === ""));
+
     const eventMatch = photo.event.toLowerCase().includes(searchInputs.event.toLowerCase()) || searchInputs.event === "All";
 
     const locationMatch = photo.location.toLowerCase().includes(searchInputs.location.toLowerCase()) || searchInputs.location === "All";

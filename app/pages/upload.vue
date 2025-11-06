@@ -196,7 +196,7 @@ async function uploadPhotos() {
       author: userStore.user?.id
     };
 
-    const { data, error } = await tryRequestEndpoint<Photo>("/upload", "POST", sendData);
+    const { data, error } = await tryRequestEndpoint<PhotoUpload>("/upload", "POST", sendData);
 
     const photoData = data?.data; //photoData gives the actual payload (w/o message, statusCode, uploadDate)
     if (error) {
@@ -228,7 +228,7 @@ async function uploadPhotos() {
 
 function confirmRedirect() {
   showConfirmRedirectModal.value = false;
-  router.push("/");
+  void router.push("/");
 }
 
 onMounted(() => {

@@ -12,6 +12,12 @@
           <li>
             <NuxtLink to="/upload" class="text-md font-semibold">Upload</NuxtLink>
           </li>
+          <li v-if="store.user?.userType === 'supervisor'">
+            <NuxtLink to="/admin-inbox" class="text-md font-semibold">Inbox</NuxtLink>
+          </li>
+          <li v-if="store.user?.userType === 'supervisor'">
+            <NuxtLink to="/admin-student-view" class="text-md font-semibold">Students</NuxtLink>
+          </li>
         </ul>
       </div>
     </div>
@@ -27,21 +33,35 @@
           <img src="/moon.svg" aria-hidden="true" class="swap-on h-5 w-5" draggable="false" />
         </label>
       </button>
-      <button type="button" class="btn btn-ghost btn-circle">
-        <div class="indicator">
-          <img src="/notify.svg" aria-hidden="true" class="h-5 w-5 dark:invert" draggable="false" />
-          <span class="badge badge-xs badge-secondary indicator-item absolute inline-flex h-full w-full animate-pulse rounded-full opacity-100"></span>
-        </div>
-      </button>
+      <div class="dropdown dropdown-end">
+        <button type="button" class="btn btn-ghost btn-circle">
+          <div class="indicator">
+            <img src="/person-circle-outline.svg" aria-hidden="true" class="h-5 w-5 select-none dark:invert" draggable="false" />
+          </div>
+        </button>
+        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <li>
+            <a class="justify-between"> Profile </a>
+          </li>
+          <li><a>Settings</a></li>
+          <li><a @click="handleLogout">Logout</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const store = useUserStore();
+const router = useRouter();
 
 function toggle() {
   store.theme = store.theme === "light" ? "dark" : "light";
+}
+
+function handleLogout() {
+  store.signOut();
+  void router.push("/login");
 }
 </script>
 
