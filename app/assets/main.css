@@ -26,7 +26,6 @@
   --color-warning-content: oklch(98% 0.022 95.277);
   --color-error: oklch(27% 0.105 12.094);
   --color-error-content: oklch(97% 0.014 343.198);
-  --color-event: oklch(82% 0.12 346.018);
   --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
@@ -70,4 +69,20 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+@theme {
+  --color-event: oklch(61.4% 0.136 346.0);
+  --color-event-content: oklch(93% 0.034 272.788);
+  --color-location: oklch(43.6% 0.207 233.7);
+  --color-location-content: oklch(94% 0.028 342.258);
+}
+
+.badge-event {
+    --badge-color: var(--color-event);
+    --badge-fg: var(--color-event-content)
+}
+.badge-location {
+    --badge-color: var(--color-location);
+    --badge-fg: var(--color-location-content)
 }
