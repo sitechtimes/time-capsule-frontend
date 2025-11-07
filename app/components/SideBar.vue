@@ -1,8 +1,8 @@
 <template>
   <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-100 sticky right-0 min-h-screen border-[#c3c5c5] transition-all duration-300">
-    <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert" @click="isCollapsed = !isCollapsed">
-      <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
-      <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
+    <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10" @click="isCollapsed = !isCollapsed">
+      <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none" draggable="false" />
+      <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none" draggable="false" />
     </button>
 
     <div v-if="!isCollapsed" class="align-center border-base-300 dark:border-base-300 w-full items-center border-r p-4 shadow-sm">
@@ -14,7 +14,7 @@
       <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
-          <label class="label w-full dark:invert">
+          <label class="label w-full">
             <span v-if="store.theme === 'light'" class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
             <span v-if="store.theme === 'dark'" class="label-text m-4 w-full text-center text-xl tracking-widest text-[#e5e5e5]">Upload Date</span>
           </label>
@@ -27,7 +27,7 @@
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
         <div class="w-full content-center items-center">
-          <label for="people" class="flex w-full flex-col items-center dark:invert">
+          <label for="people" class="flex w-full flex-col items-center">
             <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-black">People</span>
             <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-[#e5e5e5]">People</span>
             <span v-if="store.theme === 'light'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic">(comma-separated)</span>
@@ -47,7 +47,7 @@
           <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
             {{ person }}
             <button type="button" class="btn btn-xs btn-hover:[##567CAD] bg-neutral" @click="removePerson(index)">
-              <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+              <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none" draggable="false" />
             </button>
           </div>
         </div>

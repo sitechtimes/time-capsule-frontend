@@ -1,7 +1,8 @@
 <template>
   <div>
-    <label :for="category" class="label dark:text-[#e5e5e5]">
-      <span class="label-text dark:text-[#e5e5e5]">{{ category }}</span>
+    <label :for="category" class="label">
+      <span v-if="store.theme === 'light'" class="label-text text-[#5d6a7b]">{{ category }}</span>
+      <span v-if="store.theme === 'dark'" class="label-text text-[#e5e5e5]">{{ category }}</span>
     </label>
     <input v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="handleInputFocus" @blur="handleBlur" @input="onInput" />
 
@@ -15,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+const store = useUserStore();
 const props = defineProps<{
   category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
   choices: string[] | number[];

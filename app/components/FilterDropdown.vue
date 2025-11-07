@@ -1,7 +1,7 @@
 <template>
   <div>
     <label :for="category" class="label dark:text-neutral-content">
-      <span class="label-text m-2 text-base dark:invert">{{ category }}</span>
+      <span class="label-text m-2 text-base">{{ category }}</span>
     </label>
     <select v-model="modelValue" class="select select-bordered w-full" :name="category">
       <option class="text-[#5D6A7B]" value="All">All</option>
