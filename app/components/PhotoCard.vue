@@ -8,13 +8,10 @@
           class="h-full max-h-[300px] w-full cursor-pointer object-contain transition-transform duration-300 hover:scale-105"
           @click="emit('clicked')"
         />
-  <div class="card card-side bg-base-100 m-4 h-[40%] w-full shadow-sm sm:w-[48%] md:w-[30%] lg:w-[26%] xl:w-[21%]">
-    <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
-
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
-        <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
-      </div>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
+            <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+          </div>
 
       <div class="border-base-300 bg-base-200 flex items-center justify-around rounded-b-xl border-t py-2">
         <div class="dropdown dropdown-top">
