@@ -8,12 +8,6 @@
           class="h-full max-h-[300px] w-full cursor-pointer object-contain transition-transform duration-300 hover:scale-105"
           @click="emit('clicked')"
         />
-  <div class="card card-side bg-base-100 m-4 h-[40%] w-full shadow-sm sm:w-[48%] md:w-[30%] lg:w-[26%] xl:w-[21%]">
-    <img :src="photoData.imageData" aria-hidden="true" class="btn h-auto w-full cursor-pointer object-contain" @click="emit('clicked')" />
-
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-s text-info tooltip" data-tip="Info">
-        <img src="/information-circle-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
       </div>
 
       <div class="border-base-300 bg-base-200 flex items-center justify-around rounded-b-xl border-t py-2">
@@ -54,33 +48,28 @@
             <img v-else src="/edit.svg" aria-hidden="true" class="h-5 stroke-white opacity-60 select-none" draggable="false" />
           </button>
         </div>
-      <div class="card-actions tooltip justify-end" data-tip="Delete">
-        <!-- only show if logged in user is student & author -->
-        <img
-          v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
-          src="/trash-outline.svg"
-          aria-hidden="true"
-          class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
-          draggable="false"
-          @click="emit('delete')"
-        />
-      </div>
-      <div class="card-actions tooltip justify-end" data-tip="Download">
-        <img src="/download-outline.svg" aria-hidden="true" class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert" draggable="false" @click="download(photoData)" />
+        <div class="card-actions tooltip justify-end" data-tip="Delete">
+          <!-- only show if logged in user is student & author -->
+          <img
+            v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
+            src="/trash-outline.svg"
+            aria-hidden="true"
+            class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
+            draggable="false"
+            @click="emit('delete')"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user";
 const store = useUserStore();
 
 defineProps<{
   photoData: Photo;
 }>();
-
-const store = useUserStore();
 
 const emit = defineEmits<{
   delete: [void];
