@@ -12,7 +12,7 @@
         <div class="badge badge-soft badge-event">{{ selectedPhoto?.event }}</div>
         <div class="badge badge-soft badge-location">{{ selectedPhoto?.location }}</div>
       </div>
-      <p>{{ selectedPhoto?.people.join(", ") }}</p>
+      <p>People: {{ selectedPhoto?.people.join(", ") }}</p>
     </div>
     <form method="dialog" class="modal-backdrop">
       <button>close</button>

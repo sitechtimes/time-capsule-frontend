@@ -2,8 +2,15 @@
   <div class="flex min-h-screen">
     <SideBar v-model:search-inputs="searchInputs" />
     <div class="flex w-full flex-row flex-wrap">
-      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
+      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="openConfirmDeleteModal(index)" @clicked="openModal(photo)" />
       <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
+      <ConfirmModal
+        v-if="showConfirmDeleteModal"
+        title="Confirm Delete"
+        message="Are you sure you want to delete this photo?"
+        @cancel="showConfirmDeleteModal = false"
+        @confirm="deletePhoto(deletePhotoIndex)"
+      />
     </div>
   </div>
 </template>
@@ -18,12 +25,19 @@
 const photoData = ref<Photo[]>([]);
 const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
+const showConfirmDeleteModal = ref(false);
+const deletePhotoIndex = ref<number | null>(null);
 
 const modalRef = useTemplateRef("modalRef");
 
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
   modalRef.value?.openModal();
+}
+
+function openConfirmDeleteModal(index: number) {
+  deletePhotoIndex.value = index;
+  showConfirmDeleteModal.value = true;
 }
 
 interface PhotoResponse {
@@ -56,9 +70,8 @@ async function fetchPhotoData() {
   photoData.value.push(...newPhotoArray);
 }
 
-async function deletePhoto(photoIndex: number) {
-  const confirmed = window.confirm("Are you sure you want to delete this photo?");
-  if (!confirmed) return;
+async function deletePhoto(photoIndex: number | null) {
+  if (photoIndex === null) return;
   photoData.value.splice(photoIndex, 1);
   //delete from api, call "/delete"
   /* const { data, error } = await tryRequestEndpoint(
@@ -67,6 +80,7 @@ async function deletePhoto(photoIndex: number) {
     {id: photoData.value[photoIndex].id}
   );
   if (error) return error; */
+  showConfirmDeleteModal.value = false;
 }
 
 const searchInputs = reactive({
