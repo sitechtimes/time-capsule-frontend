@@ -7,11 +7,11 @@
         </button>
       </form>
       <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto max-h-[70vh] min-h-[70vh] w-auto object-contain" />
-      <p>Graduation Year: {{ selectedPhoto?.graduationYear }} <br /></p>
       <div>
         <div class="badge badge-soft badge-event">{{ selectedPhoto?.event }}</div>
         <div class="badge badge-soft badge-location">{{ selectedPhoto?.location }}</div>
       </div>
+      <p>Graduation Year: {{ selectedPhoto?.graduationYear }} <br /></p>
       <p>People: {{ selectedPhoto?.people.join(", ") }}</p>
     </div>
     <form method="dialog" class="modal-backdrop">
