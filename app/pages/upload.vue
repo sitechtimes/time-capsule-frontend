@@ -103,6 +103,7 @@ function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
 
 function removeForm(index: number) {
   photos.value.splice(index, 1);
+  showConfirmDeleteModal.value = false;
 }
 
 function handlePeopleInput(photo: PhotoForm, action: "enter" | "comma") {
