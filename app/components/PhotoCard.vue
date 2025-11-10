@@ -11,12 +11,14 @@
           <p>
             Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
             Graduation Year: {{ photoData.graduationYear }} <br />
-            Event: {{ photoData.event }} <br />
-            Location: {{ photoData.location }} <br />
             People: {{ photoData.people.join(", ") }}
             <br />
             Author: {{ photoData.author }}
           </p>
+          <div>
+            <div class="badge badge-soft badge-event">{{ photoData.event }}</div>
+            <div class="badge badge-soft badge-location">{{ photoData.location }}</div>
+          </div>
         </div>
       </div>
 
