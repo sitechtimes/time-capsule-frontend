@@ -177,8 +177,8 @@ async function uploadPhotos() {
     return;
   }
   for (const [index, photo] of photos.value.entries()) {
-    if (!photo.imageData) {
-      alert(`No image data for photo ${index + 1}`);
+    if (!photo.imageData || !photo.event || !photo.location) {
+      alert(`No image data or labels for photo ${index + 1}`);
       return;
     }
 
