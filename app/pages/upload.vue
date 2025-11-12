@@ -43,15 +43,24 @@
           <div class="mt-2 flex flex-wrap gap-2">
             <div v-for="(person, personIndex) in photo.people" class="bg-base-300 flex items-center gap-2 rounded-full px-3 py-1 text-sm">
               <span>{{ person }}</span>
-              <button type="button" @click="removePerson(photo, personIndex)">✕</button>
+              <button type="button" @click="removePerson(photo, personIndex)">
+                <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+              </button>
             </div>
           </div>
 
           <div v-if="photo.imageName" class="text-success mt-1 text-sm">Selected: {{ photo.imageName }}</div>
 
-          <div v-if="photos.length > 1" class="mt-3 text-center">
-            <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="removeForm(index)">Remove Photo</button>
+          <div class="mt-3 text-center">
+            <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="showConfirmDeleteModal = true">Remove Photo</button>
           </div>
+          <ConfirmModal
+            v-if="showConfirmDeleteModal"
+            title="Confirm Delete"
+            message="Are you sure you want to delete this photo form?"
+            @cancel="showConfirmDeleteModal = false"
+            @confirm="removeForm(index)"
+          />
         </form>
       </div>
 
@@ -88,6 +97,7 @@ const photos = ref<PhotoForm[]>([]);
 const router = useRouter();
 const showConfirmUploadModal = ref(false);
 const showConfirmRedirectModal = ref(false);
+const showConfirmDeleteModal = ref(false);
 const currentYear = new Date().getFullYear();
 const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
@@ -105,9 +115,8 @@ function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
 }
 
 function removeForm(index: number) {
-  const confirmed = window.confirm("Are you sure you want to delete this photo?");
-  if (!confirmed) return;
   photos.value.splice(index, 1);
+  showConfirmDeleteModal.value = false;
 }
 
 function handlePeopleInput(photo: PhotoForm, action: "enter" | "comma") {

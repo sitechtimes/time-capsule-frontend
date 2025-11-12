@@ -1,25 +1,16 @@
 <template>
   <div class="flex min-h-screen">
     <SideBar v-model:search-inputs="searchInputs" />
-
-    <!-- Scrollable photo container -->
-    <div class="bg-base-100 flex max-h-screen w-full flex-row flex-wrap overflow-y-auto p-4">
-      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="deletePhoto(index)" @clicked="openModal(photo)" />
-
-      <dialog ref="modalRef" class="modal">
-        <div class="modal-box">
-          <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
-              <img src="/close-outline.svg" aria-hidden="true" class="h-6 select-none dark:invert" draggable="false" />
-            </button>
-          </form>
-          <img :src="selectedPhoto?.imageData" aria-hidden="true" class="mx-auto min-h-[70vh] w-auto object-contain" />
-        </div>
-        <form method="dialog" class="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+     <div class="bg-base-100 flex max-h-screen w-full flex-row flex-wrap overflow-y-auto p-4">
+      <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="openConfirmDeleteModal(index)" @clicked="openModal(photo)" />
       <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
+      <ConfirmModal
+        v-if="showConfirmDeleteModal"
+        title="Confirm Delete"
+        message="Are you sure you want to delete this photo?"
+        @cancel="showConfirmDeleteModal = false"
+        @confirm="deletePhoto(deletePhotoIndex)"
+      />
     </div>
     <div class="uploadnav">
       <button class="btn btn-circle btn-ghost btn-sm">
@@ -39,12 +30,19 @@
 const photoData = ref<Photo[]>([]);
 const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
+const showConfirmDeleteModal = ref(false);
+const deletePhotoIndex = ref<number | null>(null);
 
 const modalRef = useTemplateRef("modalRef");
 
 function openModal(selectedPhotoData: Photo) {
   selectedPhoto.value = selectedPhotoData;
   modalRef.value?.openModal();
+}
+
+function openConfirmDeleteModal(index: number) {
+  deletePhotoIndex.value = index;
+  showConfirmDeleteModal.value = true;
 }
 
 interface PhotoResponse {
@@ -77,9 +75,8 @@ async function fetchPhotoData() {
   photoData.value.push(...newPhotoArray);
 }
 
-async function deletePhoto(photoIndex: number) {
-  const confirmed = window.confirm("Are you sure you want to delete this photo?");
-  if (!confirmed) return;
+async function deletePhoto(photoIndex: number | null) {
+  if (photoIndex === null) return;
   photoData.value.splice(photoIndex, 1);
   //delete from api, call "/delete"
   /* const { data, error } = await tryRequestEndpoint(
@@ -88,6 +85,7 @@ async function deletePhoto(photoIndex: number) {
     {id: photoData.value[photoIndex].id}
   );
   if (error) return error; */
+  showConfirmDeleteModal.value = false;
 }
 
 const searchInputs = reactive({

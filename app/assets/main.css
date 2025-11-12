@@ -75,3 +75,18 @@ html{
   margin: 0 auto;
   font-family: "Geologica", sans-serif;
 }
+@theme {
+  --color-event: oklch(61.4% 0.136 346);
+  --color-event-content: oklch(93% 0.034 272.788);
+  --color-location: oklch(43.6% 0.207 233.7);
+  --color-location-content: oklch(94% 0.028 342.258);
+}
+
+.badge-event {
+  --badge-color: var(--color-event);
+  --badge-fg: var(--color-event-content);
+}
+.badge-location {
+  --badge-color: var(--color-location);
+  --badge-fg: var(--color-location-content);
+}

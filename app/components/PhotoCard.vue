@@ -16,16 +16,19 @@
               <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60" draggable="false" />
             </label>
             <div tabindex="0" class="card card-sm dropdown-content bg-base-100 rounded-box z-50 w-64 shadow-sm">
-              <div class="card-body text-sm">
-                <p>
-                  Upload Date: {{ photoData.uploadDate.toLocaleString() }}<br />
-                  Graduation Year: {{ photoData.graduationYear }}<br />
-                  Event: {{ photoData.event }}<br />
-                  Location: {{ photoData.location }}<br />
-                  People: {{ photoData.people.join(", ") }}<br />
-                  Author: {{ photoData.author }}
-                </p>
-              </div>
+              <div class="card-body">
+          <p>
+            Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
+            Graduation Year: {{ photoData.graduationYear }} <br />
+            People: {{ photoData.people.join(", ") }}
+            <br />
+            Author: {{ photoData.author }}
+          </p>
+          <div>
+            <div class="badge badge-soft badge-event">{{ photoData.event }}</div>
+            <div class="badge badge-soft badge-location">{{ photoData.location }}</div>
+          </div>
+        </div>
             </div>
           </div>
 
