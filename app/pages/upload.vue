@@ -8,8 +8,7 @@
 
         <form class="space-y-4" @submit.prevent>
           <div>
-            <label class="mb-1 block font-medium">Graduation Year:</label>
-            <input v-model="photo.graduationYear" type="number" class="input input-bordered bg-base-100 w-full" :min="currentYear" required />
+            <DropDown v-model="photo.graduationYear" :choices="currentGradYears" category="Graduation Year" />
           </div>
 
           <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" />
@@ -169,6 +168,15 @@ async function fetchLocations() {
   if (error) return error;
   locations.value = data;
 }
+function getCurrentGradYears(): number[] {
+  const currentYear = new Date().getFullYear();
+  const gradYears = [];
+  for (let yearsAhead = 0; yearsAhead <= 4; yearsAhead++) {
+    gradYears.push(currentYear + yearsAhead);
+  }
+  return gradYears;
+}
+const currentGradYears = getCurrentGradYears();
 
 async function uploadPhotos() {
   showConfirmUploadModal.value = false;
