@@ -149,6 +149,11 @@ async function handleMultipleFiles() {
   for (const file of Array.from(input.files)) {
     try {
       const base64 = await readFileAsBase64(file);
+      if (photos.value.some((photo) => photo.imageData?.includes(base64))) {
+        alert("there's already an image with this data"); //how to check if its alr uploaded?
+        input.value = "";
+        return;
+      }
       photos.value.push(createPhotoFormWithImage(base64, file.name));
     } catch (error) {
       console.error(`Error reading file ${file.name}:`, error);
