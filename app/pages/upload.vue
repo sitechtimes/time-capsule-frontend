@@ -8,7 +8,7 @@
 
         <form class="space-y-4" @submit.prevent>
           <div>
-            <DropDown v-model="photo.graduationYear" :choices="currentGradYears" category="Graduation Year" />
+            <DropDown v-model="photo.graduationYear" :choices="currentGradYears" category="Graduation Year" :include-all-option="false" />
           </div>
 
           <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" />
@@ -35,7 +35,10 @@
             </div>
           </div>
 
-          <div v-if="photo.imageName" class="text-success mt-1 text-sm">Selected: {{ photo.imageName }}</div>
+          <div v-if="photo.imageName" class="text-success mt-1 text-sm underline">Selected: {{ photo.imageName }}</div>
+          <div class="bg-base-200 border-base-300 absolute top-full left-1/2 z-50 mt-2 hidden -translate-x-1/2 rounded border p-2 shadow-xl group-hover:flex">
+            <img :src="photo.imageData" class="max-h-64 max-w-xs rounded" />
+          </div>
 
           <div class="mt-3 text-center">
             <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="showConfirmDeleteModal = true">Remove Photo</button>
@@ -155,6 +158,7 @@ async function handleMultipleFiles() {
         return;
       }
       photos.value.push(createPhotoFormWithImage(base64, file.name));
+      console.log(base64);
     } catch (error) {
       console.error(`Error reading file ${file.name}:`, error);
     }
