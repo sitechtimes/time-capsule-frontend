@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label :for="category" class="label dark:text-neutral-content">
+    <label :for="category" class="label dark:text-neutral-content font-semibold uppercase">
       <span class="label-text m-2 text-base">{{ category }}</span>
     </label>
     <select v-model="modelValue" class="select select-bordered w-full" :name="category">
@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-// do not delete file; may need later?
 defineProps<{
   category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
   choices: string[] | number[];
@@ -22,9 +21,4 @@ defineProps<{
 const modelValue = defineModel<string | number>();
 </script>
 
-<style scoped>
-.label {
-  font-weight: 600;
-  text-transform: uppercase;
-}
-</style>
+<style scoped></style>

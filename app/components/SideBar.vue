@@ -14,7 +14,7 @@
       <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
-          <label class="label w-full">
+          <label class="label w-full font-semibold tracking-[10] uppercase">
             <span v-if="store.theme === 'light'" class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
             <span v-if="store.theme === 'dark'" class="label-text m-4 w-full text-center text-xl tracking-widest text-[#e5e5e5]">Upload Date</span>
           </label>
@@ -27,7 +27,7 @@
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
         <div class="w-full content-center items-center">
-          <label for="people" class="flex w-full flex-col items-center">
+          <label for="people" class="flex w-full flex-col items-center font-semibold tracking-[10] uppercase">
             <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-black">People</span>
             <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-[#e5e5e5]">People</span>
             <span v-if="store.theme === 'light'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic">(comma-separated)</span>
@@ -148,8 +148,5 @@ onMounted(() => {
 <style scoped>
 label {
   font-family: "Outfit", sans-serif;
-  font-weight: 600;
-  letter-spacing: 10;
-  text-transform: uppercase;
 }
 </style>

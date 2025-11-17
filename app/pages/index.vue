@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen">
     <SideBar v-model:search-inputs="searchInputs" />
-     <div class="bg-base-100 flex max-h-screen w-full flex-row flex-wrap overflow-y-auto p-4">
+    <div class="bg-base-100 flex max-h-screen w-full flex-row flex-wrap overflow-y-auto p-4">
       <PhotoCard v-for="(photo, index) in filteredPhotoData" :key="photo.id" :photo-data="photo" @delete="openConfirmDeleteModal(index)" @clicked="openModal(photo)" />
       <PhotoModal ref="modalRef" :selected-photo="selectedPhoto" />
       <ConfirmModal
@@ -12,10 +12,10 @@
         @confirm="deletePhoto(deletePhotoIndex)"
       />
     </div>
-    <div class="uploadnav">
-      <button class="btn btn-circle btn-ghost btn-sm">
-        <img src="/add-circle.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
-      </button>
+    <div class="uploadnav fixed right-6 bottom-6 z-50">
+      <NuxtLink to="/upload" class="btn btn-circle btn-ghost btn-lg">
+        <img src="/add-circle.svg" aria-hidden="true" class="color-secondary h-12 opacity-60 select-none" draggable="false" />
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -63,28 +63,19 @@ function formatPhotoDate(photos: PhotoResponse[]) {
   }));
 }
 
-// BACKEND SHOULD CREATE ENDPOINT THAT EXCLUDES PHOTOS WITH CERTAIN IDS FROM THE RESPONSE --> LIKE THIS: /photos?excludeIds=1,2,3
-// WHY? --> PHOTOS UPLOADED FROM CURRENT SESSION ARE SAVED LOCALLY, SO NO NEED TO FETCH
 async function fetchPhotoData() {
   const { data, error } = await tryRequestEndpoint<PhotoResponse[]>("/photos");
   if (error) return error;
   let newPhotoArray = formatPhotoDate(data);
   if (user?.userType === "user") {
     newPhotoArray = newPhotoArray.filter((photo) => photo.author === `${user.firstName} ${user.lastName}`);
-  } // this shouldn't be in frontend - filter by user with endpoint
+  }
   photoData.value.push(...newPhotoArray);
 }
 
 async function deletePhoto(photoIndex: number | null) {
   if (photoIndex === null) return;
   photoData.value.splice(photoIndex, 1);
-  //delete from api, call "/delete"
-  /* const { data, error } = await tryRequestEndpoint(
-    "/delete",
-    "DELETE",
-    {id: photoData.value[photoIndex].id}
-  );
-  if (error) return error; */
   showConfirmDeleteModal.value = false;
 }
 
@@ -99,9 +90,7 @@ const searchInputs = reactive({
   people: ref<string[]>([])
 });
 
-// filtering should be done on backend bc not all photos are fetched when page loads (will be deleted)
 const filteredPhotoData = computed(() => {
-  // eslint-disable-next-line complexity
   return photoData.value.filter((photo) => {
     const gradYearMatch = String(photo.graduationYear) === String(searchInputs.graduationYear) || searchInputs.graduationYear === "All" || searchInputs.graduationYear === "";
 

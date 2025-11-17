@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-// only allow open if role is admin
 const messageOpened = ref(false);
 const selectedMessage = ref<Message>();
 function handleClick(selectedMessageData: Message) {

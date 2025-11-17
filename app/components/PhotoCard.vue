@@ -17,18 +17,18 @@
             </label>
             <div tabindex="0" class="card card-sm dropdown-content bg-base-100 rounded-box z-50 w-64 shadow-sm">
               <div class="card-body">
-          <p>
-            Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
-            Graduation Year: {{ photoData.graduationYear }} <br />
-            People: {{ photoData.people.join(", ") }}
-            <br />
-            Author: {{ photoData.author }}
-          </p>
-          <div>
-            <div class="badge badge-soft badge-event">{{ photoData.event }}</div>
-            <div class="badge badge-soft badge-location">{{ photoData.location }}</div>
-          </div>
-        </div>
+                <p>
+                  Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
+                  Graduation Year: {{ photoData.graduationYear }} <br />
+                  People: {{ photoData.people.join(", ") }}
+                  <br />
+                  Author: {{ photoData.author }}
+                </p>
+                <div>
+                  <div class="badge badge-soft badge-event">{{ photoData.event }}</div>
+                  <div class="badge badge-soft badge-location">{{ photoData.location }}</div>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -1,18 +1,5 @@
 <template>
   <div class="bg-base-200 text-base-content flex min-h-screen items-center justify-center p-6 pt-20">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-        <img src="/menu-outline.svg" aria-hidden="true" class="h-5 w-5 dark:invert" draggable="false" />
-      </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li>
-          <NuxtLink to="/" class="text-md font-semibold">Homepage</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/upload" class="text-md font-semibold">Upload</NuxtLink>
-        </li>
-      </ul>
-    </div>
     <div class="w-full max-w-2xl space-y-6">
       <h1 class="mb-4 text-center text-2xl font-semibold tracking-wider text-[##5D6A7B]">Upload Photos</h1>
 
@@ -171,7 +158,6 @@ async function handleMultipleFiles() {
   input.value = "";
 }
 
-// see if this can be imported from another file bc used more than once
 async function fetchEvents() {
   const { data, error } = await tryRequestEndpoint<string[]>("/events");
   if (error) return error;

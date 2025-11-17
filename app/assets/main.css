@@ -11,20 +11,20 @@
   --color-base-300: #e5e5e5;
   --color-base-content: oklch(21% 0.006 285.885);
   --color-primary: oklch(98% 0.003 247.858);
-  --color-primary-content: #5D6A7B;
-  --color-secondary: #779FD3;
-  --color-secondary-content: oklch(1.000 0.000 0.0);
+  --color-primary-content: #5d6a7b;
+  --color-secondary: #779fd3;
+  --color-secondary-content: oklch(1 0 0);
   --color-accent: #c3c5c5;
-  --color-accent-content: oklch(1.000 0.000 0.0);
+  --color-accent-content: oklch(1 0 0);
   --color-neutral: #e5e5e5;
   --color-neutral-content: #5d6a7b;
   --color-info: #5d6a7b;
   --color-info-content: #e5e5e5;
-  --color-success: oklch(0.770 0.090 147.9);
+  --color-success: oklch(0.77 0.09 147.9);
   --color-success-content: oklch(37% 0.077 168.94);
   --color-warning: oklch(0.842 0.119 84.4);
   --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: #BE4040;
+  --color-error: #be4040;
   --color-error-content: oklch(98% 0.001 106.423);
   --radius-selector: 1rem;
   --radius-field: 2rem;
@@ -41,7 +41,7 @@
   default: false;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: #2E2E39;
+  --color-base-100: #2e2e39;
   --color-base-200: #383947;
   --color-base-300: #444557;
   --color-base-content: #e5e5e5;
@@ -52,14 +52,14 @@
   --color-accent: #254d82;
   --color-accent-content: oklch(100% 0 0);
   --color-neutral: #b6cbe8;
-  --color-neutral-content: #254D82;
+  --color-neutral-content: #254d82;
   --color-info: #e5e5e5;
   --color-info-content: #5d6a7b;
-  --color-success: oklch(0.770 0.090 147.9);
+  --color-success: oklch(0.77 0.09 147.9);
   --color-success-content: oklch(37% 0.077 168.94);
   --color-warning: oklch(0.842 0.119 84.4);
   --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: #BE4040;
+  --color-error: #be4040;
   --color-error-content: oklch(27% 0.105 12.094);
   --radius-selector: 1rem;
   --radius-field: 2rem;
@@ -71,7 +71,7 @@
   --noise: 0;
 }
 
-html{
+html {
   margin: 0 auto;
   font-family: "Geologica", sans-serif;
 }
