@@ -28,10 +28,8 @@
 
         <div class="w-full content-center items-center">
           <label for="people" class="flex w-full flex-col items-center font-semibold tracking-[10] uppercase">
-            <span v-if="store.theme === 'light'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-black">People</span>
-            <span v-if="store.theme === 'dark'" class="mt-4 mb-0 text-xl leading-none tracking-widest text-[#e5e5e5]">People</span>
-            <span v-if="store.theme === 'light'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic">(comma-separated)</span>
-            <span v-if="store.theme === 'dark'" class="mt-0 mb-4 text-sm leading-none font-normal text-[#c3c5c5] lowercase italic">(comma-separated)</span>
+            <span class="mt-4 mb-0 text-xl leading-none tracking-widest text-black dark:text-[#e5e5e5]">People</span>
+            <span class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic dark:text-[#c3c5c5]">(comma-separated)</span>
           </label>
           <input
             v-model="personInput"
@@ -46,7 +44,7 @@
         <div class="mb-2 flex w-full flex-wrap content-center items-center gap-2">
           <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
             {{ person }}
-            <button type="button" class="btn btn-xs btn-hover:[##567CAD] bg-neutral" @click="removePerson(index)">
+            <button type="button" class="btn btn-xs btn-hover:[#567CAD] bg-neutral" @click="removePerson(index)">
               <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none" draggable="false" />
             </button>
           </div>
@@ -61,6 +59,7 @@
           </button>
         </div>
       </div>
+      <p class="dark:invert">Test text</p>
     </div>
   </aside>
 </template>

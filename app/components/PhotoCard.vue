@@ -25,8 +25,8 @@
                   Author: {{ photoData.author }}
                 </p>
                 <div>
-                  <div class="badge badge-soft badge-event">{{ photoData.event }}</div>
-                  <div class="badge badge-soft badge-location">{{ photoData.location }}</div>
+                  <div class="badge badge-soft badge-event badge-sm m-1">{{ photoData.event }}</div>
+                  <div class="badge badge-soft badge-sm m-1 inline-flex items-center px-2 py-1">{{ photoData.location }}</div>
                 </div>
               </div>
             </div>
