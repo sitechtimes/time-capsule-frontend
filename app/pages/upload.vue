@@ -35,9 +35,12 @@
             </div>
           </div>
 
-          <div v-if="photo.imageName" class="text-success mt-1 text-sm underline">Selected: {{ photo.imageName }}</div>
-          <div class="bg-base-200 border-base-300 absolute top-full left-1/2 z-50 mt-2 hidden -translate-x-1/2 rounded border p-2 shadow-xl group-hover:flex">
-            <img :src="photo.imageData" class="max-h-64 max-w-xs rounded" />
+          <div class="group relative inline-block">
+            <div v-if="photo.imageName" class="text-success mt-1 cursor-pointer text-sm underline">Selected: {{ photo.imageName }}</div>
+            <img
+              :src="photo.imageData"
+              class="absolute bottom-full left-1/2 mb-3 w-64 -translate-x-1/2 scale-95 rounded-lg opacity-0 shadow-xl transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+            />
           </div>
 
           <div class="mt-3 text-center">
