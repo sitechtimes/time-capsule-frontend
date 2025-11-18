@@ -35,11 +35,11 @@
             </div>
           </div>
 
-          <div class="group relative inline-block">
+          <div class="group relative">
             <div v-if="photo.imageName" class="text-success mt-1 cursor-pointer text-sm underline">Selected: {{ photo.imageName }}</div>
             <img
               :src="photo.imageData"
-              class="absolute bottom-full left-1/2 mb-3 w-64 -translate-x-1/2 scale-95 rounded-lg opacity-0 shadow-xl transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+              class="absolute bottom-full left-1/2 mb-4 w-[600px] -translate-x-1/2 scale-95 rounded-xl opacity-0 shadow-2xl transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
             />
           </div>
 
