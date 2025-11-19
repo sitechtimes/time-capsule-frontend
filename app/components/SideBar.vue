@@ -49,7 +49,6 @@
         </div>
       </div>
     </div>
-    <div class="text-primary dark:invert">test</div>
   </aside>
 </template>
 
