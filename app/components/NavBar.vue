@@ -38,11 +38,16 @@
             <img src="/person-circle-outline.svg" aria-hidden="true" class="h-5 w-5 select-none dark:invert" draggable="false" />
           </div>
         </button>
-        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow">
+          <li>{{ user?.firstName }} {{ user?.lastName }}</li>
           <li>
-            <a class="justify-between"> Profile </a>
+            {{ user?.email }}
           </li>
-          <li><a>Settings</a></li>
+          <li>Backup email: (how to access?) and add link to edit here</li>
+          <li class="font-bold">Settings</li>
+          <li>Light/dark mode</li>
+          <li>Change password</li>
+          <li><a>Notifications (add smth to indicate new notifs)</a></li>
           <li><a @click="handleLogout">Logout</a></li>
         </ul>
       </div>
@@ -53,6 +58,7 @@
 <script setup lang="ts">
 const store = useUserStore();
 const router = useRouter();
+const user = store.user;
 
 function toggle() {
   store.theme = store.theme === "light" ? "dark" : "light";
