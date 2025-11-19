@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div autocomplete="off">
     <label :for="category" class="label">
       <span v-if="store.theme === 'light'" class="label-text text-[#5d6a7b]">{{ category }}</span>
       <span v-if="store.theme === 'dark'" class="label-text text-[#e5e5e5]">{{ category }}</span>
     </label>
-    <input v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="handleInputFocus" @blur="handleBlur" @input="onInput" />
+    <input autocomplete="off" v-model="search" class="input input-bordered w-full" :placeholder="'Search ' + category" :name="category" @focus="handleInputFocus" @blur="handleBlur" @input="onInput" />
 
-    <ul v-if="open && filteredChoices.length" class="bg-base-100 absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border shadow">
+    <ul v-if="open && filteredChoices.length" autocomplete="off" class="bg-base-100 absolute z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-md border shadow">
       <li v-if="includeAllOption" value="All" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice('All')">All</li>
       <li v-for="choice in filteredChoices" :key="choice" :value="choice" class="hover:bg-neutral cursor-pointer px-4 py-2" @click="selectChoice(choice.toString())">
         {{ choice }}

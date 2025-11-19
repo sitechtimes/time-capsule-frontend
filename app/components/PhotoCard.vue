@@ -13,7 +13,7 @@
         <div class="border-base-300 bg-base-200 flex items-center justify-center rounded-b-xl border-t py-2 text-center">
           <div class="dropdown dropdown-top">
             <label tabindex="0" class="btn btn-circle btn-ghost btn-sm tooltip" data-tip="Info">
-              <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60" draggable="false" />
+              <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
             </label>
             <div tabindex="0" class="card card-sm dropdown-content bg-base-100 rounded-box z-50 w-64 shadow-sm">
               <div class="card-body">
@@ -34,21 +34,19 @@
 
           <div class="tooltip" data-tip="Download">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="download(photoData)">
-              <img src="/download-outline.svg" aria-hidden="true" class="h-5 opacity-60" draggable="false" />
+              <img src="/download-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
             </button>
           </div>
 
           <div class="tooltip" data-tip="Delete">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="emit('delete')">
-              <img v-if="store.theme === 'light'" src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
-              <img v-else src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
+              <img src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
             </button>
           </div>
 
           <div class="tooltip" data-tip="Edit">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center">
-              <img v-if="store.theme === 'light'" src="/edit.svg" aria-hidden="true" class="h-5 opacity-60 select-none" draggable="false" />
-              <img v-else src="/edit.svg" aria-hidden="true" class="h-5 stroke-white opacity-60 select-none" draggable="false" />
+              <img src="/edit.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
             </button>
           </div>
           <div class="card-actions tooltip justify-end text-center" data-tip="Delete">

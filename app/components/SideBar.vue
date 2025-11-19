@@ -1,8 +1,8 @@
 <template>
   <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-100 sticky right-0 min-h-screen border-[#c3c5c5] transition-all duration-300">
     <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10" @click="isCollapsed = !isCollapsed">
-      <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none" draggable="false" />
-      <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none" draggable="false" />
+      <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
+      <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
     <div v-if="!isCollapsed" class="align-center border-base-300 dark:border-base-300 w-full items-center border-r p-4 shadow-sm">
@@ -15,8 +15,7 @@
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
           <label class="label w-full font-semibold tracking-[10] uppercase">
-            <span v-if="store.theme === 'light'" class="label-text m-4 w-full text-center text-xl tracking-widest text-black">Upload Date</span>
-            <span v-if="store.theme === 'dark'" class="label-text m-4 w-full text-center text-xl tracking-widest text-[#e5e5e5]">Upload Date</span>
+            <span class="label-text m-4 w-full text-center text-xl tracking-widest text-black dark:text-[#e5e5e5]">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -35,7 +34,7 @@
             v-model="personInput"
             type="text"
             placeholder="Ex: John Doe, Jane Smith"
-            class="input input-bordered w-full"
+            class="input input-bordered w-full text-[#5d6a7b] dark:text-[#c3c5c5]"
             @keydown.enter="handlePeopleInput(searchInputs, 'enter')"
             @input="handlePeopleInput(searchInputs, 'comma')"
           />
@@ -51,15 +50,15 @@
         </div>
 
         <div class="contents-center w-full items-center text-center">
-          <button v-if="store.theme === 'light'" type="reset" class="btn btn-outline-[#779FD3] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD]" @click="resetInputs">
-            Reset
-          </button>
-          <button v-if="store.theme === 'dark'" type="reset" class="btn btn-outline-[#254D82] mb-2 w-full bg-[#254D82] text-center font-normal text-white hover:bg-[#183F72]" @click="resetInputs">
+          <button
+            type="reset"
+            class="btn btn-outline-[#779FD3] dark:btn-outline-[#254D82] dark:hover:bg-[#183F72 mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD] dark:bg-[#254D82] dark:text-white"
+            @click="resetInputs"
+          >
             Reset
           </button>
         </div>
       </div>
-      <p class="dark:invert">Test text</p>
     </div>
   </aside>
 </template>
