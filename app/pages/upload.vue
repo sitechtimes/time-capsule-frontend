@@ -163,7 +163,6 @@ async function handleMultipleFiles() {
         return;
       }
       photos.value.push(createPhotoFormWithImage(base64, file.name));
-      console.log(base64);
     } catch (error) {
       console.error(`Error reading file ${file.name}:`, error);
     }
