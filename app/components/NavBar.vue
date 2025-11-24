@@ -32,14 +32,16 @@
           <img src="/moon.svg" aria-hidden="true" class="swap-on h-5 w-5" draggable="false" />
         </label>
       </button>
-      <div class="dropdown dropdown-end">
-        <button type="button" class="btn btn-ghost btn-circle">
+      <div class="dropdown dropdown-end" :class="{ 'dropdown-open': profileDropdownOpen }">
+        <button type="button" class="btn btn-ghost btn-circle" @click="profileDropdownOpen = !profileDropdownOpen">
           <div class="indicator">
             <img src="/person-circle-outline.svg" aria-hidden="true" class="h-5 w-5 select-none dark:invert" draggable="false" />
           </div>
         </button>
-        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow" @mousedown.prevent>
+        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow">
           <li class="mx-2">{{ user?.firstName }} {{ user?.lastName }}</li>
+          <li class="mx-2">{{ user?.userType }}</li>
+          <li v-if="user && isStudent(user)" class="mx-2">{{ user?.graduationYear }}</li>
           <li class="mx-2">{{ user?.email }}</li>
 
           <li class="flex flex-col">
@@ -69,8 +71,14 @@ const store = useUserStore();
 const router = useRouter();
 const user = store.user;
 
+const profileDropdownOpen = ref(false);
+
 function toggle() {
   store.theme = store.theme === "light" ? "dark" : "light";
+}
+
+function isStudent(user: User): user is Student {
+  return user.userType === "user";
 }
 
 function handleLogout() {
@@ -78,9 +86,14 @@ function handleLogout() {
   void router.push("/login");
 }
 
-const email = ref("bleh");
+const email = ref<string>();
 const editing = ref(false);
 const tempEmail = ref(email.value);
+
+async function fetchBackupEmail(user) {
+  //await backend stuff
+  return "backup@gmail.com";
+}
 
 function startEdit() {
   tempEmail.value = email.value;
@@ -90,12 +103,17 @@ function startEdit() {
 function saveEmail() {
   email.value = tempEmail.value;
   editing.value = false;
+  // post to backend
 }
 
 function cancelEdit() {
   tempEmail.value = email.value;
   editing.value = false;
 }
+
+onMounted(async () => {
+  email.value = await fetchBackupEmail(user);
+});
 </script>
 
 <style scoped></style>
