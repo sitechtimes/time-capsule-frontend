@@ -40,9 +40,9 @@
         </button>
         <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow">
           <li class="mx-2">{{ user?.firstName }} {{ user?.lastName }}</li>
-          <li class="mx-2">{{ user?.userType }}</li>
-          <li v-if="user && typeof user === Student" class="mx-2">{{ user?.graduationYear }}</li>
-          <li class="mx-2">{{ user?.email }}</li>
+          <li class="mx-2">User type: {{ user?.userType }}</li>
+          <li v-if="user && 'graduationYear' in user" class="mx-2">Graduation Year: {{ user?.graduationYear }}</li>
+          <li class="mx-2">Email: {{ user?.email }}</li>
 
           <li class="flex flex-col">
             <div v-if="!editing">
@@ -55,6 +55,7 @@
               <button class="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700" @click="saveEmail">Save</button>
               <button class="rounded bg-gray-200 px-3 py-1 text-gray-700 hover:bg-gray-300" @click="cancelEdit">Cancel</button>
             </div>
+            <p v-if="errorMessage" class="text-error mt-2 text-sm">{{ errorMessage }}</p>
           </li>
 
           <li><a>Change password</a></li>
@@ -70,6 +71,7 @@
 const store = useUserStore();
 const router = useRouter();
 const user = store.user;
+const errorMessage = ref("");
 
 const profileDropdownOpen = ref(false);
 
@@ -82,7 +84,7 @@ function handleLogout() {
   void router.push("/login");
 }
 
-const email = ref<string>();
+const email = ref<string>("");
 const editing = ref(false);
 const tempEmail = ref(email.value);
 
@@ -97,6 +99,8 @@ function startEdit() {
 }
 
 function saveEmail() {
+  if (errorMessage.value) return console.error("Error:", errorMessage.value);
+  errorMessage.value = "";
   email.value = tempEmail.value;
   editing.value = false;
   // post to backend
@@ -106,6 +110,19 @@ function cancelEdit() {
   tempEmail.value = email.value;
   editing.value = false;
 }
+
+watch(
+  () => tempEmail.value,
+  (newEmail) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(newEmail)) {
+      errorMessage.value = "Invalid email format";
+    } else {
+      errorMessage.value = "";
+    }
+  }
+);
 
 onMounted(async () => {
   email.value = await fetchBackupEmail(user);

@@ -9,6 +9,7 @@ interface LoginResponse {
   firstName: string;
   lastName: string;
   userType: "supervisor" | "user";
+  graduationYear?: number
 }
 
 export default defineEventHandler(async (event) => {
@@ -33,6 +34,7 @@ export default defineEventHandler(async (event) => {
     email: body.email,
     firstName: "Tina",
     lastName: "Zhen",
-    userType: "user"
+    userType: "user",
+    graduationYear: 2025
   } satisfies LoginResponse;
 });
