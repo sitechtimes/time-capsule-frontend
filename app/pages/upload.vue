@@ -183,8 +183,11 @@ async function fetchLocations() {
 }
 function getCurrentGradYears(): number[] {
   const currentYear = new Date().getFullYear();
+  const currentMonthIndex = new Date().getMonth();
+  const minYearsAhead = currentMonthIndex > 5 ? 1 : 0;
+  const maxYearsAhead = currentMonthIndex > 5 ? 4 : 3;
   const gradYears = [];
-  for (let yearsAhead = 0; yearsAhead <= 4; yearsAhead++) {
+  for (let yearsAhead = minYearsAhead; yearsAhead <= maxYearsAhead; yearsAhead++) {
     gradYears.push(currentYear + yearsAhead);
   }
   return gradYears;
