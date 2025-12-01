@@ -8,8 +8,7 @@
 
         <form class="space-y-4" @submit.prevent>
           <div>
-            <label class="mb-1 block font-medium">Graduation Year:</label>
-            <input v-model="photo.graduationYear" type="number" class="input input-bordered bg-base-100 w-full" :min="currentYear" required />
+            <DropDown v-model="photo.graduationYear" :choices="currentGradYears" category="Graduation Year" :include-all-option="false" />
           </div>
 
           <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" />
@@ -36,7 +35,15 @@
             </div>
           </div>
 
-          <div v-if="photo.imageName" class="text-success mt-1 text-sm">Selected: {{ photo.imageName }}</div>
+          <div class="group relative cursor-pointer overflow-visible">
+            <div v-if="photo.imageName" class="text-success mt-1 text-sm underline">Selected: {{ photo.imageName }}</div>
+
+            <img
+              v-if="photo.imageData"
+              :src="photo.imageData"
+              class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-4 w-[600px] -translate-x-1/2 scale-95 rounded-sm opacity-0 shadow-2xl transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+            />
+          </div>
 
           <div class="mt-3 text-center">
             <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="showConfirmDeleteModal = true">Remove Photo</button>
@@ -150,6 +157,11 @@ async function handleMultipleFiles() {
   for (const file of Array.from(input.files)) {
     try {
       const base64 = await readFileAsBase64(file);
+      if (photos.value.some((photo) => photo.imageData?.includes(base64))) {
+        alert("there's already an image with this data"); //how to check if its alr uploaded?
+        input.value = "";
+        return;
+      }
       photos.value.push(createPhotoFormWithImage(base64, file.name));
     } catch (error) {
       console.error(`Error reading file ${file.name}:`, error);
@@ -169,6 +181,18 @@ async function fetchLocations() {
   if (error) return error;
   locations.value = data;
 }
+function getCurrentGradYears(): number[] {
+  const currentYear = new Date().getFullYear();
+  const currentMonthIndex = new Date().getMonth();
+  const minYearsAhead = currentMonthIndex > 5 ? 1 : 0;
+  const maxYearsAhead = currentMonthIndex > 5 ? 4 : 3;
+  const gradYears = [];
+  for (let yearsAhead = minYearsAhead; yearsAhead <= maxYearsAhead; yearsAhead++) {
+    gradYears.push(currentYear + yearsAhead);
+  }
+  return gradYears;
+}
+const currentGradYears = getCurrentGradYears();
 
 async function uploadPhotos() {
   showConfirmUploadModal.value = false;
@@ -177,8 +201,8 @@ async function uploadPhotos() {
     return;
   }
   for (const [index, photo] of photos.value.entries()) {
-    if (!photo.imageData) {
-      alert(`No image data for photo ${index + 1}`);
+    if (!photo.imageData || !photo.event || !photo.location) {
+      alert(`No image data or labels for photo ${index + 1}`);
       return;
     }
 
