@@ -40,7 +40,7 @@
         </button>
         <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow">
           <li class="mx-2">{{ user?.firstName }} {{ user?.lastName }}</li>
-          <li class="mx-2">User type: {{ user?.userType }}</li>
+          <li class="mx-2">User Type: {{ user?.userType }}</li>
           <li v-if="user && 'graduationYear' in user" class="mx-2">Graduation Year: {{ user?.graduationYear }}</li>
           <li class="mx-2">Email: {{ user?.email }}</li>
 
