@@ -39,6 +39,13 @@
           </div>
         </button>
         <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-100 p-2 shadow">
+          <li class="px-0 py-0">
+            <div class="flex justify-end pr-1">
+              <button class="btn btn-circle btn-ghost" @click="profileDropdownOpen = false" aria-label="Close">
+                <img src="/close-outline.svg" aria-hidden="true" class="h-5 w-5 select-none dark:invert" draggable="false" />
+              </button>
+            </div>
+          </li>
           <li class="mx-2">{{ user?.firstName }} {{ user?.lastName }}</li>
           <li class="mx-2">User Type: {{ user?.userType }}</li>
           <li v-if="user && 'graduationYear' in user" class="mx-2">Graduation Year: {{ user?.graduationYear }}</li>
@@ -58,7 +65,7 @@
             <p v-if="errorMessage" class="text-error mt-2 text-sm">{{ errorMessage }}</p>
           </li>
 
-          <li><a>Change password</a></li>
+          <li><NuxtLink to="/change-password">Change password</NuxtLink></li>
           <li><a>Notifications</a></li>
           <li><a @click="handleLogout">Logout</a></li>
         </ul>
