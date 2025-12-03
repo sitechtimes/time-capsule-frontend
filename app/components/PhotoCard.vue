@@ -11,7 +11,7 @@
       </div>
       <div class="buttons w-full content-center items-center text-center">
         <div class="border-base-300 bg-base-200 flex items-center justify-center rounded-b-xl border-t py-2 text-center">
-          <div class="dropdown dropdown-top">
+          <div class="dropdown dropdown-top mr-3 ml-3">
             <label tabindex="0" class="btn btn-circle btn-ghost btn-sm tooltip" data-tip="Info">
               <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
             </label>
@@ -32,19 +32,19 @@
             </div>
           </div>
 
-          <div class="tooltip" data-tip="Download">
+          <div class="tooltip mr-3 ml-3" data-tip="Download">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="download(photoData)">
               <img src="/download-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
             </button>
           </div>
 
-          <div class="tooltip" data-tip="Delete">
+          <div class="tooltip mr-3 ml-3" data-tip="Delete">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="emit('delete')">
               <img src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
             </button>
           </div>
 
-          <div class="tooltip" data-tip="Edit">
+          <div class="tooltip mr-3 ml-3" data-tip="Edit">
             <button class="btn btn-circle btn-ghost btn-sm content-center text-center">
               <img src="/edit.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
             </button>
