@@ -14,7 +14,7 @@
     </div>
     <div class="uploadnav fixed right-6 bottom-6 z-50">
       <NuxtLink to="/upload" class="btn btn-circle btn-ghost btn-lg">
-        <img src="/add-circle.svg" aria-hidden="true" class="color-secondary h-12 opacity-60 select-none" draggable="false" />
+        <img src="/add-circle.svg" aria-hidden="true" class="color-secondary h-12 opacity-60 select-none dark:invert" draggable="false" />
       </NuxtLink>
     </div>
   </div>

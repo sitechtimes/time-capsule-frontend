@@ -75,6 +75,8 @@
 html {
   margin: 0 auto;
   font-family: "Geologica", sans-serif;
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 @theme {
   --color-event: oklch(61.4% 0.136 346);
