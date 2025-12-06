@@ -31,7 +31,7 @@
             <div v-for="(person, personIndex) in photo.people" class="bg-base-300 flex items-center gap-2 rounded-full px-3 py-1 text-sm">
               <span>{{ person }}</span>
               <button type="button" @click="removePerson(photo, personIndex)">
-                <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+                <img src="/close.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
               </button>
             </div>
           </div>
