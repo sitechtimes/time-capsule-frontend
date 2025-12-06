@@ -9,7 +9,7 @@ interface LoginResponse {
   firstName: string;
   lastName: string;
   userType: "supervisor" | "user";
-  graduationYear?: number
+  graduationYear?: number;
 }
 
 export default defineEventHandler(async (event) => {
