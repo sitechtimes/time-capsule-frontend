@@ -44,7 +44,7 @@
         <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral gap-2">
           {{ person }}
           <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
-            <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+            <img src="/close.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
           </button>
         </div>
       </div>
