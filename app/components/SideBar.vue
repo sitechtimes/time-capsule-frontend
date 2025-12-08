@@ -52,7 +52,7 @@
         <div class="contents-center w-full items-center text-center">
           <button
             type="reset"
-            class="btn btn-outline-[#779FD3] dark:btn-outline-[#254D82] dark:hover:bg-[#183F72 mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD] dark:bg-[#254D82] dark:text-white"
+            class="btn btn-outline-[#779FD3] dark:btn-outline-[#254D82] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD] dark:bg-[#254D82] dark:text-white dark:hover:bg-[#183F72]"
             @click="resetInputs"
           >
             Reset
