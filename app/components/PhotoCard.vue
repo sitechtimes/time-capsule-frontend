@@ -9,19 +9,19 @@
           @click="emit('clicked')"
         />
       </div>
-      <div class="buttons w-full content-center items-center text-center">
-        <div class="border-base-300 bg-base-200 flex items-center justify-center rounded-b-xl border-t py-2 text-center">
-          <div class="dropdown dropdown-top mr-3 ml-3">
-            <label tabindex="0" class="btn btn-circle btn-ghost btn-sm tooltip" data-tip="Info">
-              <img src="/information-circle-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
+
+      <div class="buttons m-auto w-full content-center items-center text-center">
+        <div class="border-base-300 bg-base-200 flex flex-nowrap items-center justify-center gap-1 rounded-b-xl border-t px-1 py-1">
+          <div class="dropdown dropdown-top">
+            <label tabindex="0" class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Info">
+              <img src="/information-circle-outline.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
             </label>
             <div tabindex="0" class="card card-sm dropdown-content bg-base-100 rounded-box z-50 w-64 shadow-sm">
               <div class="card-body">
                 <p>
                   Upload Date: {{ photoData.uploadDate.toLocaleString() }} <br />
                   Graduation Year: {{ photoData.graduationYear }} <br />
-                  People: {{ photoData.people.join(", ") }}
-                  <br />
+                  People: {{ photoData.people.join(", ") }} <br />
                   Author: {{ photoData.author }}
                 </p>
                 <div>
@@ -32,34 +32,27 @@
             </div>
           </div>
 
-          <div class="tooltip mr-3 ml-3" data-tip="Download">
-            <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="download(photoData)">
-              <img src="/download-outline.svg" aria-hidden="true" class="h-5 opacity-60 dark:invert" draggable="false" />
-            </button>
-          </div>
+          <button class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Download" @click="download(photoData)">
+            <img src="/download-outline.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
+          </button>
 
-          <div class="tooltip mr-3 ml-3" data-tip="Delete">
-            <button class="btn btn-circle btn-ghost btn-sm content-center text-center" @click="emit('delete')">
-              <img src="/trash-outline.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
-            </button>
-          </div>
+          <button class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Delete" @click="emit('delete')">
+            <img src="/trash-outline.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
+          </button>
 
-          <div class="tooltip mr-3 ml-3" data-tip="Edit">
-            <button class="btn btn-circle btn-ghost btn-sm content-center text-center">
-              <img src="/edit.svg" aria-hidden="true" class="h-5 opacity-60 select-none dark:invert" draggable="false" />
-            </button>
-          </div>
-          <div class="card-actions tooltip justify-end text-center" data-tip="Delete">
-            <!-- only show if logged in user is student & author -->
-            <img
-              v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
-              src="/trash-outline.svg"
-              aria-hidden="true"
-              class="btn btn-circle btn-ghost btn-s h-4 opacity-50 select-none dark:invert"
-              draggable="false"
-              @click="emit('delete')"
-            />
-          </div>
+          <button class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Edit">
+            <img src="/edit.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
+          </button>
+
+          <img
+            v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
+            src="/trash-outline.svg"
+            aria-hidden="true"
+            class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full opacity-50 sm:h-7 sm:w-7 md:h-8 md:w-8 dark:invert"
+            data-tip="Delete"
+            draggable="false"
+            @click="emit('delete')"
+          />
         </div>
       </div>
     </div>
@@ -90,9 +83,7 @@ const download = async (photoData: Photo) => {
     a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Failed to download image:", error);
-  }
+  } catch {}
 };
 </script>
 
