@@ -1,11 +1,11 @@
 <template>
   <div>
-    <label :for="category" class="label dark:text-neutral-content">
-      <span class="label-text dark:invert">{{ category }}</span>
+    <label :for="category" class="label dark:text-neutral-content font-semibold uppercase">
+      <span class="label-text m-2 text-base">{{ category }}</span>
     </label>
-    <select v-model="modelValue" class="select select-bordered w-full" :name="category">
-      <option value="All">All</option>
-      <option v-for="choice in choices" :key="choice" :value="choice">
+    <select v-model="modelValue" class="select select-bordered w-full border-[#e5e5e5] dark:border-[#c3c5c5]" :name="category">
+      <option class="text-[#5D6A7B]" value="All">All</option>
+      <option class="text-[#5D6A7B]" v-for="choice in choices" :key="choice" :value="choice">
         {{ choice }}
       </option>
     </select>
@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-// do not delete file; may need later?
 defineProps<{
   category: "Graduation Year" | "Month" | "Year" | "Event" | "Location";
   choices: string[] | number[];

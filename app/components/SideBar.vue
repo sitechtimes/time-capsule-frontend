@@ -1,17 +1,21 @@
 <template>
-  <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-200 sticky right-0 min-h-screen transition-all duration-300">
-    <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10 dark:invert" @click="isCollapsed = !isCollapsed">
+  <aside :class="isCollapsed ? 'w-12' : 'w-64'" class="bg-base-100 sticky right-0 min-h-screen border-[#c3c5c5] transition-all duration-300">
+    <button type="button" class="btn btn-sm btn-circle absolute top-4 right-[-0.75rem] z-10" @click="isCollapsed = !isCollapsed">
       <img v-if="!isCollapsed" src="/arrow-back-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
       <img v-else src="/arrow-forward-outline.svg" aria-hidden="true" class="h-4 select-none dark:invert" draggable="false" />
     </button>
 
-    <div v-if="!isCollapsed" class="p-4">
-      <h2 class="mb-6 text-xl font-bold">Filters</h2>
+    <div v-if="!isCollapsed" class="align-center border-base-300 dark:border-base-300 h-full w-full items-center border-r p-4 shadow-sm">
+      <div class="header w-full content-center items-center">
+        <img v-if="store.theme === 'light'" src="/filterlight.svg" class="w-full scale-75 items-center" alt="header" />
+        <img v-if="store.theme === 'dark'" src="/filterdark.svg" class="w-full scale-75 items-center" alt="header" />
+      </div>
+
       <div>
         <AutofillDropdown v-model="searchInputs.graduationYear" category="Graduation Year" :choices="graduationYears" include-all-option />
         <div>
-          <label class="label dark:invert">
-            <span class="label-text">Upload Date</span>
+          <label class="label w-full font-semibold tracking-[10] uppercase">
+            <span class="label-text m-4 w-full text-center text-xl tracking-widest text-black dark:text-[#e5e5e5]">Upload Date</span>
           </label>
           <div class="flex gap-4">
             <AutofillDropdown v-model="searchInputs.uploadDate.month" category="Month" :choices="months" include-all-option class="flex-1" />
@@ -21,30 +25,37 @@
         <AutofillDropdown v-model="searchInputs.event" category="Event" :choices="events" include-all-option />
         <AutofillDropdown v-model="searchInputs.location" category="Location" :choices="locations" include-all-option />
 
-        <div>
-          <label for="people" class="label dark:invert">
-            <span class="label-text">People (comma-separated)</span>
+        <div class="w-full content-center items-center">
+          <label for="people" class="flex w-full flex-col items-center font-semibold tracking-[10] uppercase">
+            <span class="mt-4 mb-0 text-xl leading-none tracking-widest text-black dark:text-[#e5e5e5]">People</span>
+            <span class="mt-0 mb-4 text-sm leading-none font-normal text-[#5d6a7b] lowercase italic dark:text-[#c3c5c5]">(comma-separated)</span>
           </label>
           <input
             v-model="personInput"
             type="text"
             placeholder="Ex: John Doe, Jane Smith"
-            class="input input-bordered w-full"
+            class="input input-bordered w-full text-[#5d6a7b] dark:text-[#c3c5c5]"
             @keydown.enter="handlePeopleInput(searchInputs, 'enter')"
             @input="handlePeopleInput(searchInputs, 'comma')"
           />
         </div>
 
-        <div class="flex items-end">
-          <button type="reset" class="btn btn-outline w-full" @click="resetInputs">Reset</button>
+        <div class="mb-2 flex w-full flex-wrap content-center items-center gap-2">
+          <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral m-2 gap-2">
+            {{ person }}
+            <button type="button" class="btn btn-xs btn-hover:[#567CAD] bg-neutral" @click="removePerson(index)">
+              <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none" draggable="false" />
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="mb-6 flex flex-wrap gap-2">
-        <div v-for="(person, index) in searchInputs.people" :key="person" class="badge badge-neutral gap-2">
-          {{ person }}
-          <button type="button" class="btn btn-xs btn-circle btn-ghost" @click="removePerson(index)">
-            <img src="/close-outline.svg" aria-hidden="true" class="h-4 opacity-50 select-none dark:invert" draggable="false" />
+        <div class="contents-center w-full items-center text-center">
+          <button
+            type="reset"
+            class="btn btn-outline-[#779FD3] dark:btn-outline-[#254D82] mb-2 w-full bg-[#779FD3] text-center font-normal text-white hover:bg-[#567CAD] dark:bg-[#254D82] dark:text-white dark:hover:bg-[#183F72]"
+            @click="resetInputs"
+          >
+            Reset
           </button>
         </div>
       </div>
@@ -54,6 +65,7 @@
 
 <script setup lang="ts">
 const isCollapsed = ref(false);
+const store = useUserStore();
 
 const searchInputs = defineModel("searchInputs", {
   type: Object,
@@ -130,3 +142,9 @@ onMounted(() => {
   void fetchLocations();
 });
 </script>
+
+<style scoped>
+label {
+  font-family: "Outfit", sans-serif;
+}
+</style>

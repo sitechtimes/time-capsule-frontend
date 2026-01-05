@@ -1,9 +1,9 @@
 <template>
-  <div class="navbar bg-base-100 shadow-sm">
+  <div class="navbar bg-base-100 dark:border-base-200 border-base-300 border-b shadow-sm">
     <div class="navbar-start">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-          <img src="/menu.svg" aria-hidden="true" class="h-5 w-5" draggable="false" />
+          <img src="/menu-outline.svg" aria-hidden="true" class="h-5 w-5 dark:invert" draggable="false" />
         </div>
         <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
           <li>
@@ -22,7 +22,8 @@
       </div>
     </div>
     <div class="navbar-center">
-      <a class="btn btn-ghost text-xl">TimeCapsule</a>
+      <img v-if="store.theme === 'light'" src="/logo.svg" alt="logo" class="scale-85" />
+      <img v-if="store.theme === 'dark'" src="/logodark.svg" alt="logo" class="scale-85" />
     </div>
     <div class="navbar-end">
       <button type="button" class="btn btn-ghost btn-circle">
@@ -38,7 +39,7 @@
             <img src="/person-circle-outline.svg" aria-hidden="true" class="h-5 w-5 select-none dark:invert" draggable="false" />
           </div>
         </button>
-        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-20 p-2 shadow">
           <li>
             <a class="justify-between"> Profile </a>
           </li>
