@@ -1,7 +1,7 @@
 <template>
   <div class="bg-base-200 text-base-content flex min-h-screen items-center justify-center p-6 pt-20">
     <div class="w-full max-w-2xl space-y-6">
-      <h1 class="mb-4 text-center text-2xl font-semibold tracking-wider text-[#5D6A7B] dark:text-[#e5e5e5]">Upload Photos</h1>
+      <h1 class="mb-4 text-center text-2xl font-semibold tracking-wider text-[#5D6A7B] dark:text-[#e5e5e5]">Edit Photo</h1>
 
       <div v-for="(photo, index) in photos" class="card bg-base-100 border-base-300 rounded-lg border p-6 shadow-md">
         <h2 class="text-secondary mb-4 text-center text-lg font-semibold">Photo {{ index + 1 }}</h2>
@@ -53,10 +53,9 @@
 
       <div>
         <label class="mb-1 block font-medium" for="multiImageUpload">Select Photos:</label>
-        <input ref="multipleFileInput" type="file" accept="image/*" multiple class="file-input file-input-bordered w-full" @change="handleMultipleFiles" />
       </div>
 
-      <button type="button" class="btn btn-secondary w-full hover:bg-[#3E69A3]" @click="showConfirmUploadModal = true">Upload All Photos</button>
+      <button type="button" class="btn btn-secondary w-full hover:bg-[#3E69A3]" @click="showConfirmUploadModal = true">Save Photo</button>
     </div>
 
     <ConfirmModal v-if="showConfirmUploadModal" title="Confirm Upload" message="Are you sure you want to upload photos?" @cancel="showConfirmUploadModal = false" @confirm="uploadPhotos" />
@@ -69,7 +68,7 @@ definePageMeta({
   layout: "dashboard"
 });
 
-interface PhotoForm {
+interface EditForm {
   graduationYear: number;
   event: string;
   location: string;

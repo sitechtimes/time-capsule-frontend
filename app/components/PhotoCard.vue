@@ -40,9 +40,9 @@
             <img src="/trash-outline.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
           </button>
 
-          <button class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Edit">
+          <NuxtLink to="/edit" class="tooltip flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-transparent sm:h-7 sm:w-7 md:h-8 md:w-8" data-tip="Edit">
             <img src="/edit.svg" aria-hidden="true" class="h-3.5 w-3.5 opacity-60 sm:h-4 sm:w-4 md:h-5 md:w-5 dark:invert" draggable="false" />
-          </button>
+          </NuxtLink>
 
           <img
             v-if="`${store.user?.firstName} ${store.user?.lastName}` === photoData.author"
