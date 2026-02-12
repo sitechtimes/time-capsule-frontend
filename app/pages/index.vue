@@ -120,7 +120,7 @@ definePageMeta({
   layout: "dashboard"
 });
 
-const recentlyUploadedPhotos = useUserStore().photos;
+const recentlyUploadedPhotos = usePhotoStore().photos;
 photoData.value.push(...recentlyUploadedPhotos);
 onMounted(fetchPhotoData);
 </script>

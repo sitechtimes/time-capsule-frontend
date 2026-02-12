@@ -69,16 +69,6 @@ definePageMeta({
   layout: "dashboard"
 });
 
-interface PhotoForm {
-  graduationYear: number;
-  event: string;
-  location: string;
-  personInput: string;
-  people: string[];
-  imageData: string;
-  imageName?: string;
-}
-
 const userStore = useUserStore();
 const photos = ref<PhotoForm[]>([]);
 const router = useRouter();
@@ -88,7 +78,7 @@ const showConfirmDeleteModal = ref(false);
 const currentYear = new Date().getFullYear();
 const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
-
+const photoStore = usePhotoStore();
 function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
   return {
     graduationYear: currentYear,
@@ -183,16 +173,16 @@ async function uploadPhotos() {
     }
 
     const sendData = {
-      uploadDate: Math.floor(Date.now() / 1000),
+      uploadDate: new Date(),
       graduationYear: photo.graduationYear,
       event: photo.event,
       location: photo.location,
       people: photo.people,
       imageData: photo.imageData,
       author: userStore.user?.id
-    };
+    } as Photo;
 
-    const { data, error } = await tryRequestEndpoint<PhotoUpload>("/upload", "POST", sendData);
+    const { data, error } = await photoStore.uploadPhotos(sendData);
 
     const photoData = data?.data; //photoData gives the actual payload (w/o message, statusCode, uploadDate)
     if (error) {
@@ -202,7 +192,7 @@ async function uploadPhotos() {
 
     // eslint-disable-next-line no-console
     console.log("Uploaded:", data);
-    userStore.photos.push({
+    photoStore.photos.push({
       ...photoData,
       uploadDate: new Date(photoData.uploadDate * 1000)
     });

@@ -23,12 +23,21 @@ export interface PhotoUpload {
 }
 
 export interface Photo {
-  id: number;
+  id?: number;
   uploadDate: Date;
   graduationYear: number;
   event: string;
   location: string;
   people: string[];
   imageData: string;
-  author: string;
+  author: number;
+}
+export interface PhotoForm {
+  graduationYear: number;
+  event: string;
+  location: string;
+  personInput: string;
+  people: string[];
+  imageData: string;
+  imageName?: string;
 }
