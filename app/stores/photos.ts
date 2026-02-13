@@ -3,16 +3,34 @@ export const usePhotoStore = defineStore("photoStore", () => {
   const photos = ref<Photo[]>([]);
 
   async function fetchData(url: string, method?: string, body?: any) {
-    const options: RequestInit = { credentials: "include" };
-    if (method) {
-      options.method = method;
+    const config = useRuntimeConfig();
+
+    const options: RequestInit = {
+      method,
+      credentials: "include"
+    };
+
+    if (body instanceof FormData) {
+      options.body = body;
+    } else if (body) {
       options.headers = { "Content-Type": "application/json" };
       options.body = JSON.stringify(body);
     }
-    return await fetch(import.meta.env.VITE_URL + url, options);
+
+    return await fetch(config.public.apiBase + url, options);
   }
   async function uploadPhotos(photoData: Photo) {
-    const res = await fetchData("/photos/upload", "POST", photoData);
+    const formData = new FormData();
+
+    Object.entries(photoData).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as any);
+      }
+    });
+    const res = await fetchData("/api/file/", "POST", formData);
+    if (!res.ok) {
+      throw new Error(`Failed to upload photo: ${await res.text()}`);
+    }
     return await res.json();
   }
   return {
