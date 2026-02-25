@@ -1,5 +1,5 @@
 import type { Photo } from "../utils/types";
-export const usePhotoStore = defineStore("photoStore", () => {
+export const usePhotoStore = defineStore("photo", () => {
   const photos = ref<Photo[]>([]);
 
   async function fetchData(url: string, method?: string, body?: any) {
