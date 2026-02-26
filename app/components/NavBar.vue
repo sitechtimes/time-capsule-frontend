@@ -59,7 +59,7 @@ function toggle() {
 }
 
 function handleLogout() {
-  store.signOut();
+  store.logout();
   void router.push("/login");
 }
 </script>

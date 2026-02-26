@@ -1,26 +1,33 @@
-export const useAuth = () => {
+export function useAuth() {
   const access = useCookie<string | null>("access_token");
   const refresh = useCookie<string | null>("refresh_token");
 
-  const login = async (email: string, password: string) => {
+  async function login(email: string, password: string) {
     const config = useRuntimeConfig();
 
-    const data = await $fetch<{
-      access: string;
-      refresh: string;
-    }>(`${config.public.apiBase}/api/token/`, {
-      method: "POST",
-      body: { email, password }
-    });
+    try {
+      const data = await $fetch<{
+        access: string;
+        refresh: string;
+      }>(`${config.public.apiBase}/users/token/`, {
+        method: "POST",
+        body: { email, password }
+      });
 
-    access.value = data.access;
-    refresh.value = data.refresh;
-  };
+      access.value = data.access;
+      refresh.value = data.refresh;
 
-  const logout = () => {
+      return data;
+    } catch (error: any) {
+      const message = error?.data?.detail || error?.data?.message || "Login failed. Please try again.";
+      throw new Error(message);
+    }
+  }
+
+  function logout() {
     access.value = null;
     refresh.value = null;
-  };
+  }
 
   return { login, logout, access };
-};
+}

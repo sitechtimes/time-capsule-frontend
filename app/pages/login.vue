@@ -51,7 +51,7 @@ async function handleLogin() {
   if (errorMessage.value) return console.error("Error:", errorMessage.value);
   errorMessage.value = "";
 
-  const error = await store.signIn(loginForm.email, loginForm.password);
+  const error = await store.login(loginForm.email, loginForm.password);
 
   if (error) return (errorMessage.value = error.message);
 

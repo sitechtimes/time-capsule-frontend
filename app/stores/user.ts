@@ -1,36 +1,32 @@
-import { useApi } from '~/composables/useApi';
+import { useAuth } from "~/composables/useAuth";
 export const useUserStore = defineStore("user", () => {
   const user = ref<User | null>();
   const theme = ref("light");
-  const api = useApi()
-  async function fetchData(url: string, method?: string, body?: any) {
-    const options: RequestInit = { credentials: "include" };
-    if (method) {
-      options.method = method;
-      options.headers = { "Content-Type": "application/json" };
-      options.body = JSON.stringify(body);
+  const auth = useAuth();
+  /* async function fetchUser() {
+    const config = useRuntimeConfig();
+
+    user.value = await $fetch<User>(`${config.public.apiBase}/api/me`, {
+      headers: {
+        Authorization: `Bearer ${auth.access.value}`
+      }
+    });
+  } */
+  async function login(email: string, password: string) {
+    try {
+      await auth.login(email, password);
+    } catch (err: any) {
+      return err.value;
     }
-    return await fetch(import.meta.env.VITE_URL + url, options);
   }
-  const token = useCookie('auth_token')
-  const login = async (credentials) => {
-    const data = await $fetch('http://localhost:8000/api/login/', {
-      method: 'POST',
-      body: credentials
-    })
-    token.value = data.access
+  function logout() {
+    auth.logout(); // 👈 delegate to composable
+    user.value = null;
   }
-
-  const logout = () => {
-    token.value = null
-    user.value = null
-  }
-
-  return { token, user, login, logout }
-})
   return {
     user,
     theme,
-    fetchData
+    login,
+    logout
   };
 });
