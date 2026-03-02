@@ -1,41 +1,17 @@
 import type { Photo } from "../utils/types";
+import { useAuth } from "~/composables/useAuth";
 export const usePhotoStore = defineStore("photo", () => {
   const photos = ref<Photo[]>([]);
-
-  async function fetchData(url: string, method?: string, body?: any) {
-    const config = useRuntimeConfig();
-
-    const options: RequestInit = {
-      method,
-      credentials: "include"
-    };
-
-    if (body instanceof FormData) {
-      options.body = body;
-    } else if (body) {
-      options.headers = { "Content-Type": "application/json" };
-      options.body = JSON.stringify(body);
-    }
-
-    return await fetch(config.public.apiBase + url, options);
-  }
+  const auth = useAuth();
   async function uploadPhotos(photoData: Photo) {
-    const formData = new FormData();
-
-    Object.entries(photoData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        formData.append(key, value as any);
-      }
-    });
-    const res = await fetchData("/api/file/", "POST", formData);
-    if (!res.ok) {
-      throw new Error(`Failed to upload photo: ${await res.text()}`);
+    try {
+      await auth.uploadPhotos(photoData);
+    } catch (err: any) {
+      return err.value;
     }
-    return await res.json();
   }
   return {
     photos,
-    fetchData,
     uploadPhotos
   };
 });

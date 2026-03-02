@@ -28,6 +28,26 @@ export function useAuth() {
     access.value = null;
     refresh.value = null;
   }
+  async function uploadPhotos(photoData: Record<string, any>) {
+    const config = useRuntimeConfig();
+    const formData = new FormData();
 
-  return { login, logout, access };
+    Object.entries(photoData).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as any);
+      }
+    });
+
+    const data = await $fetch(`${config.public.apiBase}/api/file/`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${access.value}`
+      }
+    });
+
+    return data;
+  }
+
+  return { login, logout, access, uploadPhotos };
 }
