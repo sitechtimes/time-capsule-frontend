@@ -1,35 +1,30 @@
 export function useAuth() {
-  const access = useCookie<string | null>("access_token");
-  const refresh = useCookie<string | null>("refresh_token");
+  const config = useRuntimeConfig();
 
   async function login(email: string, password: string) {
-    const config = useRuntimeConfig();
+    const data = await $fetch<{ user: { id: string; email: string; username: string } }>(`${config.public.apiBase}/users/auth/login/`, {
+      method: "POST",
+      body: { email, password }
+    }); // this doesnt use authfetch in order to store the tokens
 
-    try {
-      const data = await $fetch<{
-        access: string;
-        refresh: string;
-      }>(`${config.public.apiBase}/users/token/`, {
-        method: "POST",
-        body: { email, password }
-      });
-
-      access.value = data.access;
-      refresh.value = data.refresh;
-
-      return data;
-    } catch (error: any) {
-      const message = error?.data?.detail || error?.data?.message || "Login failed. Please try again.";
-      throw new Error(message);
-    }
+    return data;
   }
+  async function refreshToken() {
+    const data = await $fetch<{ access: string }>(`${config.public.apiBase}/users/auth/refresh/`, {
+      method: "POST",
+      credentials: "include"
+    });
+    return data;
+  }
+  async function logout() {
+    const data = await $fetch<{ detail: string }>(`${config.public.apiBase}/users/auth/logout/`, {
+      method: "POST",
+      credentials: "include"
+    });
 
-  function logout() {
-    access.value = null;
-    refresh.value = null;
+    return data;
   }
   async function uploadPhotos(photoData: Record<string, any>) {
-    const config = useRuntimeConfig();
     const formData = new FormData();
 
     Object.entries(photoData).forEach(([key, value]) => {
@@ -38,16 +33,17 @@ export function useAuth() {
       }
     });
 
-    const data = await $fetch(`${config.public.apiBase}/api/file/`, {
+    return await $fetch("/api/file/", {
       method: "POST",
       body: formData,
-      headers: {
-        Authorization: `Bearer ${access.value}`
-      }
+      credentials: "include"
     });
-
-    return data;
   }
 
-  return { login, logout, access, uploadPhotos };
+  return {
+    login,
+    logout,
+    uploadPhotos,
+    refreshToken
+  };
 }
