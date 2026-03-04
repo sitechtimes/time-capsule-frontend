@@ -4,8 +4,9 @@ export function useAuth() {
   async function login(email: string, password: string) {
     const data = await $fetch<{ user: { id: string; email: string; username: string } }>(`${config.public.apiBase}/users/auth/login/`, {
       method: "POST",
-      body: { email, password }
-    }); // this doesnt use authfetch in order to store the tokens
+      body: { email, password },
+      credentials: "include"
+    });
 
     return data;
   }
