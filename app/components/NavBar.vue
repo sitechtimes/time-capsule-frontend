@@ -58,8 +58,8 @@ function toggle() {
   store.theme = store.theme === "light" ? "dark" : "light";
 }
 
-function handleLogout() {
-  store.logout();
+async function handleLogout() {
+  await store.logout();
   void router.push("/login");
 }
 </script>

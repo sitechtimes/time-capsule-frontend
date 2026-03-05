@@ -19,14 +19,18 @@ export const useUserStore = defineStore("user", () => {
       return err.value;
     }
   }
-  function logout() {
-    auth.logout(); // 👈 delegate to composable
+  async function logout() {
+    await auth.logout();
     user.value = null;
+  }
+  async function refresh() {
+    await auth.refresh();
   }
   return {
     user,
     theme,
     login,
-    logout
+    logout,
+    refresh
   };
 });
