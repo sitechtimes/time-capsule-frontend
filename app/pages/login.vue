@@ -55,7 +55,7 @@ async function handleLogin() {
 
   if (error) return (errorMessage.value = error.message);
 
-  void router.push("/");
+  if (!error) void router.push("/");
 }
 </script>
 

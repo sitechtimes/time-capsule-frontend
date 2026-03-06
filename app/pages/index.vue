@@ -27,6 +27,7 @@ const user = useUserStore().user;
 const selectedPhoto = ref<Photo>();
 const showConfirmDeleteModal = ref(false);
 const deletePhotoIndex = ref<number | null>(null);
+const router = useRouter();
 
 const modalRef = useTemplateRef("modalRef");
 
@@ -122,7 +123,12 @@ definePageMeta({
 
 const recentlyUploadedPhotos = usePhotoStore().photos;
 photoData.value.push(...recentlyUploadedPhotos);
-onMounted(fetchPhotoData);
+onMounted(async () => {
+  await fetchPhotoData();
+  if (!user) {
+    void router.push("/login");
+  }
+});
 </script>
 
 <style scoped></style>

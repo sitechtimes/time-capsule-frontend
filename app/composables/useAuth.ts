@@ -6,7 +6,7 @@ export function useAuth() {
 
   async function login(email: string, password: string) {
     const data = await $fetch<{
-      user: { id: string; email: string; username: string };
+      user: User;
       access: string;
       refresh: string;
     }>(`${config.public.apiBase}/users/auth/login/`, {
@@ -16,7 +16,6 @@ export function useAuth() {
 
     accessToken.value = data.access;
     refreshToken.value = data.refresh;
-
     return data;
   }
 
