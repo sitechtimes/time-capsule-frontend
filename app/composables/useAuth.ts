@@ -58,8 +58,7 @@ export function useAuth() {
         formData.append(key, value as any);
       }
     });
-
-    return await $fetch("/api/file/", {
+    return await $fetch(`${config.public.apiBase}/api/file/`, {
       method: "POST",
       body: formData,
       headers: {

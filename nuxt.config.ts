@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      apiBase: ""
+      apiBase: "http://localhost:8000"
     }
   },
   srcDir: "app/",
