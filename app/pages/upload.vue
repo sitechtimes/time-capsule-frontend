@@ -18,7 +18,6 @@
           <div>
             <label class="mb-1 block font-medium">People (comma-separated or hit enter):</label>
             <input
-              v-model="photo.personInput"
               type="text"
               placeholder="Ex: John Doe, ..."
               class="input input-bordered bg-base-100 w-full"
@@ -70,7 +69,7 @@ definePageMeta({
 });
 
 const userStore = useUserStore();
-const photos = ref<PhotoForm[]>([]);
+const photos = ref<Photo[]>([]);
 const router = useRouter();
 const showConfirmUploadModal = ref(false);
 const showConfirmRedirectModal = ref(false);
@@ -79,14 +78,17 @@ const currentYear = new Date().getFullYear();
 const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
 const photoStore = usePhotoStore();
-function createPhotoFormWithImage(base64: string, name: string): PhotoForm {
+const multiFileInput = useTemplateRef("multipleFileInput");
+function createPhotoFormWithFile(file: File, name: string): Photo {
   return {
+    author: Number(userStore.user?.id),
+    id: Date.now(),
+    uploadDate: new Date(),
     graduationYear: currentYear,
     event: "",
     location: "",
-    personInput: "",
     people: [],
-    imageData: base64,
+    imageFile: file,
     imageName: name
   };
 }
@@ -96,54 +98,32 @@ function removeForm(index: number) {
   showConfirmDeleteModal.value = false;
 }
 
-function handlePeopleInput(photo: PhotoForm, action: "enter" | "comma") {
-  let input = photo.personInput;
+function handlePeopleInput(photo: Photo, action: "enter" | "comma") {
+  let personInput = "";
   if (action === "comma") {
-    if (!input.endsWith(",")) return;
-    input = input.slice(0, -1);
+    if (!personInput.endsWith(",")) return;
+    personInput = personInput.slice(0, -1);
   }
-  const name = input.trim();
+  const name = personInput.trim();
   if (!name || photo.people.includes(name)) {
-    photo.personInput = "";
+    personInput = "";
     return;
   }
   photo.people.push(name);
-  photo.personInput = "";
+  personInput = "";
 }
 
-function removePerson(photo: PhotoForm, index: number) {
+function removePerson(photo: Photo, index: number) {
   photo.people.splice(index, 1);
 }
 
-const multiFileInput = useTemplateRef("multipleFileInput");
-
-function readFileAsBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = reader.result;
-      if (typeof result === "string") {
-        resolve(result);
-      } else {
-        reject(new Error("File could not be converted to base64"));
-      }
-    };
-    reader.onerror = () => reject(new Error("FileReader failed"));
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handleMultipleFiles() {
-  const input = multiFileInput.value;
+function handleMultipleFiles() {
+  const input = multiFileInput.value as HTMLInputElement | undefined;
   if (!input?.files) return;
 
   for (const file of Array.from(input.files)) {
-    try {
-      const base64 = await readFileAsBase64(file);
-      photos.value.push(createPhotoFormWithImage(base64, file.name));
-    } catch (error) {
-      console.error(`Error reading file ${file.name}:`, error);
-    }
+    const fileName = file.name;
+    photos.value.push(createPhotoFormWithFile(file, fileName));
   }
   input.value = "";
 }
@@ -167,49 +147,18 @@ async function uploadPhotos() {
     return;
   }
   for (const [index, photo] of photos.value.entries()) {
-    if (!photo.imageData) {
+    if (!photo.imageFile) {
       alert(`No image data for photo ${index + 1}`);
       return;
     }
-
-    const sendData = {
-      uploadDate: new Date(),
-      graduationYear: photo.graduationYear,
-      event: photo.event,
-      location: photo.location,
-      people: photo.people,
-      imageData: photo.imageData,
-      author: userStore.user?.id
-    } as Photo;
-
-    const { data, error } = await photoStore.uploadPhotos(sendData);
-
-    const photoData = data?.data; //photoData gives the actual payload (w/o message, statusCode, uploadDate)
-    if (error) {
-      console.error("Upload error:", error);
+    try {
+      await photoStore.uploadPhotos(photo);
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert(`Upload error for photo ${index + 1}`);
       return;
     }
-
-    // eslint-disable-next-line no-console
-    console.log("Uploaded:", data);
-    photoStore.photos.push({
-      ...photoData,
-      uploadDate: new Date(photoData.uploadDate * 1000)
-    });
-
-    // eslint-disable-next-line no-console
-    console.log("Uploaded:", data);
   }
-
-  // reset forms
-  photos.value = [];
-  // reset all file input fields
-  if (Array.isArray(multiFileInput.value)) {
-    for (const input of multiFileInput.value) {
-      if (input) input.value = "";
-    }
-  }
-  showConfirmRedirectModal.value = true;
 }
 
 function confirmRedirect() {

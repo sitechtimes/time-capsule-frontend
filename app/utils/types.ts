@@ -11,17 +11,6 @@ export interface Student extends User {
   graduationYear: number;
 }
 
-export interface PhotoUpload {
-  id: number;
-  uploadDate: Date;
-  graduationYear: number;
-  event: string;
-  location: string;
-  people: string[];
-  imageData: string;
-  author: User["id"];
-}
-
 export interface Photo {
   id?: number;
   uploadDate: Date;
@@ -29,15 +18,7 @@ export interface Photo {
   event: string;
   location: string;
   people: string[];
-  imageData: string;
-  author: number;
-}
-export interface PhotoForm {
-  graduationYear: number;
-  event: string;
-  location: string;
-  personInput: string;
-  people: string[];
-  imageData: string;
-  imageName?: string;
+  imageFile: File;
+  imageName: string;
+  author: User["id"];
 }

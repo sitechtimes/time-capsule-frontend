@@ -125,9 +125,6 @@ const recentlyUploadedPhotos = usePhotoStore().photos;
 photoData.value.push(...recentlyUploadedPhotos);
 onMounted(async () => {
   await fetchPhotoData();
-  if (!user) {
-    void router.push("/login");
-  }
 });
 </script>
 
