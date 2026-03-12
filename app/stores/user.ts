@@ -1,6 +1,5 @@
 import { useAuth } from "~/composables/useAuth";
 export const useUserStore = defineStore("user", () => {
-  const user = ref<User | null>();
   const theme = ref("light");
   const auth = useAuth();
   /* async function fetchUser() {
@@ -12,6 +11,15 @@ export const useUserStore = defineStore("user", () => {
       }
     });
   } */
+  const user = ref<User | null>(null);
+  async function fetchUser() {
+    try {
+      const data = await auth.fetchUser();
+      user.value = data.user;
+    } catch {
+      user.value = null;
+    }
+  }
   async function login(email: string, password: string) {
     try {
       const data = await auth.login(email, password);
@@ -32,6 +40,7 @@ export const useUserStore = defineStore("user", () => {
     theme,
     login,
     logout,
-    refresh
+    refresh,
+    fetchUser
   };
 });
