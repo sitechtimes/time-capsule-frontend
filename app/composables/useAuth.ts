@@ -49,7 +49,7 @@ export function useAuth() {
   async function fetchUser() {
     return await $fetch<{
       user: User;
-    }>(`${config.public.apiBase}/users/auth/fetch_user/`, {
+    }>(`${config.public.apiBase}/users/auth/me/`, {
       method: "GET",
       credentials: "include"
     });

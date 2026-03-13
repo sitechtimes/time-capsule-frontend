@@ -11,6 +11,7 @@ export const useUserStore = defineStore("user", () => {
       }
     });
   } */
+  const loading = ref(false);
   const user = ref<User | null>(null);
   async function fetchUser() {
     try {
@@ -18,14 +19,18 @@ export const useUserStore = defineStore("user", () => {
       user.value = data.user;
     } catch {
       user.value = null;
+    } finally {
     }
   }
   async function login(email: string, password: string) {
     try {
+      loading.value = true;
       const data = await auth.login(email, password);
       user.value = data.user;
     } catch (err: any) {
       return err.value;
+    } finally {
+      loading.value = false;
     }
   }
   async function logout() {
@@ -41,6 +46,7 @@ export const useUserStore = defineStore("user", () => {
     login,
     logout,
     refresh,
-    fetchUser
+    fetchUser,
+    loading
   };
 });
