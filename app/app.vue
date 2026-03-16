@@ -8,4 +8,5 @@
 
 <script setup lang="ts">
 const store = useUserStore();
+await store.fetchUser();
 </script>

@@ -1,6 +1,5 @@
 export function useAuth() {
   const config = useRuntimeConfig();
-
   async function login(email: string, password: string) {
     const data = await $fetch<{
       user: User;

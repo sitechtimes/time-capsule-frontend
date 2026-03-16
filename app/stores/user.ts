@@ -15,11 +15,13 @@ export const useUserStore = defineStore("user", () => {
   const user = ref<User | null>(null);
   async function fetchUser() {
     try {
+      loading.value = true;
       const data = await auth.fetchUser();
       user.value = data.user;
     } catch {
       user.value = null;
     } finally {
+      loading.value = false;
     }
   }
   async function login(email: string, password: string) {
