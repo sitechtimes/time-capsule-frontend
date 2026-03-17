@@ -1,18 +1,15 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const userStore = useUserStore();
+  if (import.meta.server) return;
 
-  if (userStore.loading) {
-    return;
-  }
-  if (!userStore.user) {
-    await userStore.fetchUser();
-  }
+  const userStore = useUserStore();
+  await userStore.fetchUser();
 
   const user = userStore.user;
 
   if (user && to.path === "/login") {
     return navigateTo("/");
   }
+
   if (!user && to.path !== "/login") {
     return navigateTo("/login");
   }
