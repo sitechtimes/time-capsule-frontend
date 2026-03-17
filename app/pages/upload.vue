@@ -21,8 +21,8 @@
               type="text"
               placeholder="Ex: John Doe, ..."
               class="input input-bordered bg-base-100 w-full"
-              @keydown.enter="handlePeopleInput(photo, 'enter')"
-              @input="handlePeopleInput(photo, 'comma')"
+              @keydown.enter.prevent="handlePeopleInput($event, photo, 'enter')"
+              @input="handlePeopleInput($event, photo, 'comma')"
             />
           </div>
 
@@ -98,19 +98,24 @@ function removeForm(index: number) {
   showConfirmDeleteModal.value = false;
 }
 
-function handlePeopleInput(photo: Photo, action: "enter" | "comma") {
-  let personInput = "";
+function handlePeopleInput(event: Event, photo: Photo, action: "enter" | "comma") {
+  const input = event.target as HTMLInputElement;
+  let value = input.value;
+
   if (action === "comma") {
-    if (!personInput.endsWith(",")) return;
-    personInput = personInput.slice(0, -1);
+    if (!value.endsWith(",")) return;
+    value = value.slice(0, -1);
   }
-  const name = personInput.trim();
+
+  const name = value.trim();
+
   if (!name || photo.people.includes(name)) {
-    personInput = "";
+    input.value = "";
     return;
   }
+
   photo.people.push(name);
-  personInput = "";
+  input.value = "";
 }
 
 function removePerson(photo: Photo, index: number) {

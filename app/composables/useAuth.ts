@@ -17,7 +17,6 @@ export function useAuth() {
       method: "POST",
       credentials: "include"
     });
-
     return data;
   }
 
@@ -46,12 +45,26 @@ export function useAuth() {
     });
   }
   async function fetchUser() {
-    return await $fetch<{
-      user: User;
-    }>(`${config.public.apiBase}/users/auth/me/`, {
-      method: "GET",
-      credentials: "include"
-    });
+    try {
+      return await $fetch<{ user: User }>(`${config.public.apiBase}/users/auth/me/`, {
+        method: "GET",
+        credentials: "include"
+      });
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        try {
+          await refresh();
+          return await $fetch<{ user: User }>(`${config.public.apiBase}/users/auth/me/`, {
+            method: "GET",
+            credentials: "include"
+          });
+        } catch (refreshErr) {
+          throw refreshErr;
+        }
+      }
+
+      throw err;
+    }
   }
 
   return {
