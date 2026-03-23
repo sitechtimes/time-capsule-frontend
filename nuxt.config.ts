@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   srcDir: "app/",
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "nuxt-auth-utils"],
   vite: {
     plugins: [tailwindcss()]
   },
