@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", () => {
       }
     });
   } */
-  const { loggedIn, user, fetch: refreshSession } = useUserSession();
+  const user = ref<User | null>(null);
   const loading = ref(false);
   async function fetchUser() {
     try {
@@ -29,7 +29,6 @@ export const useUserStore = defineStore("user", () => {
       loading.value = true;
       const data = await auth.login(email, password);
       user.value = data.user;
-      await refreshSession();
       await navigateTo("/");
     } catch (err: any) {
       return err.value;
