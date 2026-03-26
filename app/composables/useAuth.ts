@@ -1,32 +1,48 @@
 export function useAuth() {
   const config = useRuntimeConfig();
-  async function login(email: string, password: string) {
-    const data = await $fetch<{
-      user: User;
-    }>(`${config.public.apiBase}/users/auth/login/`, {
+  async function refresh() {
+    return await $fetch(`${config.public.apiBase}/users/auth/refresh/`, {
       method: "POST",
-      body: { email, password },
       credentials: "include"
     });
+  }
+  async function fetch<T>(url: string, options: any = {}): Promise<T> {
+    try {
+      return (await $fetch<T>(`${config.public.apiBase}${url}`, {
+        credentials: "include",
+        ...options
+      })) as T;
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        await refresh();
 
-    return data;
+        return (await $fetch<T>(`${config.public.apiBase}${url}`, {
+          credentials: "include",
+          ...options
+        })) as T;
+      }
+
+      throw err;
+    }
   }
 
-  async function refresh() {
-    const data = await $fetch(`${config.public.apiBase}/users/auth/refresh/`, {
+  async function login(email: string, password: string) {
+    return await fetch<{ user: User }>("/users/auth/login/", {
       method: "POST",
-      credentials: "include"
+      body: { email, password }
     });
-    return data;
   }
 
   async function logout() {
-    const data = await $fetch(`${config.public.apiBase}/users/auth/logout/`, {
-      method: "POST",
-      credentials: "include"
+    return await fetch("/users/auth/logout/", {
+      method: "POST"
     });
+  }
 
-    return data;
+  async function fetchUser() {
+    return await fetch<{ user: User }>("/users/auth/me/", {
+      method: "GET"
+    });
   }
 
   async function uploadPhotos(photoData: Record<string, any>) {
@@ -38,40 +54,18 @@ export function useAuth() {
       }
     });
 
-    return await $fetch(`${config.public.apiBase}/api/file/`, {
+    return await fetch("/api/file/", {
       method: "POST",
-      body: formData,
-      credentials: "include"
+      body: formData
     });
-  }
-  async function fetchUser() {
-    try {
-      return await $fetch<{ user: User }>(`${config.public.apiBase}/users/auth/me/`, {
-        method: "GET",
-        credentials: "include"
-      });
-    } catch (err: any) {
-      if (err?.response?.status === 401) {
-        try {
-          await refresh();
-          return await $fetch<{ user: User }>(`${config.public.apiBase}/users/auth/me/`, {
-            method: "GET",
-            credentials: "include"
-          });
-        } catch (refreshErr) {
-          throw refreshErr;
-        }
-      }
-
-      throw err;
-    }
   }
 
   return {
+    fetch,
     login,
     logout,
     refresh,
-    uploadPhotos,
-    fetchUser
+    fetchUser,
+    uploadPhotos
   };
 }
