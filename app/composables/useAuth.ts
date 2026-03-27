@@ -48,11 +48,11 @@ export function useAuth() {
   async function uploadPhotos(photoData: Record<string, any>) {
     const formData = new FormData();
 
-    Object.entries(photoData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        formData.append(key, value as any);
-      }
-    });
+    formData.append("imageFile", photoData.imageFile);
+    formData.append("event", photoData.event);
+    formData.append("uploadDate", photoData.uploadDate.toISOString());
+    formData.append("people", JSON.stringify(photoData.people));
+    formData.append("graduationYear", String(photoData.graduationYear));
 
     return await fetch("/api/file/", {
       method: "POST",
