@@ -47,13 +47,15 @@ export function useAuth() {
 
   async function uploadPhotos(photoData: Record<string, any>) {
     const formData = new FormData();
-
-    formData.append("imageFile", photoData.imageFile);
-    formData.append("event", photoData.event);
-    formData.append("uploadDate", photoData.uploadDate.toISOString());
-    formData.append("people", JSON.stringify(photoData.people));
-    formData.append("graduationYear", String(photoData.graduationYear));
-
+    for (const [key, value] of Object.entries(photoData)) {
+      if (key === "people" && Array.isArray(value)) {
+        for (const person of value) {
+          formData.append("people[]", person);
+        }
+      } else {
+        formData.append(key, value);
+      }
+    }
     return await fetch("/api/file/", {
       method: "POST",
       body: formData
