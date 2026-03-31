@@ -1,75 +1,15 @@
-# Nuxt Minimal Starter
+# Time-Capsule-Frontend
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Welcome to Time-Capsule-Frontend
 
-## Setup
+## Startup
 
-Make sure to install dependencies:
+Before you start. you should have your environment variables in `.env`.
 
-```bash
-# npm
-npm install
+## commands to run
 
-# pnpm
-pnpm install
+To start the project, run `npm i` and `npm run server`. Use `npm run build` to build the project for production and `npm run preview` to preview it.
 
-# yarn
-yarn install
+## things to know
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+The two checks put in place verify if you have run `npm run typecheck` and `npm run prettier`, which uses prettier to format all code, and to verify if all types are accounted for according to TypeScript. Your commit will not be 'accepted' by the action if your code is badly formatted or has TypeScript errors. To teach good practice, the actions will not change your code for you.
