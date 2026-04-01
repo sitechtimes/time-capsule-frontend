@@ -12,8 +12,8 @@
             <input v-model="photo.graduationYear" type="number" class="input input-bordered bg-base-100 w-full" :min="currentYear" required />
           </div>
 
-          <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" />
-          <AutofillDropdown v-model="photo.location" category="Location" :choices="locations" :include-all-option="false" />
+          <AutofillDropdown v-model="photo.event" category="Event" :choices="events" :include-all-option="false" required />
+          <AutofillDropdown v-model="photo.location" category="Location" :choices="locations" :include-all-option="false" required />
 
           <div>
             <label class="mb-1 block font-medium">People (comma-separated or hit enter):</label>
@@ -23,6 +23,7 @@
               class="input input-bordered bg-base-100 w-full"
               @keydown.enter.prevent="handlePeopleInput($event, photo, 'enter')"
               @input="handlePeopleInput($event, photo, 'comma')"
+              required
             />
           </div>
 
