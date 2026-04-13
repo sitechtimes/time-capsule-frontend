@@ -44,9 +44,8 @@
 defineProps<{
   photoData: Photo;
 }>();
-
 const store = useUserStore();
-
+const photo = usePhotoStore();
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   delete: [void];

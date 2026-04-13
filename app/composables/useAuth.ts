@@ -61,6 +61,11 @@ export function useAuth() {
       body: formData
     });
   }
+  async function getPhotos() {
+    return await fetch("/api/filter", {
+      method: "GET"
+    });
+  }
 
   return {
     fetch,
@@ -68,6 +73,7 @@ export function useAuth() {
     logout,
     refresh,
     fetchUser,
-    uploadPhotos
+    uploadPhotos,
+    getPhotos
   };
 }

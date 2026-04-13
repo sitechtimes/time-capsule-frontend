@@ -10,8 +10,16 @@ export const usePhotoStore = defineStore("photo", () => {
       return err.value;
     }
   }
+  async function getPhotos() {
+    try {
+      photos.value = await auth.getPhotos();
+    } catch (err: any) {
+      return err.value;
+    }
+  }
   return {
     photos,
-    uploadPhotos
+    uploadPhotos,
+    getPhotos
   };
 });
