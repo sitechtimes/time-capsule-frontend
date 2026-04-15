@@ -70,7 +70,7 @@ definePageMeta({
 });
 
 const userStore = useUserStore();
-const photos = ref<Photo[]>([]);
+const photos = ref<uploadedPhoto[]>([]);
 const router = useRouter();
 const showConfirmUploadModal = ref(false);
 const showConfirmRedirectModal = ref(false);
@@ -80,12 +80,8 @@ const events = ref<string[]>([]);
 const locations = ref<string[]>([]);
 const photoStore = usePhotoStore();
 const multiFileInput = useTemplateRef("multipleFileInput");
-function createPhotoFormWithFile(file: File, name: string): Photo {
+function createPhotoFormWithFile(file: File, name: string): uploadedPhoto {
   return {
-    author: Number(userStore.user?.id),
-    id: Date.now(),
-    uploadDate: new Date(),
-    graduationYear: currentYear,
     event: "",
     location: "",
     people: [],

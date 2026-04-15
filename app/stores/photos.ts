@@ -3,7 +3,7 @@ import { useAuth } from "~/composables/useAuth";
 export const usePhotoStore = defineStore("photo", () => {
   const photos = ref<Photo[]>([]);
   const auth = useAuth();
-  async function uploadPhotos(photoData: Photo) {
+  async function uploadPhotos(photoData: uploadedPhoto) {
     try {
       await auth.uploadPhotos(photoData);
     } catch (err: any) {
