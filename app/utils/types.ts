@@ -17,6 +17,7 @@ export interface uploadedPhoto {
   imageName: string;
   people: string[];
   location: string;
+  preview?: string;
 }
 export interface Photo {
   id: User["id"];

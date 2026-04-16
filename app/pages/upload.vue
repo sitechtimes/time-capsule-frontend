@@ -36,7 +36,10 @@
             </div>
           </div>
 
-          <div v-if="photo.imageName" class="text-success mt-1 text-sm">Selected: {{ photo.imageName }}</div>
+          <div v-if="photo.imageName" class="text-success mt-1 text-sm">
+            <p>Selected: {{ photo.imageName }}</p>
+            <img :src="photo.preview" alt="Selected Photo" class="mt-2 max-h-60" />
+          </div>
 
           <div class="mt-3 text-center">
             <button type="button" class="btn btn-outline btn-error w-full max-w-xs" @click="showConfirmDeleteModal = true">Remove Photo</button>
@@ -86,7 +89,8 @@ function createPhotoFormWithFile(file: File, name: string): uploadedPhoto {
     location: "",
     people: [],
     imageFile: file,
-    imageName: name
+    imageName: name,
+    preview: URL.createObjectURL(file)
   };
 }
 
@@ -148,19 +152,14 @@ async function uploadPhotos() {
     alert("No photos added");
     return;
   }
-  for (const [index, photo] of photos.value.entries()) {
-    if (!photo.imageFile) {
-      alert(`No image data for photo ${index + 1}`);
-      return;
-    }
-    try {
-      await photoStore.uploadPhotos(photo);
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert(`Upload error for photo ${index + 1}`);
-      return;
-    }
-  }
+  await Promise.all(
+    photos.value.map((photo, index) => {
+      if (!photo.imageFile) {
+        throw new Error(`Missing file for photo ${index + 1}`);
+      }
+      return photoStore.uploadPhotos(photo);
+    })
+  );
 }
 
 function confirmRedirect() {
